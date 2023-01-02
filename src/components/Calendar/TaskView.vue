@@ -21,21 +21,25 @@
         </div>
       </div>
 
-      <div class="flex justify-between mt-5" v-if="fields && fieldsDescription.length">
-        <div :class="fieldsNoDescription ? 'w-8/12 mr-5' : 'w-full'">
-          <div class="w-full bg-gray-50 rounded-md p-2 mb-3" v-for="field in fieldsDescription">
-            <div class="text-[14px] tracking-[0.3px]">{{ field.title }}</div>
-            <div class="text-[12px] text-gray-800 font-medium tracking-[0.3px]" v-html="field.value"></div>
+      <div class="mt-5">
+        <h3 class="font-bold text-lg font-inter mb-1">Om opgaven</h3>
+        <div class="flex justify-between" v-if="fields && fieldsDescription.length">
+          <div :class="fieldsNoDescription ? 'w-8/12 mr-5' : 'w-full'">
+            <div class="w-full bg-gray-50 rounded-md p-2 mb-3" v-for="field in fieldsDescription">
+              <div class="text-[14px] tracking-[0.3px]">{{ field.title }}</div>
+              <div class="text-[12px] text-gray-800 font-medium tracking-[0.3px]" v-html="field.value"></div>
+            </div>
           </div>
-        </div>
 
-        <div class="w-4/12" v-if="fieldsNoDescription">
-          <div v-for="field in fieldsNoDescription" class="text-gray-700 mb-3">
-            <div class="text-[13px] tracking-[0.3px] font-medium">{{ field.title }}:</div>
-            <div class="text-[12px] text-gray-800 font-light tracking-[0.3px]">{{ fieldValue(field.value, field.type) }}</div>
+          <div class="w-4/12" v-if="fieldsNoDescription">
+            <div v-for="field in fieldsNoDescription" class="text-gray-700 bg-gray-50 border border-gray-100 p-1">
+              <div class="text-[13px] tracking-[0.3px] font-medium">{{ field.title }}:</div>
+              <div class="text-[12px] text-gray-800 font-light tracking-[0.3px]">{{ fieldValue(field.value, field.type) }}</div>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
 
   </div>

@@ -22,7 +22,7 @@
               </div>
             </div>
             <div class="flex">
-              <div class="mx-10 mt-5 text-gray-600 flex items-center text-sm font-light">
+              <div class="mt-5 text-gray-600 flex items-center text-sm font-light" :class="allDaySwitch ? 'mx-16' : 'mx-10'">
                 til
               </div>
               <div>
@@ -30,7 +30,7 @@
                 <div class="-mx-1 flex items-center">
                   <transition name="slide-fade" class="h-9">
                     <div v-if="allDaySwitch" class="w-32 px-1">
-                      <DateButton :setMinDate="startDate" datePickerPosition="right-[-20px]" @date="(n) => endDate = n"/>
+                      <DateButton :setMinDate="startDate" datePickerPosition="right-[-20px]" :setToday="false" @date="(n) => endDate = n"/>
                     </div>
                   </transition>
                   <div class="w-24 px-1" v-if="!allDaySwitch">
