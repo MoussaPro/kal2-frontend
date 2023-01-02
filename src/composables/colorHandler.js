@@ -1,15 +1,15 @@
 export default function colorHandler() {
   const colors = [
-    { name: 'green', css: 'bg-primary' },
-    { name: 'red', css: 'bg-red-500' },
-    { name: 'pink', css: 'bg-pink-500' },
-    { name: 'orange', css: 'bg-orange-500' },
-    { name: 'yellow', css: 'bg-yellow-500' },
-    { name: 'cyan', css: 'bg-cyan-500' },
-    { name: 'blue', css: 'bg-blue-500' },
-    { name: 'purple', css: 'bg-purple-500' },
-    { name: 'gray', css: 'bg-gray-500' },
-    { name: 'black', css: 'bg-black' },
+    { name: 'green', css: 'bg-primary', boxCss: 'bg-primary/10', text: 'text-primary' },
+    { name: 'red', css: 'bg-red-500',  boxCss: 'bg-red-500/10', text: 'text-red-600' },
+    { name: 'pink', css: 'bg-pink-500',  boxCss: 'bg-pink-500/10', text: 'text-pink-600' },
+    { name: 'orange', css: 'bg-orange-500',  boxCss: 'bg-orange-500/10', text: 'text-orange-600' },
+    { name: 'yellow', css: 'bg-yellow-500', boxCss: 'bg-yellow-500/10', text: 'text-yellow-600' },
+    { name: 'cyan', css: 'bg-cyan-500', boxCss: 'bg-cyan-500/10', text: 'text-cyan-600' },
+    { name: 'blue', css: 'bg-blue-500', boxCss: 'bg-blue-500/10', text: 'text-blue-600' },
+    { name: 'purple', css: 'bg-purple-500', boxCss: 'bg-purple-500/10', text: 'text-purple-600' },
+    { name: 'gray', css: 'bg-gray-500', boxCss: 'bg-gray-500/10', text: 'text-gray-600' },
+    { name: 'black', css: 'bg-black', boxCss: 'bg-black/10', text: 'text-black' },
   ];
 
   const getTaskColors = (taskColor) => {

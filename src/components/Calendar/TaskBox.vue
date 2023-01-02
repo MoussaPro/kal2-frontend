@@ -1,6 +1,6 @@
 <template>
+  <!-- More task component -->
   <div v-if="task.moreTask" class="h-full relative z-50">
-    <!-- More task component -->
     <div class="border rounded-md h-full flex flex-col justify-between text-xs px-2 py-[2px] font-inter hover-transition hover:opacity-75 relative shadow bg-primary-Darker text-white border-primary font-bold cursor-pointer" :class="openMoreTaskToggle ? 'opacity-75 scale-[105%]': 'hover:scale-[102%]'" @click="openMoreTask">
       <p>{{ task.title }}</p>
       <div class="line-clamp-1 -mx-[2px]" v-if="task.moreTask">
@@ -48,7 +48,7 @@
   if (!props.moreTask) {
     if (!props.subTask) {
       if (props.task.task_time_end && props.task.task_time_end > props.task.task_time) {
-        styling.value = "height: " + diffBetweenTwoTimes(props.task.task_time, props.task.task_time_end, 'minutes')*taskHeight.minute + "px;";
+        styling.value = "height: " + (diffBetweenTwoTimes(props.task.task_time, props.task.task_time_end, 'minutes')*taskHeight.minute-2) + "px;";
       } else {
         styling.value = "height: 50px;"
       }
