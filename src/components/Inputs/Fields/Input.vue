@@ -10,7 +10,7 @@
       <div class="relative mr-2 w-full">
         <div class="absolute left-0 top-0 flex items-center justify-center w-9 h-9 bg-gray-200 rounded-l-md text-[13px] font-medium font-inter" v-if="fields.type === 'valuta'">kr. </div>
         <!-- Currency -->
-        <CurrencyInput v-if="fields.type === 'valuta'" v-model="fields.value" @blur="emitChanges" placeholder="Standard værdi" class="border rounded focus:outline-none w-full h-9 text-[13px] pl-10"/>
+        <Inputs-Fields-Currency v-if="fields.type === 'valuta'" v-model="fields.value" @blur="emitChanges" placeholder="Standard værdi" class="border rounded focus:outline-none w-full h-9 text-[13px] pl-10"/>
         <!-- Rest -->
         <input v-if="fields.type === 'tal' || fields.type === 'tekst' || fields.type === ''" type="text" class="border rounded focus:outline-none w-full h-9 text-[13px] pl-2" :class="error ? 'border-red-500' : 'border-gray-200'" placeholder="Standard værdi" v-model="fields.value" @blur="emitChanges"/>
         <!-- Description -->
@@ -53,6 +53,8 @@
   import fieldHandler from "@/composables/fieldHandler";
   import Trumbowyg from 'vue-trumbowyg';
   import 'trumbowyg/dist/ui/trumbowyg.css';
+  import { useCurrencyInput } from 'vue-currency-input'
+
   const { capitalizeString, formatField } = fieldHandler();
 
   const props = defineProps({
@@ -86,6 +88,12 @@
       ['horizontalRule'],
     ],
   };
+
+  const { currencyRef } = useCurrencyInput({
+    currency: 'DKK',
+    currencyDisplay: 'hidden',
+    autoDecimalDigits: true,
+  });
 
   const toggleType = ref(false);
 

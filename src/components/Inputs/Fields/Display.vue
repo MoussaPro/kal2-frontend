@@ -7,7 +7,7 @@
     <!-- Currency -->
     <div class="w-full relative">
       <div class="absolute left-0 top-0 flex items-center justify-center w-9 h-9 bg-gray-200 rounded-l-md text-[13px] font-medium font-inter" v-if="type === 'valuta'">kr. </div>
-      <CurrencyInput v-if="type === 'valuta'" v-model="value" @blur="$emit('getField', {title, type, value, id})" class="border rounded focus:outline-none w-full h-9 text-[13px] pl-10"/>
+      <Inputs-Fields-Currency v-if="type === 'valuta'" v-model="value" @blur="$emit('getField', {title, type, value, id})" class="border rounded focus:outline-none w-full h-9 text-[13px] pl-10"/>
     </div>
 
     <!-- Description -->
