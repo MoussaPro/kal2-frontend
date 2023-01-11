@@ -18,7 +18,24 @@ export default function fieldHandler() {
     return firstChar + restOfString;
   }
 
+  const formatField = (field, setValues) => {
+  let error = false;
+    let errorMsg = '';
+    let value = field.value;
+
+    if (field.type === 'tal' && value) {
+      const regex = /^[\d,]*\.?\d*$/
+      if (!regex.test(value)) {
+        value = '';
+        error = true;
+        errorMsg = 'Indtast venligst kun tal'
+      }
+    }
+
+    return setValues(value, error, errorMsg);
+  }
+
   return {
-    addField, deleteField, capitalizeString
+    addField, deleteField, capitalizeString, formatField
   }
 }

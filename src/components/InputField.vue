@@ -7,9 +7,14 @@
     </div>
     <input type="text" class="bg-gray-50 border-gray-200 border-2 border-dashed px-2 py-1 w-[200px] rounded text-[13px] text-gray-600 focus:outline-gray-300 focus:border-gray-300" v-model="fields.title" @blur="emitChanges"/>
     <div class="flex items-center mt-2">
-      <input type="text" class="border-gray-200 border rounded pl-2 w-full h-9 text-[13px] mr-2" v-if="fields.type !== 'beskrivelse'" placeholder="Standard værdi" v-model="fields.value" @blur="emitChanges"/>
-      <div class="mr-2 w-full" v-else>
-        <trumbowyg v-model="fields.value" :config="trumConfig" @blur="emitChanges" class="form-control" placeholder="Standard værdi" name="content"></trumbowyg>
+      <div class="relative mr-2 w-full">
+        <div class="absolute left-0 top-0 flex items-center justify-center w-9 h-9 bg-gray-200 rounded-l-md text-[13px] font-medium font-inter" v-if="fields.type === 'valuta'">kr. </div>
+        <!-- Currency -->
+        <CurrencyInput v-if="fields.type === 'valuta'" v-model="fields.value" @blur="emitChanges" placeholder="Standard værdi" class="border rounded focus:outline-none w-full h-9 text-[13px] pl-10"/>
+        <!-- Rest -->
+        <input v-if="fields.type === 'tal' || fields.type === 'tekst' || fields.type === ''" type="text" class="border rounded focus:outline-none w-full h-9 text-[13px] pl-2" :class="error ? 'border-red-500' : 'border-gray-200'" placeholder="Standard værdi" v-model="fields.value" @blur="emitChanges"/>
+        <!-- Description -->
+        <trumbowyg v-if="fields.type === 'beskrivelse'" v-model="fields.value" :config="trumConfig" @blur="emitChanges" placeholder="Standard værdi" class="form-control"></trumbowyg>
       </div>
       <div class="relative">
         <div class="bg-gray-50 border-gray-200 border-2 h-9 text-[12px] w-[200px] rounded text-sm text-gray-700 cursor-pointer hover-transition hover:bg-gray-100 relative" :class="toggleType ? 'font-semibold' : 'border-dashed'" @click="toggleType = !toggleType">
@@ -40,30 +45,33 @@
         </div>
       </div>
     </div>
+    <span v-if="errorMsg" class="text-[11px] font-bold text-red-600 font-inter mt-1">{{ errorMsg }}</span>
   </div>
 </template>
 <script setup>
   import { ref } from "vue";
   import fieldHandler from "@/composables/fieldHandler";
-  const { capitalizeString } = fieldHandler();
   import Trumbowyg from 'vue-trumbowyg';
   import 'trumbowyg/dist/ui/trumbowyg.css';
+  const { capitalizeString, formatField } = fieldHandler();
 
   const props = defineProps({
     type: String,
     title: String,
-    value: String,
+    value: null,
     index: Number,
     id: Number
   });
 
-  const emit = defineEmits(['changes', 'delete'])
+  const emit = defineEmits(['changes', 'delete']);
+  const error = ref(false);
+  const errorMsg = ref();
 
   const fields = ref({
     id: props.id,
     type: props.type,
-    title: capitalizeString(props.title),
-    value: props.value
+    title: props.title ? capitalizeString(props.title) : props.title,
+    value: props.value ? props.value : null
   });
 
   const trumConfig = {
@@ -92,6 +100,13 @@
   }
 
   const emitChanges = () => {
+    // Format before emitting
+    formatField(fields.value, (value, cError, cErrorMsg) => {
+      fields.value.value = value;
+      error.value = cError;
+      errorMsg.value = cErrorMsg;
+    });
+
     emit('changes', fields.value);
   }
 </script>

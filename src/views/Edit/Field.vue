@@ -12,8 +12,8 @@
           <input type="text" id="title" name="title" v-model="title" class="input-field-non-border" placeholder="Navngiv skabelonen">
 
           <div class="mt-6">
-            <div class="mt-5" v-for="(field, index) in apiData.fields" :key="field.id">
-              <CreateField :type="field.type" :index="index" :id="field.id" :title="field.title" :value="field.value" @changes="fieldObj => setFields(fieldObj, index)" @delete="deleteField(apiData.fields, index)"/>
+            <div class="mt-5" v-for="(field, index) in apiData.fields" :key="field.id+field.type+field.value">
+              <InputField :type="field.type" :index="index" :id="field.id" :title="field.title" :value="field.value" @changes="fieldObj => setFields(fieldObj, index)" @delete="deleteField(apiData.fields, index)"/>
             </div>
 
             <div class="text-primary-Darker1 tracking-[0.45px] mt-2 ml-[2px] font-inter font-medium text-[13px] inline-flex border-b border-primary-Darker1 items-center cursor-pointer hover-transition hover:opacity-75" @click="addField(apiData.fields)">

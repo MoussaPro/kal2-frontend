@@ -55,12 +55,12 @@
       // If no selected field set the primary
       if (selectedFieldId.value === null) {
         const primaryField = apiData.value.filter(field => field.is_primary === 1)[0];
-        if (!primaryField) {
-          // If no primary, set the first one
+        // Set primary or just set the first field
+        if (primaryField) {
+          returnedFields.value = primaryField;
+        } else {
           returnedFields.value = apiData.value[0];
         }
-
-        returnedFields.value = primaryField;
       } else {
         // If selected field
         returnedFields.value = apiData.value.filter(field => field.id === selectedFieldId.value)[0];
@@ -102,7 +102,9 @@
           'Authorization': 'Bearer '+ localStorage.getItem('token')
         }
       }).then((response) => response.data).then((response) => {
-        apiData.value = response.fields;
+        if (response.fields.length) {
+          apiData.value = response.fields;
+        }
         loading.value = false;
       }).catch((response) => {
         error.value = response;

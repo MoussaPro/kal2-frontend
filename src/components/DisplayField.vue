@@ -1,8 +1,17 @@
 <template>
   <div>
     <span class="text-[12.5px] font-inter font-medium text-gray-700">{{ title }}</span>
-    <input type="text" v-model="value" v-if="type !== 'beskrivelse'" @blur="$emit('getField', {title, type, value, id})" class="block w-full pl-2 rounded shadow-sm mt-[2px] border border-gray-200 h-[32px] text-sm font-inter" />
-    <div class="mr-2 w-full" v-else>
+    <!-- Rest -->
+    <input type="text" v-model="value" v-if="type === 'tal' || type === 'tekst'" @blur="$emit('getField', {title, type, value, id})" class="block w-full pl-2 rounded shadow-sm mt-[2px] border border-gray-200 h-[32px] text-sm font-inter" />
+
+    <!-- Currency -->
+    <div class="w-full relative">
+      <div class="absolute left-0 top-0 flex items-center justify-center w-9 h-9 bg-gray-200 rounded-l-md text-[13px] font-medium font-inter" v-if="type === 'valuta'">kr. </div>
+      <CurrencyInput v-if="type === 'valuta'" v-model="value" @blur="$emit('getField', {title, type, value, id})" class="border rounded focus:outline-none w-full h-9 text-[13px] pl-10"/>
+    </div>
+
+    <!-- Description -->
+    <div class="mr-2 w-full" v-if="type === 'beskrivelse'">
       <trumbowyg v-model="value" :config="trumConfig" @blur="$emit('getField', {title, type, value, id})" class="form-control" name="content"></trumbowyg>
     </div>
   </div>
