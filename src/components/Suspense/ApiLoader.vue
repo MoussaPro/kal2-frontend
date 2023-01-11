@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Loading v-if="loading && !error"/>
-    <Error v-if="error" :error="error"/>
+    <Suspense-Loading v-if="loading && !error"/>
+    <Suspense-Error v-if="error" :error="error"/>
   </div>
 </template>
 <script setup>

@@ -1,14 +1,14 @@
 <template>
   <div class="auth-content pb-20">
-    <ApiLoader :error="errorApiLoader" :redirect404="true" :loading="loading" class="mt-5" />
+    <Suspense-ApiLoader :error="errorApiLoader" :redirect404="true" :loading="loading" class="mt-5" />
 
     <div v-if="!loading">
-      <Block class="mt-5">
+      <Layout-Block class="mt-5">
         <div class="p-10">
-          <Loader :loading="loading"/>
-          <ErrorMsg :error="error" :message="errorMsg" class="mb-5"/>
-          <SuccessMsg :success="success" :message="successMsg" class="mb-5"/>
-          <BlockTitle title="Rediger skabelon" class="mb-5"/>
+          <ApiCreate-Loader :loading="loading"/>
+          <ApiCreate-ErrorMsg :error="error" :message="errorMsg" class="mb-5"/>
+          <ApiCreate-SuccessMsg :success="success" :message="successMsg" class="mb-5"/>
+          <Layout-BlockTitle title="Rediger skabelon" class="mb-5"/>
           <input type="text" id="title" name="title" v-model="title" class="input-field-non-border" placeholder="Navngiv skabelonen">
 
           <div class="mt-6">
@@ -37,7 +37,7 @@
           </div>
 
         </div>
-      </Block>
+      </Layout-Block>
     </div>
   </div>
 </template>

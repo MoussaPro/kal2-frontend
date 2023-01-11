@@ -1,12 +1,11 @@
 <template>
-  <ApiLoader :error="error" :loading="loading" class="mt-10"/>
+  <Suspense-ApiLoader :error="error" :loading="loading" class="mt-10"/>
   <div v-if="!loading && !error">
-    <Navigation :weekNumber="apiData.week_number" :year="apiData.year" active="week" @previous="previous" @next="next" @gotoByWeekNumber="gotoByDate" @create="toggleCreateTask"/>
-    <CreateTask v-if="showCreateTask" @close="toggleCreateTask" @created="newTaskCreated" />
-    <TaskEdit v-if="showOpenedTask" :task="openedTask" @close="toggleOpenedTask" />
+    <Calendar-Navigation :weekNumber="apiData.week_number" :year="apiData.year" active="week" @previous="previous" @next="next" @gotoByWeekNumber="gotoByDate" @create="toggleCreateTask"/>
+    <NewTask-CreateTask v-if="showCreateTask" @close="toggleCreateTask" @created="newTaskCreated" />
+    <Calendar-TaskEdit v-if="showOpenedTask" :task="openedTask" @close="toggleOpenedTask" />
 
     <!-- @TODO styling -->
-    <!-- Gøre med slut dato som outlook, slut dato skal kun være der hvis hele dagen er markeret. Fjern slutdato switch. -->
     <div v-for="task in allDayTasks">
       <div class="bg-primary px-2 py-1 cursor-pointer hover-transition hover:opacity-75" @click="setOpenedTask(task)">{{ task.title }}</div>
     </div>
@@ -29,7 +28,7 @@
         <div class="border-b border-gray-100 bg-white relative flex" :class="heightClass" v-for="(time, index) in timeframe" :key="index+' '+time">
           <div class="sibling absolute w-full h-full hover:bg-primary/10 hover-transition cursor-pointer"></div>
           <div v-for="task in tasks(week.timestamp, time)" class="flex-1 p-[2px]" :key="task.id">
-            <Task :task="task" @clicked="setOpenedTask" />
+            <Calendar-Week-Task :task="task" @clicked="setOpenedTask" />
           </div>
         </div>
       </div>
@@ -38,7 +37,7 @@
 </template>
 
 <script setup>
-  import { computed, onMounted, reactive, ref, watch } from "vue";
+  import { computed, ref } from "vue";
   import dateHandler from "@/composables/dateHandler";
   import timeHandler from "@/composables/timeHandler";
   import axios from "axios";

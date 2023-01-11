@@ -1,6 +1,6 @@
 <template>
-  <Top v-if="!auth.check() && route.fullPath !== '/login' && route.fullPath !== '/register'" />
-  <TopLogged v-if="auth.check()" />
+  <Layout-Top v-if="!auth.check() && route.fullPath !== '/login' && route.fullPath !== '/register'" />
+  <Layout-TopLogged v-if="auth.check()" />
   <router-view :key="route.fullPath"></router-view>
 </template>
 <script setup>

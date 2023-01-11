@@ -1,12 +1,12 @@
 <template>
   <div>
     <PopUp boxClass="max-h-[80vh] min-h-[470px] flex" :overflowY="true" @close="$emit('close')">
-      <Loader :loading="loading"/>
+      <ApiCreate-Loader :loading="loading"/>
       <div class="h-full w-full relative flex flex-col justify-between">
         <div class="px-1 mt-2 relative">
-          <ErrorMsg :error="error" :message="errorMsg" class="my-5" />
+          <ApiCreate-ErrorMsg :error="error" :message="errorMsg" class="my-5" />
           <div class="flex items-end">
-            <ColorPicker @color="(n) => color = n" />
+            <NewTask-ColorPicker @color="(n) => color = n" />
             <input type="text" id="title" name="title" v-model="title" class="input-field-non-border ml-5" placeholder="Tilføj titel">
           </div>
           <div class="flex mt-4 items-center">
@@ -14,10 +14,10 @@
               <p class="font-inter text-[13px] text-gray-800 mb-1">Opgave start</p>
               <div class="-mx-1 flex items-center">
                 <div class="w-32 px-1">
-                  <DateButton :setMaxDate="endDate" @date="(n) => startDate = n"/>
+                  <NewTask-DateButton :setMaxDate="endDate" @date="(n) => startDate = n"/>
                 </div>
                 <div class="w-24 px-1" v-if="!allDaySwitch">
-                  <TimeButton @time="(n) => startTime = n" />
+                  <NewTask-TimeButton @time="(n) => startTime = n" />
                 </div>
               </div>
             </div>
@@ -30,11 +30,11 @@
                 <div class="-mx-1 flex items-center">
                   <transition name="slide-fade" class="h-9">
                     <div v-if="allDaySwitch" class="w-32 px-1">
-                      <DateButton :setMinDate="startDate" datePickerPosition="right-[-20px]" :setToday="false" @date="(n) => endDate = n"/>
+                      <NewTask-DateButton :setMinDate="startDate" datePickerPosition="right-[-20px]" :setToday="false" @date="(n) => endDate = n"/>
                     </div>
                   </transition>
                   <div class="w-24 px-1" v-if="!allDaySwitch">
-                    <TimeButton @time="(n) => endTime = n" />
+                    <NewTask-TimeButton @time="(n) => endTime = n" />
                   </div>
                 </div>
               </div>
@@ -45,7 +45,7 @@
           </div>
 
           <div class="mt-8">
-            <FieldsContainer @taskFields="setFields" />
+            <NewTask-Fields-FieldsContainer @taskFields="setFields" />
           </div>
         </div>
 

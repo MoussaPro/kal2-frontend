@@ -1,10 +1,10 @@
 <template>
   <div class="auth-content pb-20">
-    <Block class="mt-5">
+    <Layout-Block class="mt-5">
       <div class="p-10">
-        <Loader :loading="loading"/>
-        <ErrorMsg :error="error" :message="errorMsg" class="mb-5"/>
-        <BlockTitle title="Opret ny skabelon" class="mb-5"/>
+        <ApiCreate-Loader :loading="loading"/>
+        <ApiCreate-ErrorMsg :error="error" :message="errorMsg" class="mb-5"/>
+        <Layout-BlockTitle title="Opret ny skabelon" class="mb-5"/>
         <input type="text" id="title" name="title" v-model="title" class="input-field-non-border" placeholder="Navngiv skabelonen">
 
         <div class="mt-6">
@@ -28,7 +28,7 @@
         </div>
         <button class="bg-primary px-5 py-2 text-white rounded-md text-sm font-medium hover-transition mt-5 hover:bg-primary-Darker active:bg-primary-Darker1" @click="save">Gem skabelon</button>
       </div>
-    </Block>
+    </Layout-Block>
   </div>
 </template>
 <script setup>

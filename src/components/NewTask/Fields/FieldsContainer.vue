@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-50 relative border border-gray-100 rounded-md" :class="{'h-[250px]': loading}">
-    <Loader :loading="loading"/>
+    <ApiCreate-Loader :loading="loading"/>
     <div v-if="selectedField">
       <div class="flex justify-center">
         <div class="mx-auto relative">
