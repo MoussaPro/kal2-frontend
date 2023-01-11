@@ -1,13 +1,14 @@
 <template>
   <div class="auth-content pb-20">
-    <Suspense-ApiLoader :error="errorApiLoader" :redirect404="true" :loading="loading" class="mt-5" />
+    <Api-Server-Loading v-if="loading && !errorApiLoader" class="mt-5"/>
+    <Api-Server-Error v-if="errorApiLoader" :error="errorApiLoader" class="mt-5"/>
 
     <div v-if="!loading">
       <Layout-Block class="mt-5">
         <div class="p-10">
-          <ApiCreate-Loader :loading="loading"/>
-          <ApiCreate-ErrorMsg :error="error" :message="errorMsg" class="mb-5"/>
-          <ApiCreate-SuccessMsg :success="success" :message="successMsg" class="mb-5"/>
+          <Api-Local-Loading :loading="loading"/>
+          <Api-Local-Error :error="error" :message="errorMsg" class="mb-5"/>
+          <Api-Local-Success :success="success" :message="successMsg" class="mb-5"/>
           <Layout-BlockTitle title="Rediger skabelon" class="mb-5"/>
           <input type="text" id="title" name="title" v-model="title" class="input-field-non-border" placeholder="Navngiv skabelonen">
 
@@ -110,7 +111,9 @@
   }
 
   const save = async () => {
+    // Reset messages
     error.value = false;
+    success.value = false;
 
     if (!title.value) {
       error.value = true;

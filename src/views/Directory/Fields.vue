@@ -1,6 +1,7 @@
 <template>
   <div class="relative">
-    <Suspense-ApiLoader :error="error" :loading="loading" />
+    <Api-Server-Loading v-if="loading && !error"/>
+    <Api-Server-Error v-if="error" :error="error"/>
 
     <div v-if="!loading" class="p-10">
       <Layout-BlockTitle title="Felter skabeloner"/>

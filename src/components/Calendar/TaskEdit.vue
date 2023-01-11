@@ -1,11 +1,11 @@
 <template>
   <div>
     <PopUp boxClass="max-h-[80vh] min-h-[470px] flex w-[750px]" :overflowY="true" @close="$emit('close')">
-      <ApiCreate-Loader :loading="loading"/>
+      <Api-Local-Loading :loading="loading"/>
       <CalendarTaskView :task="task" v-if="!editMode"/>
       <div class="h-full w-full relative flex flex-col justify-between" v-if="editMode">
         <div class="px-1 mt-2 relative">
-          <ApiCreate-ErrorMsg :error="error" :message="errorMsg" class="my-5" />
+          <Api-Local-Error :error="error" :message="errorMsg" class="my-5" />
           <div class="flex items-end">
             <NewTask-ColorPicker @color="(n) => color = n" />
             <input type="text" id="title" name="title" v-model="title" class="input-field-non-border ml-5" placeholder="Tilføj titel">

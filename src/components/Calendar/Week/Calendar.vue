@@ -1,5 +1,8 @@
 <template>
-  <Suspense-ApiLoader :error="error" :loading="loading" class="mt-10"/>
+  <Api-Server-Loading v-if="loading && !error" class="mt-10"/>
+  <Api-Server-Error v-if="error" :error="error" class="mt-10"/>
+
+
   <div v-if="!loading && !error">
     <Calendar-Navigation :weekNumber="apiData.week_number" :year="apiData.year" active="week" @previous="previous" @next="next" @gotoByWeekNumber="gotoByDate" @create="toggleCreateTask"/>
     <NewTask-CreateTask v-if="showCreateTask" @close="toggleCreateTask" @created="newTaskCreated" />

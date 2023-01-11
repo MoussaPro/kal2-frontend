@@ -2,8 +2,8 @@
   <div class="auth-content pb-20">
     <Layout-Block class="mt-5">
       <div class="p-10">
-        <ApiCreate-Loader :loading="loading"/>
-        <ApiCreate-ErrorMsg :error="error" :message="errorMsg" class="mb-5"/>
+        <Api-Local-Loading :loading="loading"/>
+        <Api-Local-Error :error="error" :message="errorMsg" class="mb-5"/>
         <Layout-BlockTitle title="Opret ny skabelon" class="mb-5"/>
         <input type="text" id="title" name="title" v-model="title" class="input-field-non-border" placeholder="Navngiv skabelonen">
 
