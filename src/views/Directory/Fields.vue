@@ -1,9 +1,10 @@
 <template>
   <div class="relative">
-    <ApiLoader :error="error" :loading="loading" />
+    <Api-Server-Loading v-if="loading && !error"/>
+    <Api-Server-Error v-if="error" :error="error"/>
 
     <div v-if="!loading" class="p-10">
-      <BlockTitle title="Felter skabeloner"/>
+      <Layout-BlockTitle title="Felter skabeloner"/>
       <div class="grid gap-5 grid-cols-3 mt-3">
         <div v-for="field in fields" class="w-full bg-gray-100 rounded-md text-gray-500 border-2 border-gray-300 hover-transition cursor-pointer hover:bg-gray-300 hover:border-gray-400 h-[300px]">
           <RouterLink :to="'/edit/field/'+field.id" class="h-full flex flex-col justify-center items-center">

@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-50 relative border border-gray-100 rounded-md" :class="{'h-[250px]': loading}">
-    <Loader :loading="loading"/>
+    <Api-Local-Loading :loading="loading"/>
     <div v-if="selectedField">
       <div class="flex justify-center">
         <div class="mx-auto relative">
@@ -17,11 +17,11 @@
       </div>
       <div class="max-h-[40vh] relative overflow-y-scroll">
         <div class="grid grid-cols-2 bg-gray-50 gap-x-5 gap-y-4 px-2 pb-4 mt-3">
-          <DisplayField v-for="field in JSON.parse(selectedField.fields).filter((n) => {return n.type !== 'beskrivelse'})" :key="field" :field="field" @getField="updatedField => updateField(updatedField, field.id)"/>
+          <Inputs-Fields-Display v-for="field in JSON.parse(selectedField.fields).filter((n) => {return n.type !== 'beskrivelse'})" :key="field" :field="field" @getField="updatedField => updateField(updatedField, field.id)"/>
         </div>
 
         <div class="px-2 pb-4 mt-3">
-          <DisplayField v-for="field in JSON.parse(selectedField.fields).filter((n) => {return n.type === 'beskrivelse'})" class="mt-4" :key="field" :field="field" @getField="updatedField => updateField(updatedField, field.id)"/>
+          <Inputs-Fields-Display v-for="field in JSON.parse(selectedField.fields).filter((n) => {return n.type === 'beskrivelse'})" class="mt-4" :key="field" :field="field" @getField="updatedField => updateField(updatedField, field.id)"/>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
     plugins: [
-      require('unplugin-vue-components/webpack')({ deep: true, directoryAsNamespace: false }),
+      require('unplugin-vue-components/webpack')({ deep: true, directoryAsNamespace: true }),
       new Dotenv(),
       new webpack.ProvidePlugin({
         jQuery: jQueryPath,

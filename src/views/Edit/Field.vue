@@ -1,19 +1,20 @@
 <template>
   <div class="auth-content pb-20">
-    <ApiLoader :error="errorApiLoader" :redirect404="true" :loading="loading" class="mt-5" />
+    <Api-Server-Loading v-if="loading && !errorApiLoader" class="mt-5"/>
+    <Api-Server-Error v-if="errorApiLoader" :error="errorApiLoader" class="mt-5"/>
 
     <div v-if="!loading">
-      <Block class="mt-5">
+      <Layout-Block class="mt-5">
         <div class="p-10">
-          <Loader :loading="loading"/>
-          <ErrorMsg :error="error" :message="errorMsg" class="mb-5"/>
-          <SuccessMsg :success="success" :message="successMsg" class="mb-5"/>
-          <BlockTitle title="Rediger skabelon" class="mb-5"/>
+          <Api-Local-Loading :loading="loading"/>
+          <Api-Local-Error :error="error" :message="errorMsg" class="mb-5"/>
+          <Api-Local-Success :success="success" :message="successMsg" class="mb-5"/>
+          <Layout-BlockTitle title="Rediger skabelon" class="mb-5"/>
           <input type="text" id="title" name="title" v-model="title" class="input-field-non-border" placeholder="Navngiv skabelonen">
 
           <div class="mt-6">
             <div class="mt-5" v-for="(field, index) in apiData.fields" :key="field.id+field.type+field.value">
-              <InputField :type="field.type" :index="index" :id="field.id" :title="field.title" :value="field.value" @changes="fieldObj => setFields(fieldObj, index)" @delete="deleteField(apiData.fields, index)"/>
+              <Inputs-Fields-Input :type="field.type" :index="index" :id="field.id" :title="field.title" :value="field.value" @changes="fieldObj => setFields(fieldObj, index)" @delete="deleteField(apiData.fields, index)"/>
             </div>
 
             <div class="text-primary-Darker1 tracking-[0.45px] mt-2 ml-[2px] font-inter font-medium text-[13px] inline-flex border-b border-primary-Darker1 items-center cursor-pointer hover-transition hover:opacity-75" @click="addField(apiData.fields)">
@@ -37,7 +38,7 @@
           </div>
 
         </div>
-      </Block>
+      </Layout-Block>
     </div>
   </div>
 </template>
@@ -110,7 +111,9 @@
   }
 
   const save = async () => {
+    // Reset messages
     error.value = false;
+    success.value = false;
 
     if (!title.value) {
       error.value = true;

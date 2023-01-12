@@ -1,9 +1,9 @@
 <template>
   <div class="auth-content">
-    <UnderTopLogged v-if="menu" :menu="menu"></UnderTopLogged>
-    <Block class="mt-5">
+    <Layout-UnderTopLogged v-if="menu" :menu="menu"></Layout-UnderTopLogged>
+    <Layout-Block class="mt-5">
         <router-view></router-view>
-    </Block>
+    </Layout-Block>
   </div>
 </template>
 <script setup>
