@@ -9,7 +9,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
         </svg>
         <div class="relative">
-          <Calendar-Week-WeekNavigationButton :weekNumber="weekNumber" @gotoByWeekNumber="(number) => $emit('gotoByWeekNumber', number)" :year="year" v-if="active === 'week'"/>
+          <Calendar-Week-Navigation :weekNumber="weekNumber" @gotoByWeekNumber="(number) => $emit('gotoByWeekNumber', number)" :year="year" v-if="active === 'week'"/>
         </div>
       </div>
 
