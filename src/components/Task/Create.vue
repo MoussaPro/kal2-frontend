@@ -79,7 +79,7 @@
   });
 
   const emit = defineEmits(['close', 'created']);
-  const startDate = ref();
+  const startDate = ref(null);
   const startTime = ref(null);
   const endDate = ref(null);
   const endTime = ref(null);
