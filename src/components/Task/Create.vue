@@ -6,7 +6,7 @@
         <div class="px-1 mt-2 relative">
           <Api-Local-Error :error="error" :message="errorMsg" class="my-5" />
           <div class="flex items-end">
-            <NewTask-ColorPicker @color="(n) => color = n" />
+            <ColorPicker @color="(n) => color = n" />
             <input type="text" id="title" name="title" v-model="title" class="input-field-non-border ml-5" placeholder="Tilføj titel">
           </div>
           <div class="flex mt-4 items-center">
@@ -14,10 +14,10 @@
               <p class="font-inter text-[13px] text-gray-800 mb-1">Opgave start</p>
               <div class="-mx-1 flex items-center">
                 <div class="w-32 px-1">
-                  <NewTask-DateButton :setMaxDate="endDate" @date="(n) => startDate = n"/>
+                  <DateButton :setMaxDate="endDate" @date="(n) => startDate = n"/>
                 </div>
                 <div class="w-24 px-1" v-if="!allDaySwitch">
-                  <NewTask-TimeButton @time="(n) => startTime = n" />
+                  <TimeButton @time="(n) => startTime = n" />
                 </div>
               </div>
             </div>
@@ -30,11 +30,11 @@
                 <div class="-mx-1 flex items-center">
                   <transition name="slide-fade" class="h-9">
                     <div v-if="allDaySwitch" class="w-32 px-1">
-                      <NewTask-DateButton :setMinDate="startDate" datePickerPosition="right-[-20px]" :setToday="false" @date="(n) => endDate = n"/>
+                      <DateButton :setMinDate="startDate" datePickerPosition="right-[-20px]" :setToday="false" @date="(n) => endDate = n"/>
                     </div>
                   </transition>
                   <div class="w-24 px-1" v-if="!allDaySwitch">
-                    <NewTask-TimeButton @time="(n) => endTime = n" />
+                    <TimeButton @time="(n) => endTime = n" />
                   </div>
                 </div>
               </div>

@@ -5,8 +5,8 @@
 
   <div v-if="!loading && !error">
     <Calendar-Navigation :weekNumber="apiData.week_number" :year="apiData.year" active="week" @previous="previous" @next="next" @gotoByWeekNumber="gotoByDate" @create="toggleCreateTask"/>
-    <NewTask-CreateTask v-if="showCreateTask" @close="toggleCreateTask" @created="newTaskCreated" />
-    <Calendar-Tasks-Edit v-if="showOpenedTask" :task="openedTask" @close="toggleOpenedTask" />
+    <Task-Create v-if="showCreateTask" @close="toggleCreateTask" @created="newTaskCreated" />
+    <Task-Edit v-if="showOpenedTask" :task="openedTask" @close="toggleOpenedTask" />
 
     <!-- @TODO styling -->
     <div v-for="task in allDayTasks">
