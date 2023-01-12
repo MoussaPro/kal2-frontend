@@ -45,7 +45,7 @@
           </div>
 
           <div class="mt-8">
-            <NewTask-Fields-FieldsContainer @taskFields="setFields" />
+            <Inputs-Fields-Container @taskFields="setFields" />
           </div>
         </div>
 
