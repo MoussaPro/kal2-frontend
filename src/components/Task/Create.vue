@@ -14,10 +14,10 @@
               <p class="font-inter text-[13px] text-gray-800 mb-1">Opgave start</p>
               <div class="-mx-1 flex items-center">
                 <div class="w-32 px-1">
-                  <DateButton :setMaxDate="endDate" @date="(n) => startDate = n"/>
+                  <DateButton :setMaxDate="endDate" :prefill="startDate" @date="(n) => startDate = n"/>
                 </div>
                 <div class="w-24 px-1" v-if="!allDaySwitch">
-                  <TimeButton @time="(n) => startTime = n" />
+                  <TimeButton :prefill="startTime" @time="(n) => startTime = n" />
                 </div>
               </div>
             </div>
@@ -71,8 +71,15 @@
   import { ref } from "vue";
   import axios from "axios";
 
+  const props = defineProps({
+    prefill: {
+      type: Object,
+      required: false
+    }
+  });
+
   const emit = defineEmits(['close', 'created']);
-  const startDate = ref(null);
+  const startDate = ref();
   const startTime = ref(null);
   const endDate = ref(null);
   const endTime = ref(null);
@@ -83,6 +90,12 @@
   const loading = ref(false);
   const error = ref(null);
   const errorMsg = ref(null);
+
+  // Set prefills
+  if (props.prefill) {
+    startDate.value = props.prefill.day ?? null;
+    startTime.value = props.prefill.time ?? null;
+  }
 
   const toggleAllDaySwitch = () => {
     allDaySwitch.value = !allDaySwitch.value;
