@@ -5,7 +5,7 @@
 
   <div v-if="!loading && !error">
     <Calendar-Navigation :weekNumber="apiData.week_number" :year="apiData.year" active="week" @previous="previous" @next="next" @gotoByWeekNumber="gotoByDate" @create="toggleCreateTask"/>
-    <Task-Create v-if="showCreateTask" @close="toggleCreateTask" @created="newTaskCreated" />
+    <Task-Create v-if="showCreateTask" :prefill="prefillTask" @close="toggleCreateTask" @created="newTaskCreated" />
     <Task-Edit v-if="showOpenedTask" :task="openedTask" @close="toggleOpenedTask" />
 
     <!-- @TODO styling -->
@@ -29,7 +29,7 @@
       <div :id="'week_'+week.date" class="col-span-1 bg-white relative" :class="{'border-l border-t border-gray-100': index === 0}" v-for="(week, index) in weekDays" :key="week.timestamp">
         <!-- Times -->
         <div class="border-b border-gray-100 bg-white relative flex" :class="heightClass" v-for="(time, index) in timeframe" :key="index+' '+time">
-          <div class="sibling absolute w-full h-full hover:bg-primary/10 hover-transition cursor-pointer"></div>
+          <div class="sibling absolute w-full h-full hover:bg-primary/10 hover-transition cursor-pointer" @click="toggleCreateTask({ time: time, day: week.date })"></div>
           <div v-for="task in tasks(week.timestamp, time)" class="flex-1 p-[2px]" :key="task.id">
             <Calendar-Week-Task :task="task" @clicked="setOpenedTask" />
           </div>
@@ -59,6 +59,7 @@
   const showCreateTask = ref(false);
   const showOpenedTask = ref(false);
   const openedTask = ref();
+  const prefillTask = ref({});
 
   /**
    * Getting data from the API
@@ -143,7 +144,8 @@
     getApi(date.startOf('isoWeek').format('DD-MM-YYYY'));
   }
 
-  const toggleCreateTask = () => {
+  const toggleCreateTask = (prefilling = null) => {
+    prefillTask.value = prefilling; // Set prefilling if whitebox is clicked
     showCreateTask.value = !showCreateTask.value;
   }
 

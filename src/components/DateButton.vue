@@ -29,6 +29,10 @@
     setToday: {
       type: Boolean,
       default: true
+    },
+    prefill: {
+      type: String,
+      required: false
     }
   });
 
@@ -38,8 +42,14 @@
   const emit = defineEmits(['date']);
   const toggleDatePicker = ref(false);
 
-  if (props.setToday) {
+  // If setToday and there is no prefill or there is no prefill.day
+  if (props.setToday && !props.prefill) {
     date.value = new Date();
+  }
+
+  // Set prefill
+  if (props.prefill) {
+    date.value = danishToDate(props.prefill);
   }
 
   const finaleDate = computed(() => {
