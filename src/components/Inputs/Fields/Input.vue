@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <span v-if="errorMsg" class="text-[11px] font-bold text-red-600 font-inter mt-1">{{ errorMsg }}</span>
+    <span v-if="error" class="text-[11px] font-bold text-red-600 font-inter mt-1">{{ errorMsg }}</span>
   </div>
 </template>
 <script setup>
@@ -55,7 +55,7 @@
   import 'trumbowyg/dist/ui/trumbowyg.css';
   import { useCurrencyInput } from 'vue-currency-input'
 
-  const { capitalizeString, formatField } = fieldHandler();
+  const { capitalizeString } = fieldHandler();
 
   const props = defineProps({
     type: String,
@@ -108,15 +108,20 @@
   }
 
   const emitChanges = () => {
-    // Format before emitting
-    formatField(fields.value, (value, cError, cErrorMsg) => {
-      fields.value.value = value;
-      error.value = cError;
-      errorMsg.value = cErrorMsg;
-    });
+    // Check if type is number and value is a number
+    if (fields.value.type === 'tal' && fields.value.value) {
+      const regex = /^[\d,]*\.?\d*$/
+      if (!regex.test(fields.value.value)) {
+        fields.value.value = '';
+        error.value = true;
+        errorMsg.value = 'Indtast venligst kun tal'
+        return false;
+      }
+    }
 
     emit('changes', fields.value);
   }
+
 </script>
 <style lang="css">
 .trumbowyg-box {
