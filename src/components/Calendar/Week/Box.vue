@@ -1,7 +1,7 @@
 <template>
   <!-- More task component -->
   <div v-if="task.moreTask" class="h-full relative z-50">
-    <div class="border rounded-md h-full flex flex-col justify-between text-xs px-2 py-[2px] font-inter hover-transition hover:opacity-75 relative shadow bg-primary-Darker text-white border-primary font-bold cursor-pointer" :class="openMoreTaskToggle ? 'opacity-75 scale-[105%]': 'hover:scale-[102%]'" @click="openMoreTask">
+    <div class="border rounded-md h-full flex flex-col justify-between text-xs px-2 py-[2px] font-inter hover-transition hover:opacity-80 relative shadow hover:!z-[25] bg-primary-Darker text-white border-primary font-bold cursor-pointer" :class="openMoreTaskToggle ? 'opacity-75 scale-[105%]': 'hover:scale-[102%]'" @click="openMoreTask">
       <p>{{ task.title }}</p>
       <div class="line-clamp-1 -mx-[2px]" v-if="task.moreTask">
         <p class="inline text-[10px] mx-[2px] font-medium" v-for="(task, i) in task.tasks">
@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <div v-else class="border rounded-md text-xs px-2 py-[5px] shadow relative hover-transition hover:opacity-75 cursor-pointer hover:scale-[102%]" :style="styling">
+  <div v-else class="border rounded-md text-xs px-2 py-[5px] shadow relative hover-transition hover:opacity-80 cursor-pointer hover:scale-[102%] hover:!z-[25]" :style="styling">
     <div class="overflow-y-hidden h-full">
       <p class="leading-none font-medium font-inter" :class="lineClamper">{{ task.title }}</p>
       <span class="text-[10px]">#{{ task.id }}</span>
