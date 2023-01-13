@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PopUp boxClass="max-h-[80vh] min-h-[470px] flex" :overflowY="true" @close="$emit('close')">
+    <PopUp boxClass="max-h-[99.99vh]" :overflowY="true" @close="$emit('close')">
       <Api-Local-Loading :loading="loading"/>
       <div class="h-full w-full relative flex flex-col justify-between">
         <div class="px-1 mt-2 relative">
@@ -51,16 +51,16 @@
 
         <div class="mt-5">
           <button @click="createTask" class="text-sm font-inter text-gray-700 font-medium py-3 px-5 rounded-md hover-transition" :class="!loading ? 'bg-gray-200 hover:bg-primary hover:text-white' : 'bg-gray-400'">
-          <span v-if="!loading" class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-4 mr-[5px]">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            Opret opgave
-          </span>
-            <span v-else class="flex items-center text-white">
-            <img src="@/assets/images/loader.gif" class="w-5 mr-2" alt="loader"/>
-            Indlæser...
-          </span>
+            <span v-if="!loading" class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-4 mr-[5px]">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              Opret opgave
+            </span>
+              <span v-else class="flex items-center text-white">
+              <img src="@/assets/images/loader.gif" class="w-5 mr-2" alt="loader"/>
+              Indlæser...
+            </span>
           </button>
         </div>
       </div>
