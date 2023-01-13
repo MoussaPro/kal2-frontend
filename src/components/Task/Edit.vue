@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PopUp boxClass="max-h-[80vh] min-h-[470px] flex w-[750px]" :overflowY="true" @close="$emit('close')">
+    <PopUp boxClass="max-h-[95vh] w-[750px]" :overflowY="true" @close="$emit('close')">
       <Api-Local-Loading :loading="loading"/>
       <Task-View :task="task" v-if="!editMode"/>
       <div class="h-full w-full relative flex flex-col justify-between" v-if="editMode">
