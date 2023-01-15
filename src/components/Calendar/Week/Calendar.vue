@@ -4,9 +4,9 @@
 
 
   <div v-if="!loading && !error">
-    <Calendar-Navigation :weekNumber="apiData.week_number" :year="apiData.year" active="week" @previous="previous" @next="next" @gotoByWeekNumber="gotoByDate" @create="toggleCreateTask"/>
-    <Task-Create v-if="showCreateTask" :prefill="prefillTask" @close="toggleCreateTask" @created="newTaskCreated" />
-    <Task-Edit v-if="showOpenedTask" :task="openedTask" @close="toggleOpenedTask" />
+    <Calendar-Navigation :weekNumber="apiData ? apiData.week_number : null" :year="apiData ? apiData.year : null" active="week" @previous="previous" @next="next" @gotoByWeekNumber="gotoByDate" @create="toggleCreateTask"/>
+    <Task-Create v-if="showCreateTask" :containerFields="containerFields" :prefill="prefillTask" @close="toggleCreateTask" @created="newTaskCreated" />
+    <Task-Open v-if="showOpenedTask" :containerFields="containerFields" :task="openedTask" @close="toggleOpenedTask" @updated="newTaskCreated" />
 
     <!-- @TODO styling -->
     <div v-for="task in allDayTasks">
@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-  import { computed, ref } from "vue";
+import { computed, ref } from "vue";
   import dateHandler from "@/composables/dateHandler";
   import timeHandler from "@/composables/timeHandler";
   import axios from "axios";
@@ -60,6 +60,7 @@
   const showOpenedTask = ref(false);
   const openedTask = ref();
   const prefillTask = ref({});
+  const containerFields = ref(null);
 
   /**
    * Getting data from the API
@@ -81,6 +82,7 @@
         }
       }).then((response) => response.data).then((response) => {
         apiData.value = response;
+        containerFields.value = response.fields ?? null;
         loading.value = false;
       }).catch((response) => {
         error.value = response;

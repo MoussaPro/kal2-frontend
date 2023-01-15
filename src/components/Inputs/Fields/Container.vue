@@ -10,8 +10,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </p>
-          <div v-if="toggleTemplates && apiData.length" v-click-outside="hideToggleTemplates" class="absolute shadow-md left-0 top-[34px] w-[300px] font-inter text-[13px] text-gray-600 z-20 rounded-b-md bg-white border border-gray-200">
-            <div class="max-h-[150px] overflow-y-scroll relative">
+          <div v-if="toggleTemplates" v-click-outside="hideToggleTemplates" class="absolute shadow-md left-0 top-[34px] w-[300px] font-inter text-[13px] text-gray-600 z-20 rounded-b-md bg-white border border-gray-200">
+            <div class="max-h-[150px] overflow-y-scroll relative" v-if="apiData.length">
               <div @click="setFieldId(field.id)" v-for="(field) in apiData" class="p-2 hover-transition hover:bg-gray-200 cursor-pointer border-b border-gray-200" :class="{'bg-gray-100 font-medium': field.id === selectedField.id}">{{ field.title }}</div>
             </div>
             <RouterLink to="/new/field" class="px-1 py-2 hover-transition bg-gray-100 hover:bg-gray-200 cursor-pointer flex items-center font-semibold justify-start rounded-b-md">
@@ -25,11 +25,18 @@
       </div>
       <div class="min-h-[100px] max-h-[50vh] relative overflow-y-scroll">
         <div class="grid grid-cols-2 bg-gray-50 gap-x-5 gap-y-4 px-2 pb-4 mt-3">
-          <Inputs-Fields-Display v-for="field in JSON.parse(selectedField.fields).filter((n) => {return n.type !== 'beskrivelse'})" :key="field" :field="field" @getField="updatedField => updateField(updatedField, field.id)"/>
+          <Inputs-Fields-Display v-for="field in JSON.parse(selectedField.fields).filter((n) => {return n.type !== 'beskrivelse'})"
+              :key="field"
+              :field="field"
+              @getField="updatedField => updateField(updatedField, field.id)"/>
         </div>
 
         <div class="px-2 pb-4 mt-3">
-          <Inputs-Fields-Display v-for="field in JSON.parse(selectedField.fields).filter((n) => {return n.type === 'beskrivelse'})" class="mt-4" :key="field" :field="field" @getField="updatedField => updateField(updatedField, field.id)"/>
+          <Inputs-Fields-Display v-for="field in JSON.parse(selectedField.fields).filter((n) => {return n.type === 'beskrivelse'})"
+              class="mt-4"
+              :key="field"
+              :field="field"
+              @getField="updatedField => updateField(updatedField, field.id)"/>
         </div>
       </div>
     </div>
@@ -42,41 +49,54 @@
 </template>
 
 <script setup>
-  import { computed, onMounted, ref } from "vue";
+import { computed, inject, onMounted, ref } from "vue";
   import axios from "axios";
 
   const props = defineProps({
-    jsonData: String
+    jsonData: {
+      type: String,
+    },
+    containerFields: {
+      type: Array || null,
+    }
   });
 
-  const apiData = ref();
+  const apiData = ref(props.containerFields ?? null);
   const loading = ref();
   const error = ref();
   const selectedFieldId = ref(null);
   const toggleTemplates = ref();
-  const emits = defineEmits(['taskFields'])
+  const emits = defineEmits(['taskFields']);
+  const prefilled = props.jsonData ? { title: 'Vælg ny skabelon', fields: props.jsonData } : null;
 
   const selectedField = computed(() => {
     const returnedFields = ref();
 
     if (apiData.value) {
-      // If no selected field set the primary
-      if (selectedFieldId.value === null) {
-        const primaryField = apiData.value.filter(field => field.is_primary === 1)[0];
-        // Set primary or just set the first field
-        if (primaryField) {
-          returnedFields.value = primaryField;
-        } else {
-          returnedFields.value = apiData.value[0];
-        }
+      // Select fields from props
+      if (prefilled && selectedFieldId.value === null) {
+        returnedFields.value = prefilled;
       } else {
-        // If selected field
-        returnedFields.value = apiData.value.filter(field => field.id === selectedFieldId.value)[0];
+        // If no selected field set the primary
+        if (selectedFieldId.value === null) {
+          const primaryField = apiData.value.filter(field => field.is_primary === 1)[0];
+          // Set primary or just set the first field
+          if (primaryField) {
+            returnedFields.value = primaryField;
+          } else {
+            returnedFields.value = apiData.value[0];
+          }
+        } else {
+          // If selected field
+          returnedFields.value = apiData.value.filter(field => field.id === selectedFieldId.value)[0];
+        }
       }
 
-      // Emits field template changes and defaults value
-      emits('taskFields', JSON.stringify(JSON.parse(returnedFields.value.fields)));
-      return returnedFields.value;
+      if (returnedFields.value) {
+        // Emits field template changes and defaults value
+        emits('taskFields', JSON.stringify(JSON.parse(returnedFields.value.fields)));
+        return returnedFields.value;
+      }
     }
   });
 
@@ -101,24 +121,4 @@
     selectedField.value.fields = JSON.stringify(array);
     emits('taskFields', selectedField.value.fields);
   }
-
-  onMounted(() => {
-    try {
-      loading.value = true;
-      axios.get('/fields', {
-        headers: {
-          'Authorization': 'Bearer '+ localStorage.getItem('token')
-        }
-      }).then((response) => response.data).then((response) => {
-        if (response.fields.length) {
-          apiData.value = response.fields;
-        }
-        loading.value = false;
-      }).catch((response) => {
-        error.value = response;
-      });
-    } catch(e) {
-      error.value = e;
-    }
-  });
 </script>
