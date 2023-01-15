@@ -6,6 +6,7 @@
     <div v-if="!loading">
       <Layout-Block class="mt-5">
         <div class="p-10">
+          <div id="topScroller" class="h-2 w-2"></div>
           <Api-Local-Loading :loading="loading"/>
           <Api-Local-Error :error="error" :message="errorMsg" class="mb-5"/>
           <Api-Local-Success :success="success" :message="successMsg" class="mb-5"/>
@@ -111,6 +112,8 @@
   }
 
   const save = async () => {
+    const el = document.getElementById('topScroller');
+
     // Reset messages
     error.value = false;
     success.value = false;
@@ -118,6 +121,9 @@
     if (!title.value) {
       error.value = true;
       errorMsg.value = 'Angiv venligst et navn til dit skabelon';
+      if (el) {
+        el.scrollIntoView();
+      }
       return false;
     }
 
@@ -125,12 +131,18 @@
       if (!n.type) {
         error.value = true;
         errorMsg.value = 'Angiv venligst en type for felt';
+        if (el) {
+          el.scrollIntoView();
+        }
         return false;
       }
 
       if (!n.title) {
         error.value = true;
         errorMsg.value = 'Angiv venligst en overskrift for felt';
+        if (el) {
+          el.scrollIntoView();
+        }
         return false;
       }
     })
@@ -153,6 +165,9 @@
       }).catch((response) => {
         error.value = true;
         errorMsg.value = 'Der opstod en fejl - fejlkode: '+response.response.status;
+        if (el) {
+          el.scrollIntoView();
+        }
         loading.value = false;
       });
     } else {

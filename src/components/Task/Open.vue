@@ -1,5 +1,6 @@
 <template>
   <PopUp boxClass="max-h-[95vh] w-[750px]" :overflowY="true" @close="closeOpenTask">
+    <div id="topScroller" class="h-2 w-2"></div>
     <Api-Local-Error :error="error" :message="errorMsg" class="my-5" />
     <Task-View :task="taskActive" v-if="!editMode"/>
     <Task-Edit :task="taskActive" :containerFields="containerFields" ref="editTask" v-if="editMode" />
@@ -44,7 +45,7 @@
           </span>
         </button>
         <div class="flex items-center">
-          <button class="text-sm text-gray-700 font-inter underline flex items-center hover-transition hover:text-gray-900" :disabled="loading" @click="editMode = false;">
+          <button class="text-sm text-gray-700 font-inter underline flex items-center hover-transition hover:text-gray-900" :disabled="loading" @click="editMode = false; hideWarnings()">
             Anuller ændringer
           </button>
           <span class="ml-6 mr-5 text-gray-300">|</span>
@@ -57,7 +58,7 @@
   </PopUp>
 </template>
 <script setup>
-  import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
   import axios from "axios";
 
   const props = defineProps({
@@ -79,7 +80,10 @@
   const hasBeenUpdated = ref(false);
   const updatedMessage = ref(false);
 
+
   const saveTask = async () => {
+    const el = document.getElementById('topScroller');
+
     loading.value = true;
     const task = editTask.value.save();
 
@@ -87,6 +91,9 @@
       error.value = true;
       errorMsg.value = 'Vælg venligst en dato';
       loading.value = false;
+      if (el) {
+        el.scrollIntoView();
+      }
       return false;
     }
 
@@ -94,6 +101,9 @@
       error.value = true;
       errorMsg.value = 'Angiv venligst en overskrift';
       loading.value = false;
+      if (el) {
+        el.scrollIntoView();
+      }
       return false;
     }
 
@@ -142,6 +152,11 @@
     } else {
       emit('close');
     }
+  }
+
+  const hideWarnings = () => {
+    loading.value = false;
+    error.value = false;
   }
 </script>
 <style>
