@@ -7,7 +7,7 @@
         </svg>
       </div>
       <div v-if="title" class="text-black text-xl font-medium font-inter pl-2">{{ title }}</div>
-      <div class="relative p-3 w-full" :class="[{'overflow-y-scroll': overflowY}, boxClass]">
+      <div class="relative w-full" :class="[{'overflow-y-scroll': overflowY}, innerBoxClass]">
         <slot></slot>
       </div>
     </div>
@@ -21,6 +21,7 @@
       default: false
     },
     boxClass: String,
+    innerBoxClass: String,
     overflowY: Boolean,
     loading: {
       type: Boolean,

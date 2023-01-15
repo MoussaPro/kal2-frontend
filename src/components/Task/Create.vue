@@ -1,8 +1,8 @@
 <template>
-  <PopUp boxClass="max-h-[99.99vh]" :overflowY="true" @close="$emit('close')">
+  <PopUp innerBoxClass="max-h-[95vh]" :overflowY="true" @close="$emit('close')">
     <Api-Local-Loading :loading="loading"/>
     <div class="h-full w-full relative flex flex-col justify-between">
-      <div class="px-1 mt-2 relative">
+      <div class="p-3 mt-2 relative">
         <Api-Local-Error :error="error" :message="errorMsg" class="my-5" />
         <div class="flex items-end">
           <ColorPicker @color="(n) => color = n.name" />
@@ -48,7 +48,7 @@
         </div>
       </div>
 
-      <div class="mt-5">
+      <div class="bg-gray-50 sticky bottom-0 p-3 border-t border-gray-100 z-[200]">
         <button @click="createTask" class="text-sm font-inter text-gray-700 font-medium py-3 px-5 rounded-md hover-transition" :class="!loading ? 'bg-gray-200 hover:bg-primary hover:text-white' : 'bg-gray-400'">
           <span v-if="!loading" class="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-4 mr-[5px]">
