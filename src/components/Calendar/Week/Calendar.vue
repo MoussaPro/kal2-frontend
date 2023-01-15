@@ -28,7 +28,7 @@
       <!-- Day foreach -->
       <div :id="'week_'+week.date" class="col-span-1 bg-white relative" :class="{'border-l border-t border-gray-100': index === 0}" v-for="(week, index) in weekDays" :key="week.timestamp">
         <!-- Times -->
-        <div class="border-b border-gray-100 bg-white relative flex" :class="heightClass" v-for="(time, index) in timeframe" :key="index+' '+time">
+        <div class="border-b relative flex border-gray-200/50" :class="[heightClass, week.isToday ? 'bg-green-100/40  border-gray-100' : 'bg-white']" v-for="(time, index) in timeframe" :key="index+' '+time">
           <div class="sibling absolute w-full h-full hover:bg-primary/10 hover-transition cursor-pointer" @click="toggleCreateTask({ time: time, day: week.date })"></div>
           <div v-for="task in tasks(week.timestamp, time)" class="flex-1 p-[2px]" :key="task.id">
             <Calendar-Week-Task :task="task" @clicked="setOpenedTask" />
