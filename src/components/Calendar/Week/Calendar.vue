@@ -128,7 +128,8 @@ import { computed, ref } from "vue";
       });
 
       // Return single task objects if no more than 3, otherwise return a "more task" object
-      return tasks.length < 3 ? tasks : [{ title: '+'+tasks.length+' Opgaver', moreTask: true, tasks: tasks }];
+      // Take first task date so we inside the more task component knows which date we on
+      return tasks.length < 3 ? tasks : [{ title: '+'+tasks.length+' Opgaver', moreTask: true, tasks: tasks, date: tasks[0].task_date }];
   };
 
   const next = () => {
