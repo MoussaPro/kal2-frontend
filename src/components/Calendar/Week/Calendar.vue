@@ -6,7 +6,7 @@
   <div v-if="!loading && !error">
     <Calendar-Navigation :weekNumber="apiData ? apiData.week_number : null" :year="apiData ? apiData.year : null" active="week" @previous="previous" @next="next" @gotoByWeekNumber="gotoByDate" @create="toggleCreateTask"/>
     <Task-Create v-if="showCreateTask" :containerFields="containerFields" :prefill="prefillTask" @close="toggleCreateTask" @created="newTaskCreated" />
-    <Task-Open v-if="showOpenedTask" :containerFields="containerFields" :task="openedTask" @close="toggleOpenedTask" @updated="newTaskCreated" />
+    <Task-Open v-if="showOpenedTask" :containerFields="containerFields" :task="openedTask" @close="toggleOpenedTask" @updated="newTaskCreated" @deleted="taskDeleted" />
 
     <!-- @TODO styling -->
     <div v-for="task in allDayTasks">
@@ -167,5 +167,9 @@ import { computed, ref } from "vue";
       const date = moment(task.task_date, 'YYYY-MM-DD');
       getApi(date.format('DD-MM-YYYY'));
     }
+  }
+
+  const taskDeleted = () => {
+    getApi();
   }
 </script>

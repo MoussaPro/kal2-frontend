@@ -103,7 +103,7 @@
     fields.value = getFields;
   }
 
-  const save = () => {
+  const getTask = () => {
     // Return the new informations to parent
     return {
       title: title.value,
@@ -119,6 +119,6 @@
   }
 
   defineExpose({
-    save
+    getTask
   });
 </script>
