@@ -1,12 +1,12 @@
 <template>
   <PopUp boxClass="w-[750px]" innerBoxClass="max-h-[95vh] relative" :overflowY="true" @close="closeOpenTask">
     <div id="topScroller" class="h-2 w-2"></div>
-    <Api-Local-Error :error="error" :message="errorMsg" class="my-5" />
+    <Api-Local-Error :error="error" :message="errorMsg" class="my-3" />
     <Task-View :task="taskActive" v-if="!editMode" class="p-3"/>
     <Task-Edit :task="taskActive" :containerFields="containerFields" ref="editTask" v-if="editMode" class="p-3"/>
 
     <transition>
-      <div class="absolute w-full h-full top-0 left-0 flex items-center justify-center transition-hover" v-if="updatedMessage">
+      <div class="absolute w-full h-full top-0 left-0 flex items-center justify-center transition-hover z-[100]" v-if="updatedMessage">
         <div class="bg-primary flex items-center justify-center px-10 py-5 rounded-md shadow-xl">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-14 mr-3 text-white">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -15,6 +15,20 @@
         </div>
       </div>
     </transition>
+
+    <transition>
+      <div class="absolute w-full h-full bg-black/30 top-0 left-0 flex items-center justify-center transition-hover z-[500]" v-if="deleteBox">
+        <div class="bg-gray-100 rounded-md drop-shadow-4xl w-[400px] border border-gray-300">
+          <div class="bg-gray-200 p-2 text-gray-500 font-medium text-sm">Bekræftelse</div>
+          <div class="p-3 font-medium text-sm">Er du sikker på du vil slette denne opgave?</div>
+          <div class="flex items-center p-3 mt-5">
+            <button class="flex items-center bg-gray-200 py-3 px-5 rounded-lg text-sm text-gray-800 font-inter hover-transition hover:bg-primary hover:text-white" @click="toggleDeleteBox">Annuller</button>
+            <button class="flex items-center bg-red-500 text-white py-3 px-5 rounded-lg text-sm font-inter hover-transition hover:bg-red-700 ml-2" @click="deleteTask">Slet opgave</button>
+          </div>
+        </div>
+      </div>
+    </transition>
+
 
     <div class="bg-gray-50 sticky bottom-0 p-3 border-t border-gray-100 z-[200]">
       <div v-if="!editMode" class="flex items-center">
@@ -49,7 +63,7 @@
             Anuller ændringer
           </button>
           <span class="ml-6 mr-5 text-gray-300">|</span>
-          <button class="text-sm text-red-500 font-inter underline flex items-center hover-transition hover:text-red-800" :disabled="loading">
+          <button class="text-sm text-red-500 font-inter underline flex items-center hover-transition hover:text-red-800" @click="toggleDeleteBox" :disabled="loading">
             Slet opgave
           </button>
         </div>
@@ -79,13 +93,13 @@
   const loading = ref(false);
   const hasBeenUpdated = ref(false);
   const updatedMessage = ref(false);
-
+  const deleteBox = ref();
 
   const saveTask = async () => {
     const el = document.getElementById('topScroller');
 
     loading.value = true;
-    const task = editTask.value.save();
+    const task = editTask.value.getTask();
 
     if (task.startDate === null) {
       error.value = true;
@@ -152,6 +166,32 @@
     } else {
       emit('close');
     }
+  }
+
+  const toggleDeleteBox = () => {
+    deleteBox.value = !deleteBox.value;
+  }
+
+  const deleteTask = async () => {
+    const task = editTask.value.getTask();
+
+    await axios.delete('/task/'+task.taskId, {
+      headers: {
+        'Authorization': 'Bearer '+ localStorage.getItem('token')
+      }
+    }).then((response) => response.data).then((response) => {
+      toggleDeleteBox();
+      loading.value = false;
+      error.value = false;
+      errorMsg.value = '';
+      emit('deleted');
+      emit('close');
+    }).catch((response) => {
+      toggleDeleteBox();
+      error.value = true;
+      errorMsg.value = 'Der opstod en fejl - fejlkode: '+response.response.status;
+      loading.value = false;
+    });
   }
 
   const hideWarnings = () => {

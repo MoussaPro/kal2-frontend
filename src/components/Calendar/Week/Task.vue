@@ -4,7 +4,7 @@
 
     <!-- Tasks slider -->
     <div class="absolute hover-transition z-[60] top-[50%] -translate-y-1/2 w-[200px] bg-gray-100 rounded-md px-2 drop-shadow-4xl border-2 border-gray-200" :class="sunday ? 'right-[75%]' : 'left-[75%]'" v-if="openMoreTask">
-      <Calendar-Week-Box :task="task" :subTask="true" v-for="(task) in task.tasks" @click="$emit('clicked', task)" class="my-[10px] h-10" />
+      <Calendar-Week-Box :task="task" :subTask="true" v-for="(task) in task.tasks" @click="$emit('clicked', task); openMoreTask = false;" class="my-[10px] h-10" />
     </div>
   </div>
   <div v-else>
