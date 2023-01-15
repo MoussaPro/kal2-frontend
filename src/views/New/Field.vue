@@ -2,6 +2,7 @@
   <div class="auth-content pb-20">
     <Layout-Block class="mt-5">
       <div class="p-10">
+        <div id="topScroller" class="h-2 w-2"></div>
         <Api-Local-Loading :loading="loading"/>
         <Api-Local-Error :error="error" :message="errorMsg" class="mb-5"/>
         <Layout-BlockTitle title="Opret ny skabelon" class="mb-5"/>
@@ -56,11 +57,15 @@
   }
 
   const save = async () => {
+    const el = document.getElementById('topScroller');
     error.value = false;
 
     if (!title.value) {
       error.value = true;
       errorMsg.value = 'Angiv venligst et navn til dit skabelon';
+      if (el) {
+        el.scrollIntoView();
+      }
       return false;
     }
 
@@ -68,12 +73,18 @@
       if (!n.type) {
         error.value = true;
         errorMsg.value = 'Angiv venligst en type for felt';
+        if (el) {
+          el.scrollIntoView();
+        }
         return false;
       }
 
       if (!n.title) {
         error.value = true;
         errorMsg.value = 'Angiv venligst en overskrift for felt';
+        if (el) {
+          el.scrollIntoView();
+        }
         return false;
       }
     })
@@ -94,6 +105,9 @@
         router.push({ path: '/directory/fields' });
       }).catch((response) => {
         error.value = true;
+        if (el) {
+          el.scrollIntoView();
+        }
         errorMsg.value = 'Der opstod en fejl - fejlkode: '+response.response.status;
         loading.value = false;
       });
