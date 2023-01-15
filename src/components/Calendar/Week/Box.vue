@@ -48,7 +48,8 @@
   if (!props.moreTask) {
     if (!props.subTask) {
       if (props.task.task_time_end && props.task.task_time_end > props.task.task_time) {
-        styling.value = "height: " + (diffBetweenTwoTimes(props.task.task_time, props.task.task_time_end, 'minutes')*taskHeight.minute-2) + "px;";
+        console.log('t', props.task.diff);
+        styling.value = "height: " + ((diffBetweenTwoTimes(props.task.task_time, props.task.task_time_end, 'minutes')*taskHeight.minute)-2) + "px;";
       } else {
         styling.value = "height: 50px;"
       }

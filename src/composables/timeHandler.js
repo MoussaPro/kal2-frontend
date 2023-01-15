@@ -3,7 +3,7 @@ export default function timeHandler() {
   const taskHeight = {
     hour: 24, // 3.5 REM
     halfHour: 12, // 1.75 REM
-    minute: 0.45 // 0.03 REM
+    minute: 0.459 // 0.03 REM
   };
 
   // Gets the difference between two hours in specified format
