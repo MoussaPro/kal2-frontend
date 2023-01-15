@@ -6,7 +6,7 @@
       <div class="line-clamp-1 -mx-[2px]" v-if="task.moreTask">
         <p class="inline text-[10px] mx-[2px] font-medium" v-for="(task, i) in task.tasks">
           <span v-if="i !== 0">| </span>
-          <span>#{{ task.id }}</span>
+          <span>#{{ task.task_number }}</span>
         </p>
       </div>
     </div>
@@ -15,7 +15,7 @@
   <div v-else class="border rounded-md text-xs px-2 py-[5px] shadow relative hover-transition hover:opacity-80 cursor-pointer hover:scale-[102%] hover:!z-[25]" :style="styling">
     <div class="overflow-y-hidden h-full">
       <p class="leading-none font-medium font-inter" :class="lineClamper">{{ task.title }}</p>
-      <span class="text-[10px]">#{{ task.id }}</span>
+      <span class="text-[10px]">#{{ task.task_number }}</span>
     </div>
   </div>
 </template>
