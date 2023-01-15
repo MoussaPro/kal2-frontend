@@ -1,9 +1,9 @@
 <template>
-  <PopUp boxClass="max-h-[95vh] w-[750px]" :overflowY="true" @close="closeOpenTask">
+  <PopUp boxClass="w-[750px]" innerBoxClass="max-h-[95vh] relative" :overflowY="true" @close="closeOpenTask">
     <div id="topScroller" class="h-2 w-2"></div>
     <Api-Local-Error :error="error" :message="errorMsg" class="my-5" />
-    <Task-View :task="taskActive" v-if="!editMode"/>
-    <Task-Edit :task="taskActive" :containerFields="containerFields" ref="editTask" v-if="editMode" />
+    <Task-View :task="taskActive" v-if="!editMode" class="p-3"/>
+    <Task-Edit :task="taskActive" :containerFields="containerFields" ref="editTask" v-if="editMode" class="p-3"/>
 
     <transition>
       <div class="absolute w-full h-full top-0 left-0 flex items-center justify-center transition-hover" v-if="updatedMessage">
@@ -16,7 +16,7 @@
       </div>
     </transition>
 
-    <div class="bg-gray-50 p-3 -mx-2 -mb-3 mt-10 border-t border-gray-100">
+    <div class="bg-gray-50 sticky bottom-0 p-3 border-t border-gray-100 z-[200]">
       <div v-if="!editMode" class="flex items-center">
         <button class="flex items-center bg-gray-200 py-3 px-5 rounded-lg text-sm text-gray-800 font-inter hover-transition hover:bg-primary hover:text-white" @click="editMode = true;">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-[18px] mr-[5px]">
@@ -44,7 +44,7 @@
             Gemmer...
           </span>
         </button>
-        <div class="flex items-center">
+        <div class="flex items-center mr-3">
           <button class="text-sm text-gray-700 font-inter underline flex items-center hover-transition hover:text-gray-900" :disabled="loading" @click="editMode = false; hideWarnings()">
             Anuller ændringer
           </button>
