@@ -161,6 +161,7 @@ import { computed, ref } from "vue";
   }
 
   const newTaskCreated = (task) => {
+    // @TODO error handling from backend
     if (task !== null) {
       const date = moment(task.task_date, 'YYYY-MM-DD');
       getApi(date.format('DD-MM-YYYY'));
