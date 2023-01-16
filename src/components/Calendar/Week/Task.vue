@@ -28,7 +28,6 @@
 
   const sunday = computed(() => {
     const isSunday = getDay(dateToTimestamp(props.task.date), 'name');
-    console.log(isSunday);
 
     return isSunday === 'søndag';
   });
