@@ -1,6 +1,6 @@
 <template>
   <div class="w-full relative">
-    <div class="w-full bg-gray-200 py-[2px] text-gray-500 text-[10px] flex items-center justify-center font-semibold hover:cursor-pointer hover-transiton hover:bg-gray-300" @click="toggleShowAll">
+    <div class="w-full bg-gray-200 py-[2px] text-gray-500 text-[10px] flex items-center justify-center font-semibold hover:cursor-pointer hover-transiton hover:bg-gray-300" v-if="tasks.length > 1" @click="toggleShowAll">
       <span v-if="!showAll">Daglige opgaver (Vis alle {{ tasks.length }})</span>
       <span v-else>Skjul dagelige opgaver</span>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" :class="showAll ? 'rotate-[-180deg]' : ''" stroke-width="1.5" stroke="currentColor" class="w-4 mt-[1px] ml-[2px]">
