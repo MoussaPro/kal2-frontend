@@ -85,7 +85,7 @@
   });
 
   const taskActive = ref(props.task);
-  const emit = defineEmits(['close', 'updated']);
+  const emit = defineEmits(['close', 'updated', 'deleted']);
   const editMode = ref(false);
   const editTask = ref();
   const error = ref(false);

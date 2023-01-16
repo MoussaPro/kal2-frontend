@@ -8,17 +8,15 @@
     <Task-Create v-if="showCreateTask" :containerFields="containerFields" :prefill="prefillTask" @close="toggleCreateTask" @created="newTaskCreated" />
     <Task-Open v-if="showOpenedTask" :containerFields="containerFields" :task="openedTask" @close="toggleOpenedTask" @updated="newTaskCreated" @deleted="taskDeleted" />
 
-    <!-- @TODO styling -->
-    <div v-for="task in allDayTasks">
-      <div class="bg-primary px-2 py-1 cursor-pointer hover-transition hover:opacity-75" @click="setOpenedTask(task)">{{ task.title }}</div>
-    </div>
-
     <div class="grid grid-cols-7 mt-5 divide-x divide-primary-Darker">
       <div v-for="day in weekDays" class="col-span-1 px-3 flex justify-between items-center justify-center h-10 text-white font-inter text-sm tracking-wider" :class="day.isToday ? 'bg-primary-Darker font-semibold' : 'bg-primary font-normal'">
         <p class="capitalize">{{ day.day }}</p>
         <p>{{ day.date.slice(0, 5) }}</p>
       </div>
     </div>
+
+    <Calendar-Week-DailyTasks v-if="allDayTasks.length > 0" :tasks="allDayTasks" :firstDate="weekDays[0]" @opened="setOpenedTask" />
+
     <div class="grid grid-cols-7 divide-x divide-y divide-gray-100 border-r border-gray-100 relative">
       <!-- Display timeframes on the calendar side -->
       <div class="absolute text-gray-500 text-xs left-[-42px] top-0">
@@ -40,7 +38,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+  import { computed, ref } from "vue";
   import dateHandler from "@/composables/dateHandler";
   import timeHandler from "@/composables/timeHandler";
   import axios from "axios";
@@ -68,10 +66,10 @@ import { computed, ref } from "vue";
    */
   const getApi = async(date) => {
     const url = ref("/calendar/week");
+    loading.value = true;
 
     // Date only filled when clicking, therefor we set the loader to true
     if (date) {
-      loading.value = true;
       url.value = "/calendar/week/"+date;
     }
 
@@ -171,5 +169,6 @@ import { computed, ref } from "vue";
 
   const taskDeleted = () => {
     getApi();
+    console.log('herinde');
   }
 </script>
