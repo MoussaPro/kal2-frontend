@@ -1,7 +1,7 @@
 <template>
   <!-- More task component -->
   <div v-if="task.moreTask" class="h-full relative z-50">
-    <div class="border rounded-md h-full flex flex-col justify-between text-xs px-2 py-[2px] font-inter hover-transition hover:opacity-80 relative shadow hover:!z-[25] bg-primary-Darker text-white border-primary font-bold cursor-pointer" :class="openMoreTaskToggle ? 'opacity-75 scale-[105%]': 'hover:scale-[102%]'" @click="openMoreTask">
+    <div class="border rounded-md h-full flex flex-col justify-between text-xs px-2 py-[2px] font-inter hover-transition hover:opacity-80 relative shadow hover:!z-[25] bg-primary-Darker text-white border-primary font-bold cursor-pointer" :class="openMoreTaskToggle ? 'opacity-75 scale-[105%]': 'hover:scale-[102%]'" @click="openMoreTask" v-click-outside="hideOpenMoreTask">
       <p>{{ task.title }}</p>
       <div class="line-clamp-1 -mx-[2px]" v-if="task.moreTask">
         <p class="inline text-[10px] mx-[2px] font-medium" v-for="(task, i) in task.tasks">
@@ -68,10 +68,15 @@
   }
 
   const openMoreTaskToggle = ref(false);
+
   const openMoreTask = () => {
     emit('openMoreTask');
 
     return openMoreTaskToggle.value = !openMoreTaskToggle.value;
+  }
+
+  const hideOpenMoreTask = () => {
+    openMoreTaskToggle.value = false;
   }
 
 </script>
