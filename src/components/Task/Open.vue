@@ -23,7 +23,10 @@
           <div class="p-3 font-medium text-sm">Er du sikker på du vil slette denne opgave?</div>
           <div class="flex items-center p-3 mt-5">
             <button class="flex items-center bg-gray-200 py-3 px-5 rounded-lg text-sm text-gray-800 font-inter hover-transition hover:bg-primary hover:text-white" @click="toggleDeleteBox">Annuller</button>
-            <button class="flex items-center bg-red-500 text-white py-3 px-5 rounded-lg text-sm font-inter hover-transition hover:bg-red-700 ml-2" @click="deleteTask">Slet opgave</button>
+            <button class="flex items-center text-white py-3 px-5 rounded-lg text-sm font-inter hover-transition ml-2" :disabled="deleteLoading" :class="deleteLoading ? 'bg-red-700' : 'bg-red-500 hover:bg-red-700'" @click="deleteTask">
+              <span v-if="!deleteLoading">Slet opgave</span>
+              <span v-if="deleteLoading">Sletter...</span>
+            </button>
           </div>
         </div>
       </div>
@@ -94,6 +97,7 @@
   const hasBeenUpdated = ref(false);
   const updatedMessage = ref(false);
   const deleteBox = ref();
+  const deleteLoading = ref(false);
 
   const saveTask = async () => {
     const el = document.getElementById('topScroller');
@@ -173,6 +177,7 @@
   }
 
   const deleteTask = async () => {
+    deleteLoading.value = true;
     const task = editTask.value.getTask();
 
     await axios.delete('/task/'+task.taskId, {
@@ -185,9 +190,11 @@
       error.value = false;
       errorMsg.value = '';
       emit('deleted');
+      deleteLoading.value = false;
       emit('close');
     }).catch((response) => {
       toggleDeleteBox();
+      deleteLoading.value = false;
       error.value = true;
       errorMsg.value = 'Der opstod en fejl - fejlkode: '+response.response.status;
       loading.value = false;
