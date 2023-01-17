@@ -10,32 +10,34 @@
           <Api-Local-Loading :loading="loading"/>
           <Api-Local-Error :error="error" :message="errorMsg" class="mb-5"/>
           <Api-Local-Success :success="success" :message="successMsg" class="mb-5"/>
-          <Layout-BlockTitle title="Rediger skabelon" class="mb-5"/>
+          <Layout-BlockTitle title="Rediger kartotek" class="mb-5"/>
           <input type="text" id="title" name="title" v-model="title" class="input-field-non-border" placeholder="Navngiv skabelonen">
 
-          <div class="mt-6">
-            <div class="mt-5" v-for="(field, index) in apiData.fields" :key="field.id+field.type+field.value">
-              <Inputs-Fields-Input :type="field.type" :index="index" :id="field.id" :title="field.title" :value="field.value" @changes="fieldObj => setFields(fieldObj, index)" @delete="deleteField(apiData.fields, index)"/>
-            </div>
 
-            <div class="text-primary-Darker1 tracking-[0.45px] mt-2 ml-[2px] font-inter font-medium text-[13px] inline-flex border-b border-primary-Darker1 items-center cursor-pointer hover-transition hover:opacity-75" @click="addField(apiData.fields)">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 mr-[1px]">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
-              </svg>
-              Tilføj ny felt
+          <div v-for="(field, index) in apiData.fields" :key="field.id + ' ' + field.value">
+            <div class="relative">
+              <div v-if="index !== 0" @click="deleteField(apiData.fields, index)" class="text-red-500 hover-transition hover:text-red-700 cursor-pointer absolute left-[-35px] top-[27px]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+
+              <input type="search" class="bg-gray-50 border-gray-200 border-2 border-dashed mt-5 px-2 py-1 w-[400px] rounded text-[13px] text-gray-600 focus:outline-gray-300 focus:border-gray-300 active:border-gray-300" @blur="setFields({ id: field.id, title: field.title }, index)" v-model="field.title"/>
             </div>
+          </div>
+
+          <div class="text-primary-Darker1 tracking-[0.45px] mt-2 ml-[2px] font-inter font-medium text-[13px] inline-flex border-b border-primary-Darker1 items-center cursor-pointer hover-transition hover:opacity-75" @click="addFieldDirectory(apiData.fields)">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 mr-[1px]">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+            </svg>
+            Tilføj ny værdi holder
           </div>
         </div>
 
         <div class="w-full bg-gray-50 px-10 py-4 rounded-md">
-          <div class="flex items-center">
-            <input type="checkbox" id="primary" name="primary" v-model="apiData.is_primary">
-            <label for="primary" class="cursor-pointer text-gray-600 mt-[1px] ml-2">Sæt som primære</label>
-          </div>
-
           <div class="flex items-center mt-5">
-            <button class="bg-primary px-5 py-2 text-white rounded-md mr-5 text-sm font-medium hover-transition hover:bg-primary-Darker active:bg-primary-Darker1" @click="save">Gem skabelon</button>
-            <div class="text-red-500 text-sm underline font-medium cursor-pointer hover-transition hover:text-red-700" @click="deleteTemplate">Slet skabelon</div>
+            <button class="bg-primary px-5 py-2 text-white rounded-md mr-5 text-sm font-medium hover-transition hover:bg-primary-Darker active:bg-primary-Darker1" @click="save">Gem kartotek</button>
+            <div class="text-red-500 text-sm underline font-medium cursor-pointer hover-transition hover:text-red-700" @click="deleteDirectory">Slet kartotek</div>
           </div>
         </div>
       </Layout-Block>
@@ -43,12 +45,11 @@
   </div>
 </template>
 <script setup>
-  import { useRoute } from "vue-router/dist/vue-router";
+  import { useRoute, useRouter } from "vue-router/dist/vue-router";
   import { onMounted, ref } from "vue";
   import axios from "axios";
-  import { useRouter } from "vue-router";
   import fieldHandler from "@/composables/fieldHandler";
-  const { addField, deleteField } = fieldHandler();
+  const { addFieldDirectory, deleteField } = fieldHandler();
 
   const route = useRoute();
   const router = useRouter();
@@ -61,13 +62,9 @@
   const success = ref();
   const successMsg = ref();
 
-  const setFields = (obj, index) => {
-    apiData.value.fields[index] = obj;
-  }
-
   onMounted(() => {
     try {
-      axios.get('/field/'+route.params.id, {
+      axios.get('/directory/'+route.params.id, {
         headers: {
           'Authorization': 'Bearer '+ localStorage.getItem('token')
         }
@@ -89,15 +86,19 @@
     }
   });
 
-  const deleteTemplate = async() => {
+  const setFields = (obj, index) => {
+    apiData.value.fields[index] = obj;
+  }
+
+  const deleteDirectory = async() => {
     if (confirm('Er du sikker?')) {
-      await axios.delete('/field/'+route.params.id, {
+      await axios.delete('/directory/'+route.params.id, {
         headers: {
           'Authorization': 'Bearer '+ localStorage.getItem('token')
         }
       }).then((response) => response.data).then((response) => {
         if (response.field === 1) {
-          router.push('/directory/fields');
+          router.push('/directory');
         } else {
           error.value = true;
           errorMsg.value = 'Der opstod en fejl under sletning - fejlkode: '+response.response.status;
@@ -118,7 +119,7 @@
 
     if (!title.value) {
       error.value = true;
-      errorMsg.value = 'Angiv venligst et navn til dit skabelon';
+      errorMsg.value = 'Angiv venligst et navn til dit kartotek';
       if (el) {
         el.scrollIntoView();
       }
@@ -126,15 +127,6 @@
     }
 
     apiData.value.fields.forEach(n => {
-      if (!n.type) {
-        error.value = true;
-        errorMsg.value = 'Angiv venligst en type for felt';
-        if (el) {
-          el.scrollIntoView();
-        }
-        return false;
-      }
-
       if (!n.title) {
         error.value = true;
         errorMsg.value = 'Angiv venligst en overskrift for felt';
@@ -148,10 +140,9 @@
     if (!loading.value && !error.value) {
       loading.value = true;
 
-      await axios.put('/field/'+route.params.id, {
+      await axios.put('/directory/'+route.params.id, {
         title: title.value,
         fields: apiData.value.fields,
-        primary: apiData.value.is_primary
       }, {
         headers: {
           'Authorization': 'Bearer '+ localStorage.getItem('token')

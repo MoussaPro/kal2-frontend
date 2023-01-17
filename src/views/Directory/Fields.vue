@@ -3,7 +3,7 @@
     <Api-Server-Loading v-if="loading && !error"/>
     <Api-Server-Error v-if="error" :error="error"/>
 
-    <div v-if="!loading" class="p-10">
+    <div v-if="!loading && !error" class="p-10">
       <Layout-BlockTitle title="Felter skabeloner"/>
       <div class="grid gap-5 grid-cols-3 mt-3">
         <div v-for="field in fields" class="w-full bg-gray-100 rounded-md text-gray-500 border-2 border-gray-300 hover-transition cursor-pointer hover:bg-gray-300 hover:border-gray-400 h-[300px]">
@@ -22,9 +22,9 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+  import { onMounted, ref } from "vue";
   import axios from "axios";
-  const title = ref();
+
   const fields = ref();
   const loading = ref(true);
   const error = ref();

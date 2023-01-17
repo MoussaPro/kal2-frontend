@@ -33,10 +33,19 @@
   const getDiffDays = computed(() => {
     if (endDate) {
       const diffOutsideFrame = ref(((endDate.getTime() - firstDate.getTime()) / 86400000));
+      const diffFirstDate = ref(((startDate.getTime() - firstDate.getTime()) / 86400000));
 
       // If it ends withing the week frame
       if (diffOutsideFrame.value < 7) {
-        return diffOutsideFrame.value + 1;
+        if (diffOutsideFrame.value === 0) {
+          return 1;
+        }
+
+        if (diffFirstDate.value > 0) {
+          return diffOutsideFrame.value+1 - diffFirstDate.value;
+        } else {
+          return diffOutsideFrame.value+1
+        }
       } else {
         // Ends on another week frame, so fill out whole week
         showTaskEndDate.value = true;

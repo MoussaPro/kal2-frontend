@@ -10,6 +10,13 @@ export default function fieldHandler() {
     });
   }
 
+  const addFieldDirectory = (fieldsArray) => {
+    fieldsArray.push({
+      id: Math.random(),
+      title: 'Angiv værdi holder',
+    });
+  }
+
   const deleteField = (fieldsArray, index) => {
     fieldsArray.splice(index, 1);
   }
@@ -21,6 +28,6 @@ export default function fieldHandler() {
   }
 
   return {
-    addField, deleteField, capitalizeString
+    addField, deleteField, capitalizeString, addFieldDirectory
   }
 }
