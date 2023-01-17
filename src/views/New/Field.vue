@@ -27,7 +27,7 @@
           <input type="checkbox" id="primary" name="primary" v-model="primary">
           <label for="primary" class="cursor-pointer text-gray-600 mt-[1px] ml-2"> Sæt som primære</label>
         </div>
-        <button class="bg-primary px-5 py-2 text-white rounded-md text-sm font-medium hover-transition mt-5 hover:bg-primary-Darker active:bg-primary-Darker1" @click="save">Gem skabelon</button>
+        <button class="bg-primary px-5 py-2 text-white rounded-md text-sm font-medium hover-transition mt-5 hover:bg-primary-Darker active:bg-primary-Darker1" @click="create">Opret skabelon</button>
       </div>
     </Layout-Block>
   </div>
@@ -56,7 +56,7 @@
     fields.value[index] = obj;
   }
 
-  const save = async () => {
+  const create = async () => {
     const el = document.getElementById('topScroller');
     error.value = false;
 
@@ -92,7 +92,7 @@
     if (!loading.value && !error.value) {
       loading.value = true;
 
-      await axios.post('/fields', {
+      await axios.post('/field', {
         title: title.value,
         fields: fields.value,
         primary: primary.value

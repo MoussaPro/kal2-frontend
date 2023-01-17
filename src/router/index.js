@@ -23,6 +23,7 @@ import guest from "@/middleware/guest";
 
   /** New **/
     import NewField from '../views/New/Field.vue'
+    import NewDirectory from '../views/New/Directory.vue'
   /** End New **/
 
   /** Edit **/
@@ -43,7 +44,8 @@ const routes = [
   },
   { path: '/new', name: 'new', meta: { middleware: auth }, children: [
       { path: '', component: NotFoundView, name: 'newError' },
-      { path: 'field', component: NewField, name: 'new.field' }
+      { path: 'field', component: NewField, name: 'new.field' },
+      { path: 'directory', component: NewDirectory, name: 'new.directory' }
     ]
   },
   { path: '/edit', name: 'edit', meta: { middleware: auth }, children: [
