@@ -28,6 +28,7 @@ import guest from "@/middleware/guest";
 
   /** Edit **/
     import EditField from '../views/Edit/Field.vue'
+    import EditDirectory from '../views/Edit/Directory.vue'
   /** End edit **/
 /** End routes **/
 
@@ -50,7 +51,8 @@ const routes = [
   },
   { path: '/edit', name: 'edit', meta: { middleware: auth }, children: [
       { path: '', component: NotFoundView, name: 'editError' },
-      { path: 'field/:id', component: EditField, name: 'edit.field' }
+      { path: 'field/:id', component: EditField, name: 'edit.field' },
+      { path: 'directory/:id', component: EditDirectory, name: 'edit.directory' }
     ]
   },
   { path: '/calendar', name: 'calendar', component: Calendar, meta: { middleware: auth }, },

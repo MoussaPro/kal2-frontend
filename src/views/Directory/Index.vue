@@ -16,7 +16,7 @@
 
       <div v-for="directory in directories" class="w-full flex justify-between items-center p-2 relative bg-gray-100 rounded-md text-gray-600 border border-gray-300 hover-transition my-2">
         <div class="h-full flex justify-center items-center">
-          <div class="w-10 h-10 rounded-full bg-gray-500 mr-3 flex items-center justify-center text-white text-2xl font-inter">{{ directory.title.substring(0,1) }}</div>
+          <div class="w-10 h-10 rounded-full bg-gray-500 mr-3 flex items-center justify-center text-white text-xl font-inter">{{ directory.title.substring(0,1) }}</div>
           <div class="text-lg font-medium">{{ directory.title }}</div>
         </div>
         <div class="flex items-center space-x-6 font-inter text-xs mr-2">
@@ -27,7 +27,7 @@
             </svg>
             Vis data
           </RouterLink>
-          <RouterLink to="#" class="hover-transition hover:underline flex items-center hover:text-gray-800">
+          <RouterLink :to="'/edit/directory/'+directory.id" class="hover-transition hover:underline flex items-center hover:text-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-[15px] mr-1">
               <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
             </svg>
