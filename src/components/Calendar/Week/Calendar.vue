@@ -169,6 +169,5 @@
 
   const taskDeleted = () => {
     getApi();
-    console.log('herinde');
   }
 </script>
