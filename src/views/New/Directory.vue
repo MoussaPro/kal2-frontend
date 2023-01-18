@@ -20,13 +20,13 @@
 
         <div v-for="(field, index) in directory" v-if="directory && directory.length" :key="field.id">
           <div class="relative">
-            <div v-if="index !== 0" @click="deleteField(directory, index)" class="text-red-500 hover-transition hover:text-red-700 cursor-pointer absolute left-[-35px] top-[27px]">
+            <div v-if="index !== 0" @click="deleteField(directory, index)" class="text-red-500 hover-transition hover:text-red-700 cursor-pointer absolute left-[-35px] top-[30px]">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </div>
 
-            <input type="search" class="bg-gray-50 border-gray-200 border-2 border-dashed mt-5 px-2 py-1 w-[400px] rounded text-[13px] text-gray-600 focus:outline-gray-300 focus:border-gray-300 active:border-gray-300" @blur="setField({ id: field.id, title: field.title }, index)" v-model="field.title"/>
+            <input type="text" class="bg-gray-50 border-gray-200 border-2 border-dashed mt-5 px-2 py-1 w-[400px] h-9 rounded text-[13px] text-gray-600 focus:outline-gray-300 focus:border-gray-300 active:border-gray-300" @blur="setField({ id: field.id, title: field.title }, index)" v-model="field.title"/>
           </div>
         </div>
         <div class="text-primary-Darker1 tracking-[0.45px] mt-3 ml-[1px] font-inter font-medium text-[13px] inline-flex border-b border-primary-Darker1 items-center cursor-pointer hover-transition hover:opacity-75" @click="addFieldDirectory(directory)">
@@ -53,6 +53,7 @@
   const title = ref();
   const recommended = ref(null);
   const standard = { id: Math.random(), title: 'Værdi holder navn' };
+  const saved = ref([standard]); // Saved when going back from recommended
   const directory = ref([standard]);
   const loading = ref();
   const error = ref();
@@ -74,7 +75,7 @@
 
     switch(r) {
       case null:
-        directory.value = [standard];
+        directory.value = saved.value;
         break;
       case 'employees':
         directory.value = [
@@ -111,6 +112,10 @@
 
   const setField = (obj, index) => {
     directory.value[index] = obj;
+
+    if (recommended.value === null) {
+      saved.value[index] = obj;
+    }
   }
 
   const create = async () => {

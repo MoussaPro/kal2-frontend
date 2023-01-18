@@ -4,20 +4,29 @@
     <Api-Server-Error v-if="error" :error="error"/>
 
     <div v-if="!loading && !error" class="p-10">
-      <Layout-BlockTitle title="Kartotek"/>
-      <RouterLink to="/new/directory" class="w-full flex items-center p-2 mb-5 relative bg-gray-100 rounded-md text-gray-600 border-2 border-dotted border-gray-300 hover-transition hover:bg-gray-300 hover:border-gray-400 my-2">
-        <div class="h-full flex justify-center items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-10 mr-2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div class="text-lg font-medium">Opret ny kartotek</div>
+      <Layout-BlockTitle title="Kartotek skabeloner" class="mb-2"/>
+      <RouterLink to="/new/directory" class="relative flex justify-between items-center space-x-3 bg-gray-50 rounded-lg border-2 hover-transition hover:bg-gray-200 border-gray-300 border-dashed px-6 py-5 shadow-sm hover:border-primary mb-5">
+        <div class="flex items-center space-x-3">
+          <div class="flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-11 text-primary-Darker1">
+              <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="text-lg font-medium">Opret ny kartotek</div>
+          </div>
         </div>
       </RouterLink>
 
-      <div v-for="directory in directories" class="w-full flex justify-between items-center p-2 relative bg-gray-100 rounded-md text-gray-600 border border-gray-300 hover-transition my-2">
-        <div class="h-full flex justify-center items-center">
-          <div class="w-10 h-10 rounded-full bg-gray-500 mr-3 flex items-center justify-center text-white text-xl font-inter">{{ directory.title.substring(0,1) }}</div>
-          <div class="text-lg font-medium">{{ directory.title }}</div>
+      <div v-for="directory in directories" :key="directory.id" class="relative flex justify-between hover-transition items-center space-x-3 mb-2 rounded-lg border border-gray-300 hover:border-gray-400 shadow-sm bg-white px-6 py-5">
+        <div class="flex items-center space-x-3">
+          <div class="flex-shrink-0">
+            <div class="h-10 w-10 bg-gray-500 text-gray-100 flex items-center justify-center rounded-full">{{ directory.title.substring(0,1) }}</div>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-medium text-gray-900">{{ directory.title }}</p>
+            <p class="truncate text-sm text-gray-500">#{{ directory.id }}</p>
+          </div>
         </div>
         <div class="flex items-center space-x-6 font-inter text-xs mr-2">
           <RouterLink to="#" class="hover-transition hover:underline flex items-center hover:text-gray-800">
@@ -35,7 +44,7 @@
           </RouterLink>
         </div>
       </div>
-      </div>
+    </div>
   </div>
 </template>
 <script setup>

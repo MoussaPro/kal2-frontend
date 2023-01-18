@@ -16,13 +16,13 @@
 
           <div v-for="(field, index) in apiData.fields" :key="field.id + ' ' + field.value">
             <div class="relative">
-              <div v-if="index !== 0" @click="deleteField(apiData.fields, index)" class="text-red-500 hover-transition hover:text-red-700 cursor-pointer absolute left-[-35px] top-[27px]">
+              <div v-if="index !== 0" @click="deleteField(apiData.fields, index)" class="text-red-500 hover-transition hover:text-red-700 cursor-pointer absolute left-[-35px] top-[30px]">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </div>
 
-              <input type="search" class="bg-gray-50 border-gray-200 border-2 border-dashed mt-5 px-2 py-1 w-[400px] rounded text-[13px] text-gray-600 focus:outline-gray-300 focus:border-gray-300 active:border-gray-300" @blur="setFields({ id: field.id, title: field.title }, index)" v-model="field.title"/>
+              <input type="text" class="bg-gray-50 border-gray-200 border-2 border-dashed mt-5 px-2 py-1 w-[400px] h-9 rounded text-[13px] text-gray-600 focus:outline-gray-300 focus:border-gray-300 active:border-gray-300" @blur="setFields({ id: field.id, title: field.title }, index)" v-model="field.title"/>
             </div>
           </div>
 
