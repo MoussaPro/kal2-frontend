@@ -5,7 +5,7 @@
 
     <div v-if="!loading && !error" class="p-10">
       <Layout-BlockTitle title="Kartotek skabeloner" class="mb-2"/>
-      <RouterLink to="/new/directory" class="relative flex justify-between items-center space-x-3 bg-gray-50 rounded-lg border-2 hover-transition hover:bg-gray-200 border-gray-300 border-dashed px-6 py-5 shadow-sm hover:border-primary mb-5">
+      <RouterLink to="/new/directory" class="relative flex justify-between items-center space-x-3 bg-gray-50 rounded-lg border-2 hover-transition hover:bg-gray-200 border-gray-300 border-dashed px-6 py-5 shadow-sm hover:border-gray-600 mb-5">
         <div class="flex items-center space-x-3">
           <div class="flex-shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-11 text-primary-Darker1">
