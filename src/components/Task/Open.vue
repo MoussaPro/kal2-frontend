@@ -31,8 +31,6 @@
         </div>
       </div>
     </transition>
-
-
     <div class="bg-gray-50 sticky bottom-0 p-3 border-t border-gray-100 z-[200]">
       <div v-if="!editMode" class="flex items-center">
         <button class="flex items-center bg-gray-200 py-3 px-5 rounded-lg text-sm text-gray-800 font-inter hover-transition hover:bg-primary hover:text-white" @click="editMode = true;">

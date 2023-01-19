@@ -9,7 +9,7 @@
           <div id="topScroller" class="h-2 w-2"></div>
           <Api-Local-Loading :loading="loading"/>
           <Api-Local-Error :error="error" :message="errorMsg" class="mb-5"/>
-          <Api-Local-Success :success="success" :message="successMsg" class="mb-5"/>
+          <Api-Local-Success :success="success" :message="successMsg" :hideMsg="true" class="mb-5"/>
           <Layout-BlockTitle title="Rediger skabelon" class="mb-5"/>
           <input type="text" id="title" name="title" v-model="title" class="input-field-non-border" placeholder="Navngiv skabelonen">
 
