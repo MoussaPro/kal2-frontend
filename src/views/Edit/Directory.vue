@@ -9,7 +9,7 @@
           <div id="topScroller" class="h-2 w-2"></div>
           <Api-Local-Loading :loading="loading"/>
           <Api-Local-Error :error="error" :message="errorMsg" class="mb-5"/>
-          <Api-Local-Success :success="success" :message="successMsg" class="mb-5"/>
+          <Api-Local-Success :success="success" :message="successMsg" :hideMsg="true" class="mb-5"/>
           <Layout-BlockTitle title="Rediger kartotek" class="mb-5"/>
           <input type="text" id="title" name="title" v-model="title" class="input-field-non-border" placeholder="Navngiv skabelonen">
 
@@ -70,12 +70,7 @@
         }
       }).then((response) => response.data).then((response) => {
         apiData.value = response;
-        // Parse json
         apiData.value.fields = JSON.parse(apiData.value.fields);
-        // For v-model to set checked, it need to be true instead of 1
-        if (apiData.value.is_primary === 1) {
-          apiData.value.is_primary = true;
-        }
         title.value = apiData.value.title;
         loading.value = false;
       }).catch((response) => {
