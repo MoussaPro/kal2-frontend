@@ -40,11 +40,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col items-center justify-center py-8 text-gray-600 font-inter" v-else>
-      <img src="@/assets/images/empty.png" class="w-[100px]" alt="Empty icon"/>
-      <div class="text-[13.5px] mt-2 font-light">Ingen skabeloner blev fundet</div>
-      <RouterLink to="/new/field" class="bg-gray-700 text-white text-[13px] mt-3 px-5 py-2 rounded-md hover-transition hover:bg-gray-600">Opret skabelon</RouterLink>
-    </div>
+    <Empty text="Ingen skabeloner blev fundet" textBtn="Opret skabelon" @btnClick="$router.push('/new/field')" v-else/>
   </div>
 </template>
 
