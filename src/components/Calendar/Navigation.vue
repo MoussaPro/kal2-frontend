@@ -1,5 +1,12 @@
 <template>
   <div>
+    <Task-Create
+        v-if="showCreateTask"
+        :containerFields="containerFields"
+        :prefill="prefill"
+        @close="toggleCreateTask"
+        @created="(task) => $emit('created', task)" />
+
     <div class="w-full p-4 bg-gray-100 border border-gray-200 mt-10 rounded flex justify-between items-center">
       <div class="w-64 flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.25" stroke="currentColor" class="w-7 h-7 p-1 text-gray-600 hover-transition hover:text-white hover:bg-primary rounded-full cursor-pointer" @click="$emit('previous');">
@@ -26,7 +33,7 @@
       </div>
 
       <div class="w-64 flex justify-end">
-        <button @click="$emit('create');" class="rounded py-3 px-5 font-medium text-sm bg-gray-200 flex items-center text-gray-700 hover-transition hover:bg-primary hover:text-white cursor-pointer">
+        <button @click="toggleCreateTask" class="rounded py-3 px-5 font-medium text-sm bg-gray-200 flex items-center text-gray-700 hover-transition hover:bg-primary hover:text-white cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="5" stroke="currentColor" class="w-4 mr-[5px]">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
           </svg>
@@ -37,6 +44,8 @@
   </div>
 </template>
 <script setup>
+  import { ref } from "vue";
+
   const props = defineProps({
     weekNumber: {
       type: Number,
@@ -46,6 +55,21 @@
     },
     active: {
       type: String
-    }
+    },
+    containerFields: {
+      type: Array || null,
+    },
+  });
+
+  const showCreateTask = ref(false);
+  const prefill = ref();
+
+  const toggleCreateTask = (prefilling = null) => {
+    prefill.value = prefilling; // Set prefilling if whitebox is clicked
+    showCreateTask.value = !showCreateTask.value;
+  }
+
+  defineExpose({
+    toggleCreateTask
   });
 </script>
