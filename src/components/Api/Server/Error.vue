@@ -15,9 +15,8 @@
   const props = defineProps({
     error: Object
   });
-
   // If unauthorized, log user out.
-  if (props.error.response.status === 403 && props.error.response.data.error === 'Unauthorized') {
+  if (props.error && props.error.response && props.error.status && props.error.response.status === 403 && props.error.response.data.error === 'Unauthorized') {
     const auth = Auth();
 
     auth.logout();

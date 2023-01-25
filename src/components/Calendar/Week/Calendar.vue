@@ -7,14 +7,13 @@
         :weekNumber="apiData ? apiData.week_number : null"
         :year="apiData ? apiData.year : null"
         :containerFields="containerFields"
-        active="week"
         @previous="previous"
         @next="next"
         @gotoByWeekNumber="gotoByDate"
         @created="newTaskCreated"
+        @updated="newTaskCreated"
+        @deleted="getApi"
         ref="navigation" />
-
-    <Task-Open v-if="showOpenedTask" :containerFields="containerFields" :task="openedTask" @close="toggleOpenedTask" @updated="newTaskCreated" @deleted="getApi" />
 
     <div class="grid grid-cols-7 mt-5 divide-x divide-primary-Darker">
       <div v-for="day in weekDays" class="col-span-1 px-3 flex justify-between items-center justify-center h-10 text-white font-inter text-sm tracking-wider" :class="day.isToday ? 'bg-primary-Darker font-semibold' : 'bg-primary font-normal'">
@@ -23,7 +22,7 @@
       </div>
     </div>
 
-    <Calendar-Week-DailyTasks v-if="allDayTasks.length > 0" :tasks="allDayTasks" :firstDate="weekDays[0]" @opened="setOpenedTask" />
+    <Calendar-Week-DailyTasks v-if="allDayTasks.length > 0" :tasks="allDayTasks" :firstDate="weekDays[0]" @opened="(t) => navigation.setOpenedTask(t)" />
 
     <div class="grid grid-cols-7 divide-x divide-y divide-gray-100 border-r border-gray-100 relative">
       <div class="absolute text-gray-500 text-xs left-[-42px] top-0">
@@ -34,7 +33,7 @@
         <div class="border-b relative flex border-gray-200/50" :class="[heightClass, week.isToday ? 'bg-green-100/40  border-gray-100' : 'bg-white']" v-for="(time, index) in timeframe" :key="index+' '+time">
           <div class="sibling absolute w-full h-full hover:bg-primary/10 hover-transition cursor-pointer" @click="navigation.toggleCreateTask({ time: time, day: week.date })"></div>
           <div v-for="task in tasks(week.timestamp, time)" class="flex-1 p-[2px]" :key="task.id">
-            <Calendar-Week-Task :task="task" @clicked="setOpenedTask" />
+            <Calendar-Week-Task :task="task" @opened="(t) => navigation.setOpenedTask(t)" />
           </div>
         </div>
       </div>
@@ -49,18 +48,13 @@
   import axios from "axios";
   import moment from 'moment';
 
-  const { insideTimeBox } = timeHandler();
+  const { insideTimeBox, timeframe } = timeHandler();
   const { getDay, getDate, isToday, dateToTimestamp } = dateHandler();
   const apiData = ref();
   const loading = ref(true);
   const error = ref();
   const heightClass = ref('h-14');
-  const timeframe = [
-    '00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'
-  ];
   const weekHolder = ref([]);
-  const showOpenedTask = ref(false);
-  const openedTask = ref();
   const containerFields = ref(null);
   const navigation = ref();
 
@@ -147,15 +141,6 @@
   const gotoByDate = (inputDate) => {
     const date = moment(inputDate, 'DD/MM/YYYY');
     getApi(date.startOf('isoWeek').format('DD-MM-YYYY'));
-  }
-
-  const setOpenedTask = (task) => {
-    openedTask.value = task;
-    showOpenedTask.value = true; // Open task as we assign it
-  }
-
-  const toggleOpenedTask = () => {
-    showOpenedTask.value = !showOpenedTask.value;
   }
 
   const newTaskCreated = (task) => {
