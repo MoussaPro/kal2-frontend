@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-      <div class="min-h-[100px] max-h-[50vh] relative overflow-y-scroll">
+      <div class="min-h-[220px] max-h-[50vh] relative overflow-y-scroll">
         <div class="grid grid-cols-2 bg-gray-50 gap-x-5 gap-y-4 px-2 pb-4 mt-3">
           <Inputs-Fields-Display v-for="field in JSON.parse(selectedField.fields).filter((n) => {return n.type !== 'beskrivelse'})"
               :key="field"
