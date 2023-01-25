@@ -13,7 +13,7 @@ import guest from "@/middleware/guest";
     import Index from '../views/Index.vue'
     import NotFoundView from '../views/NotFoundView.vue'
     import Dashboard from '../views/Dashboard.vue'
-    import Calendar from '../views/Calendar.vue'
+    const Calendar = () => import('../views/Calendar.vue')
 
   /** Directory **/
     import Directory from '../views/Directory/Layout.vue'
