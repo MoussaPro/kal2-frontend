@@ -8,7 +8,7 @@
       </svg>
     </div>
     <transition name="slide">
-      <div ref="containerDiv" class="w-full py-1 px-[2px] bg-gray-50 border border-gray-200 relative h-15 grid grid-cols-7 grid-flow-dense border-b-gray-300 border-b-2 shadow hover-transition" :class="showAll ? '' : 'max-h-[45px] overflow-hidden'">
+      <div ref="containerDiv" class="w-full py-1 px-[2px] gap-1 bg-gray-50 border border-gray-200 relative h-15 grid grid-cols-7 grid-flow-dense border-b-gray-300 border-b-2 shadow hover-transition" :class="showAll ? '' : 'max-h-[45px] overflow-hidden'">
         <Calendar-Day-DailyBox v-for="task in tasks" :task="task" :day="day" @opened="$emit('opened', task)" />
       </div>
     </transition>

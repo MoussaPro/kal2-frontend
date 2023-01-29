@@ -13,6 +13,7 @@ import guest from "@/middleware/guest";
     import Index from '../views/Index.vue'
     import NotFoundView from '../views/NotFoundView.vue'
     import Dashboard from '../views/Dashboard.vue'
+    import Search from '../views/Search.vue'
     const Calendar = () => import('../views/Calendar.vue')
 
   /** Directory **/
@@ -39,6 +40,7 @@ const routes = [
   { path: '/login', name: 'login', component: Login, meta: { middleware: guest }, },
   { path: '/register', name: 'register', component: Register, meta: { middleware: guest }, },
   { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { middleware: auth }, },
+  { path: '/search', name: 'search', component: Search, meta: { middleware: auth }, },
   { path: '/directory', name: 'directory', component: Directory, meta: { middleware: auth }, children: [
       { path: '', component: Directory_index, name: 'directory.index' },
       { path: 'fields', component: Directory_Fields, name: 'directory.fields' }
