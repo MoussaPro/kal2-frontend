@@ -187,7 +187,7 @@
       loading.value = false;
       error.value = false;
       errorMsg.value = '';
-      emit('deleted');
+      emit('deleted', task);
       deleteLoading.value = false;
       emit('close');
     }).catch((response) => {

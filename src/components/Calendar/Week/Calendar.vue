@@ -12,7 +12,7 @@
         @gotoByWeekNumber="gotoByDate"
         @created="newTaskCreated"
         @updated="newTaskCreated"
-        @deleted="getApi"
+        @deleted="(task) => gotoByDate(task.startDate)"
         ref="navigation" />
 
     <div class="grid grid-cols-7 mt-5 divide-x divide-primary-Darker">

@@ -11,7 +11,7 @@
         @gotoByDayNumber="gotoByDate"
         @created="newTaskCreated"
         @updated="newTaskCreated"
-        @deleted="getApi"
+        @deleted="(task) => gotoByDate(task.startDate)"
         ref="navigation" />
 
     <div class="w-full bg-primary-Darker mt-5 h-10 px-3 flex items-center justify-center h-10 text-white font-inter text-sm tracking-wider capitalize">{{ title }}</div>
