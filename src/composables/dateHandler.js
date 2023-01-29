@@ -59,6 +59,16 @@ export default function dateHandler() {
     }
   }
 
+  const dateCalenderTime = (dateParser, slice = true) => {
+    const date = dateCalender(dateParser, slice);
+    const time = new Date(dateParser).toLocaleTimeString(dateLocale, {
+      hour: "2-digit",
+      minute: "2-digit",
+    }).replaceAll('.', ':');
+
+    return date + ' kl. ' + time;
+  }
+
   const danishToDate = (danishDate) => {
     const date = danishDate.split("/");
 
@@ -73,6 +83,7 @@ export default function dateHandler() {
     isToday,
     dateCalender,
     dateToTimestamp,
-    danishToDate
+    danishToDate,
+    dateCalenderTime
   }
 }
