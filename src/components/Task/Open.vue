@@ -69,7 +69,7 @@
           </button>
         </div>
       </div>
-ª      <div class="text-[11px] text-gray-400 mt-2 flex items-center">
+      <div class="text-[11px] text-gray-400 mt-2 flex items-center">
         <p class="font-light" v-if="task.created_at">Oprettet: {{ dateCalenderTime(task.created_at) }}</p>
         <div v-if="task.updated_at && dateCalenderTime(task.updated_at) !== dateCalenderTime(task.created_at)">
           <span class="mx-2">-</span>
