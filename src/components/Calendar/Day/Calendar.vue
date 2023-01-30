@@ -32,11 +32,12 @@
   </div>
 </template>
 <script setup>
-  import { computed, ref } from "vue";
+  import { computed, ref, watch } from "vue";
   import axios from "axios";
   import moment from "moment";
   import dateHandler from "@/composables/dateHandler";
   import timeHandler from "@/composables/timeHandler";
+  import { useRoute } from "vue-router/dist/vue-router";
 
   const apiData = ref();
   const loading = ref(true);
@@ -47,9 +48,9 @@
   const title = ref();
   const { timeframe, insideTimeBox } = timeHandler();
   const navigation = ref();
+  const route = useRoute();
 
-
-/**
+  /**
    * Getting data from the API
    * @param date - Determine which week
    */
@@ -79,7 +80,6 @@
       error.value = e;
     }
   }
-  getApi();
 
   const day = computed(() => {
     if (apiData.value && apiData.value.day) {
@@ -107,6 +107,22 @@
     // Take first task date so we inside the more task component knows which date we on
     return tasks.length < 5 ? tasks : [{ title: '+'+tasks.length+' Opgaver', moreTask: true, tasks: tasks, date: tasks[0].task_date }];
   };
+
+
+  // Watch for route query otherwise pick today
+  watch(() => route.query.day,() => {
+    if (route.query.day) {
+      const dateRegex = /^(0[1-9]|1[0-9]|2[0-9]|3[0-1])-(0[1-9]|1[0-2])-\d{4}$/;
+
+      if (dateRegex.test(route.query.day)) {
+        getApi(route.query.day)
+      }
+    } else {
+      getApi();
+    }
+  }, {
+    immediate: true,
+  });
 
   const next = () => {
     const date = moment(day.value, 'DD/MM/YYYY');
