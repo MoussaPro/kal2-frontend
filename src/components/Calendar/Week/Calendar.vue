@@ -4,6 +4,7 @@
 
   <div v-if="!loading && !error">
     <Calendar-Navigation
+        :weekDays="apiData ? apiData.week : null"
         :weekNumber="apiData ? apiData.week_number : null"
         :year="apiData ? apiData.year : null"
         :containerFields="containerFields"
