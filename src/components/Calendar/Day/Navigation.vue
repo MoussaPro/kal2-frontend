@@ -21,7 +21,7 @@
   const { dateCalender, getDay, getDate, getMonth, getYear } = dateHandler();
 
   const dayNumberNavigation = ref(false);
-  const date = ref();
+  const date = ref(new Date(props.day * 1000));
   const emit = defineEmits(['gotoByDayNumber']);
   const title = getDay(props.day, 'name') + ' - ' + getDate(props.day).slice(0, 2) + '. ' + getMonth(props.day, 'name') + ' ' + getYear(props.day);
 

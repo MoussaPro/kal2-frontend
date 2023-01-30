@@ -24,7 +24,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
         </svg>
         <div class="relative">
-          <Calendar-Week-Navigation :weekNumber="weekNumber" @gotoByWeekNumber="(number) => $emit('gotoByWeekNumber', number)" :year="year" v-if="calendar.active === 'week'"/>
+          <Calendar-Week-Navigation :weekDays="weekDays" :weekNumber="weekNumber" @gotoByWeekNumber="(number) => $emit('gotoByWeekNumber', number)" :year="year" v-if="calendar.active === 'week'"/>
           <Calendar-Day-Navigation :day="day" @gotoByDayNumber="(number) => $emit('gotoByDayNumber', number)" v-if="calendar.active === 'day'"/>
         </div>
       </div>
@@ -62,6 +62,9 @@
   const calendar = Calendar();
 
   const props = defineProps({
+    weekDays: {
+      type: Array,
+    },
     day: {
       type: Number,
     },
