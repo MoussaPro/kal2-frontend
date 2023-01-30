@@ -1,6 +1,6 @@
 <template>
-  <div class="border rounded-md text-xs px-2 py-[5px] flex justify-between items-center shadow relative hover-transition hover:opacity-80 cursor-pointer hover:scale-[102%] hover:!z-[25]" :style="styling" @click="$emit('opened', task)">
-    <p>#{{task.task_number}} {{ task.title }}</p>
+  <div class="border rounded-md text-xs px-2 py-[5px] flex justify-between items-center shadow relative hover-transition hover:opacity-80 cursor-pointer hover:scale-[102%] hover:!z-[25]" :class="showTaskEndDate ? 'col-span-7' : 'col-span-1'" :style="styling" @click="$emit('opened', task)">
+    <p class="line-clamp-2">#{{task.task_number}} {{ task.title }}</p>
     <p class="text-[10.5px] leading-none font-inter font-medium" v-if="showTaskEndDate">{{ dateCalender(task.task_date_end) }}</p>
   </div>
 </template>

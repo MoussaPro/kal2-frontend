@@ -16,7 +16,7 @@
         ref="navigation" />
 
     <div class="grid grid-cols-7 mt-5 divide-x divide-primary-Darker">
-      <div v-for="day in weekDays" class="col-span-1 px-3 flex justify-between items-center justify-center h-10 text-white font-inter text-sm tracking-wider" :class="day.isToday ? 'bg-primary-Darker font-semibold' : 'bg-primary font-normal'">
+      <div v-for="day in weekDays" @click="goToDailyCalendar(day.date)" class="col-span-1 px-3 flex justify-between items-center justify-center h-10 text-white font-inter text-sm tracking-wider cursor-pointer hover-transition" :class="day.isToday ? 'bg-primary-Darker hover:bg-primary-Darker/80 font-semibold' : 'bg-primary hover:bg-primary/80 font-normal'">
         <p class="capitalize">{{ day.day }}</p>
         <p>{{ day.date.slice(0, 5) }}</p>
       </div>
@@ -47,6 +47,8 @@
   import timeHandler from "@/composables/timeHandler";
   import axios from "axios";
   import moment from 'moment';
+  import { useRouter } from "vue-router";
+  import { Calendar } from "@/store/calendar";
 
   const { insideTimeBox, timeframe } = timeHandler();
   const { getDay, getDate, isToday, dateToTimestamp } = dateHandler();
@@ -57,6 +59,8 @@
   const weekHolder = ref([]);
   const containerFields = ref(null);
   const navigation = ref();
+  const Router = useRouter();
+  const calendar = Calendar();
 
   /**
    * Getting data from the API
@@ -149,5 +153,10 @@
       const date = moment(task.task_date, 'YYYY-MM-DD');
       getApi(date.format('DD-MM-YYYY'));
     }
+  }
+
+  const goToDailyCalendar = (date) => {
+    calendar.switchCalendar('day');
+    Router.push('?day='+date.replaceAll('/', '-'));
   }
 </script>
