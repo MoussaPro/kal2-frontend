@@ -1,5 +1,3 @@
-import { ref } from "vue";
-
 export default function fieldHandler() {
   const addField = (fieldsArray) => {
     fieldsArray.push({
