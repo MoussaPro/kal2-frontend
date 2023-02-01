@@ -12,7 +12,7 @@
 
     <!-- Description -->
     <div class="mr-2 w-full" v-if="field.type === 'beskrivelse'">
-      <trumbowyg v-model="field.value" :config="trumConfig" @blur="emitChanges" class="form-control" name="content"></trumbowyg>
+      <trumbowyg v-model="field.value" :defaultValue="field.value" :config="trumConfig" @blur="emitChanges" class="form-control" name="content"></trumbowyg>
     </div>
     <span v-if="errorMsg" class="text-[11px] font-bold text-red-600 font-inter mt-1">{{ errorMsg }}</span>
   </div>
