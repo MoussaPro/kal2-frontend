@@ -11,7 +11,7 @@ export default function fieldHandler() {
   const addFieldDirectory = (fieldsArray) => {
     fieldsArray.push({
       id: Math.random(),
-      title: 'Angiv værdi holder',
+      title: '',
     });
   }
 

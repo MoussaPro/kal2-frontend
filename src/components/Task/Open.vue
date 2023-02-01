@@ -3,7 +3,7 @@
     <div id="topScroller" class="h-2 w-2"></div>
     <Api-Local-Error :error="error" :message="errorMsg" class="my-3" />
     <Task-View :task="taskActive" v-if="!editMode" class="p-3"/>
-    <Task-Edit :task="taskActive" :containerFields="containerFields" ref="editTask" v-if="editMode" class="p-3"/>
+    <Task-Edit :task="taskActive" :containerFields="containerFields" :containerDirectories="containerDirectories" ref="editTask" v-if="editMode" class="p-3"/>
 
     <transition>
       <div class="absolute w-full h-full top-0 left-0 flex items-center justify-center transition-hover z-[100]" v-if="updatedMessage">
@@ -91,6 +91,9 @@
     },
     containerFields: {
       type: Array || null,
+    },
+    containerDirectories: {
+      type: Array || null,
     }
   });
 
@@ -141,7 +144,8 @@
         endDate: task.endDate,
         allDay: task.allDaySwitch,
         endTime: task.endTime,
-        fields: task.fields
+        fields: task.fields,
+        data: task.data
       }
     }, {
       headers: {

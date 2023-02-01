@@ -135,7 +135,8 @@
     error.value = false;
     success.value = false;
 
-    if (Object.values(fieldsObj).length > 0) {
+    // Bigger than 1 because ID is always filled
+    if (Object.values(fieldsObj).length > 1) {
       // Push to existing data set or create new
       if (apiData.value.data) {
         apiData.value.data.push(fieldsObj);
@@ -207,8 +208,6 @@
         }
       }).then((response) => response.data).then((response) => {
         apiData.value = response;
-        apiData.value.fields = JSON.parse(response.fields);
-        apiData.value.data = JSON.parse(response.data);
         title.value = apiData.value.title;
         loading.value = false;
       }).catch((response) => {

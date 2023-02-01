@@ -108,6 +108,9 @@
   }
 
   const emitChanges = () => {
+    error.value = false;
+    errorMsg.value = ''
+
     // Check if type is number and value is a number
     if (fields.value.type === 'tal' && fields.value.value) {
       const regex = /^[\d,]*\.?\d*$/

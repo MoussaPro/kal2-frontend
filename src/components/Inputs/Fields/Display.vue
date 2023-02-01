@@ -53,6 +53,9 @@
   field.value.title = capitalizeString(props.field.title);
 
   const emitChanges = () => {
+    error.value = false;
+    errorMsg.value = ''
+
     // Format before emitting
     if (field.value.type === 'tal' && field.value.value) {
       const regex = /^[\d,]*\.?\d*$/

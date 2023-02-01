@@ -1,6 +1,5 @@
 <template>
-  <div class="bg-gray-50 relative border border-gray-100 rounded-md" :class="{'h-[250px]': loading}">
-    <Api-Local-Loading :loading="loading"/>
+  <div class="bg-gray-50 relative border border-gray-100 rounded-md">
     <div v-if="selectedField">
       <div class="flex justify-center">
         <div class="mx-auto relative">
@@ -25,14 +24,14 @@
       </div>
       <div class="min-h-[220px] max-h-[50vh] relative overflow-y-scroll">
         <div class="grid grid-cols-2 bg-gray-50 gap-x-5 gap-y-4 px-2 pb-4 mt-3">
-          <Inputs-Fields-Display v-for="field in JSON.parse(selectedField.fields).filter((n) => {return n.type !== 'beskrivelse'})"
+          <Inputs-Fields-Display v-for="field in selectedField.fields.filter((n) => {return n.type !== 'beskrivelse'})"
               :key="field"
               :field="field"
               @getField="updatedField => updateField(updatedField, field.id)"/>
         </div>
 
         <div class="px-2 pb-4 mt-3">
-          <Inputs-Fields-Display v-for="field in JSON.parse(selectedField.fields).filter((n) => {return n.type === 'beskrivelse'})"
+          <Inputs-Fields-Display v-for="field in selectedField.fields.filter((n) => {return n.type === 'beskrivelse'})"
               class="mt-4"
               :key="field"
               :field="field"
@@ -50,7 +49,7 @@ import { computed, inject, onMounted, ref } from "vue";
 
   const props = defineProps({
     jsonData: {
-      type: String,
+      type: Array,
     },
     containerFields: {
       type: Array || null,
@@ -58,7 +57,6 @@ import { computed, inject, onMounted, ref } from "vue";
   });
 
   const apiData = ref(props.containerFields ?? null);
-  const loading = ref();
   const error = ref();
   const selectedFieldId = ref(null);
   const toggleTemplates = ref();
@@ -90,7 +88,7 @@ import { computed, inject, onMounted, ref } from "vue";
 
       if (returnedFields.value) {
         // Emits field template changes and defaults value
-        emits('taskFields', JSON.stringify(JSON.parse(returnedFields.value.fields)));
+        emits('taskFields', returnedFields.value.fields);
         return returnedFields.value;
       }
     }
@@ -108,13 +106,16 @@ import { computed, inject, onMounted, ref } from "vue";
   }
 
   const updateField = (updatedField, field_id) => {
-    let array = JSON.parse(selectedField.value.fields)
-    array.forEach(field => {
+    selectedField.value.fields.forEach(field => {
       if (field.id === field_id) {
-        field.value = updatedField.value
+        const regex = /^[\d,]*\.?\d*$/
+        if (regex.test(updatedField.value)) {
+          field.value = Number(updatedField.value)
+        } else {
+          field.value = updatedField.value
+        }
       }
     });
-    selectedField.value.fields = JSON.stringify(array);
     emits('taskFields', selectedField.value.fields);
   }
 </script>

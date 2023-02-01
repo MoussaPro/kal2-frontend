@@ -3,6 +3,7 @@
     <Task-Create
         v-if="showCreateTask"
         :containerFields="containerFields"
+        :containerDirectories="containerDirectories"
         :prefill="prefill"
         @close="toggleCreateTask"
         @created="(task) => $emit('created', task)" />
@@ -10,6 +11,7 @@
     <Task-Open
         v-if="showOpenedTask"
         :containerFields="containerFields"
+        :containerDirectories="containerDirectories"
         :task="openedTask"
         @close="toggleOpenedTask"
         @updated="(task) => $emit('updated', task)"
@@ -77,6 +79,9 @@
     containerFields: {
       type: Array || null,
     },
+    containerDirectories: {
+      type: Array || null,
+    }
   });
 
   const showCreateTask = ref(false);
