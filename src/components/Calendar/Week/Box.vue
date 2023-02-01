@@ -59,8 +59,6 @@
       } else {
         styling.value += " z-index:" + props.task.task_time.slice(0, 2) + ";";
       }
-    } else {
-      styling.value = " height: 100%;";
     }
     styling.value += " background-color:" + color.value['background'] + ";";
     styling.value += " color:" + color.value['text'] + ";";
