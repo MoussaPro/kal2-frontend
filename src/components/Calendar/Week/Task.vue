@@ -3,7 +3,7 @@
     <Calendar-Week-Box :task="task" :moreTask="task.moreTask" @openMoreTask="openMoreTask = !openMoreTask"/>
 
     <!-- Tasks slider -->
-    <div class="absolute hover-transition z-[60] top-[50%] -translate-y-1/2 w-[200px] bg-gray-100 rounded-md px-2 drop-shadow-4xl border-2 border-gray-200" :class="sunday ? 'right-[75%]' : 'left-[75%]'" v-click-outside="hideOpenMore" v-if="openMoreTask" >
+    <div class="absolute hover-transition z-[60] top-[50%] -translate-y-1/2 bg-gray-100 rounded-md px-2 drop-shadow-4xl border-2 border-gray-200 w-[200px]" :class="[sunday ? 'right-[75%]' : 'left-[75%]', {'grid grid-cols-2 gap-x-2 !w-[400px]': task.tasks.length > 7 && task.tasks.length < 15, 'grid grid-cols-3 gap-x-2 !w-[600px] !left-[25%] !right-[25%]': task.tasks.length >= 15}]" v-click-outside="hideOpenMore" v-if="openMoreTask" >
       <Calendar-Week-Box :task="task" :subTask="true" v-for="(task) in task.tasks" @click="$emit('opened', task); openMoreTask = false;" class="my-[10px] h-10" />
     </div>
   </div>
