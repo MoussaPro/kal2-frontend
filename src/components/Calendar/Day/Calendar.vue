@@ -5,6 +5,7 @@
   <div v-if="!loading && !error">
     <Calendar-Navigation
         :containerFields="containerFields"
+        :containerDirectories="containerDirectories"
         :day="apiData.day"
         @previous="previous"
         @next="next"
@@ -44,6 +45,7 @@
   const error = ref();
   const heightClass = ref('h-14');
   const containerFields = ref(null);
+  const containerDirectories = ref(null);
   const { getDay, getDate, getMonth, getYear } = dateHandler();
   const title = ref();
   const { timeframe, insideTimeBox } = timeHandler();
@@ -71,6 +73,7 @@
       }).then((response) => response.data).then((response) => {
         apiData.value = response;
         containerFields.value = response.fields ?? null;
+        containerDirectories.value = response.directories ?? null;
         title.value = getDay(apiData.value.day, 'name') + ' - ' + getDate(apiData.value.day).slice(0, 2) + '. ' + getMonth(apiData.value.day, 'name') + ' ' + getYear(apiData.value.day);
         loading.value = false;
       }).catch((response) => {

@@ -4,10 +4,11 @@
 
   <div v-if="!loading && !error">
     <Calendar-Navigation
+        :containerFields="containerFields"
+        :containerDirectories="containerDirectories"
         :weekDays="apiData ? apiData.week : null"
         :weekNumber="apiData ? apiData.week_number : null"
         :year="apiData ? apiData.year : null"
-        :containerFields="containerFields"
         @previous="previous"
         @next="next"
         @gotoByWeekNumber="gotoByDate"
@@ -59,6 +60,7 @@
   const heightClass = ref('h-14');
   const weekHolder = ref([]);
   const containerFields = ref(null);
+  const containerDirectories = ref(null);
   const navigation = ref();
   const Router = useRouter();
   const calendar = Calendar();
@@ -84,6 +86,7 @@
       }).then((response) => response.data).then((response) => {
         apiData.value = response;
         containerFields.value = response.fields ?? null;
+        containerDirectories.value = response.directories ?? null;
         loading.value = false;
       }).catch((response) => {
         error.value = response;

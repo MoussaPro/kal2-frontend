@@ -13,16 +13,16 @@
           <Layout-BlockTitle title="Rediger kartotek" class="mb-5"/>
           <input type="text" id="title" name="title" v-model="title" class="input-field-non-border" placeholder="Navngiv skabelonen">
 
-
           <div v-for="(field, index) in apiData.fields" :key="field.id + ' ' + field.value">
-            <div class="relative">
-              <div v-if="index !== 0" @click="deleteField(apiData.fields, index)" class="text-red-500 hover-transition hover:text-red-700 cursor-pointer absolute left-[-35px] top-[30px]">
+            <div class="relative mt-5">
+              <div v-if="index === 0" class="text-gray-500 text-xs font-medium mb-1">( Identifikations felt )</div>
+              <div v-if="index !== 0" @click="deleteField(apiData.fields, index)" class="text-red-500 hover-transition hover:text-red-700 cursor-pointer absolute left-[-35px] top-[9px]">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </div>
 
-              <input type="text" class="bg-gray-50 border-gray-200 border-2 border-dashed mt-5 px-2 py-1 w-[400px] h-9 rounded text-[13px] text-gray-600 focus:outline-gray-300 focus:border-gray-300 active:border-gray-300" @blur="setFields({ id: field.id, title: field.title }, index)" v-model="field.title"/>
+              <input type="text" class="bg-gray-50 border-gray-200 border-2 border-dashed px-2 py-1 w-[400px] h-9 rounded text-[13px] text-gray-600 focus:outline-gray-300 focus:border-gray-300 active:border-gray-300 placeholder:text-gray-500" placeholder="Angiv værdi holder" @blur="setFields({ id: field.id, title: field.title }, index)" v-model="field.title"/>
             </div>
           </div>
 
@@ -70,7 +70,6 @@
         }
       }).then((response) => response.data).then((response) => {
         apiData.value = response;
-        apiData.value.fields = JSON.parse(apiData.value.fields);
         title.value = apiData.value.title;
         loading.value = false;
       }).catch((response) => {

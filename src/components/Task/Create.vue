@@ -43,7 +43,13 @@
           <SwitchButton title="Hele dagen" @clicked="toggleAllDaySwitch" />
         </div>
 
-        <div class="mt-8">
+        <div class="mt-5">
+          <p class="text-[14px] font-medium text-gray-700">Tilknytning</p>
+          <Inputs-Directories-Container :containerDirectories="containerDirectories" @taskDataDirectories="setDataDirectories" />
+        </div>
+
+        <div class="mt-5">
+          <p class="text-[14px] font-medium text-gray-700 mb-1">Om opgaven</p>
           <Inputs-Fields-Container :containerFields="containerFields" @taskFields="setFields" />
         </div>
       </div>
@@ -76,6 +82,9 @@
     },
     containerFields: {
       type: Array || null,
+    },
+    containerDirectories: {
+      type: Array || null,
     }
   });
 
@@ -86,6 +95,7 @@
   const endTime = ref(null);
   const title = ref(null);
   const fields = ref(null);
+  const dataDirectories = ref(null);
   const color = ref('green');
   const allDaySwitch = ref(false);
   const loading = ref(false);
@@ -109,6 +119,10 @@
 
   const setFields = (getFields) => {
     fields.value = getFields;
+  }
+
+  const setDataDirectories = (getDataDirectories) => {
+    dataDirectories.value = getDataDirectories;
   }
 
   const createTask = async () => {
@@ -136,7 +150,8 @@
           endDate: endDate.value,
           allDay: allDaySwitch.value,
           endTime: endTime.value,
-          fields: fields.value
+          fields: fields.value,
+          data: dataDirectories.value ? ( dataDirectories.value.length > 0 ? dataDirectories.value : null) : null
         }
       }, {
         headers: {
