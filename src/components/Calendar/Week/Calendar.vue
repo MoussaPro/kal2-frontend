@@ -2,34 +2,39 @@
   <Api-Server-Loading v-if="loading && !error" class="mt-10"/>
   <Api-Server-Error v-if="error" :error="error" class="mt-10"/>
 
-
   <div v-if="!loading && !error">
-    <Calendar-Navigation :weekNumber="apiData ? apiData.week_number : null" :year="apiData ? apiData.year : null" active="week" @previous="previous" @next="next" @gotoByWeekNumber="gotoByDate" @create="toggleCreateTask"/>
-    <Task-Create v-if="showCreateTask" :containerFields="containerFields" :prefill="prefillTask" @close="toggleCreateTask" @created="newTaskCreated" />
-    <Task-Open v-if="showOpenedTask" :containerFields="containerFields" :task="openedTask" @close="toggleOpenedTask" @updated="newTaskCreated" @deleted="taskDeleted" />
+    <Calendar-Navigation
+        :weekDays="apiData ? apiData.week : null"
+        :weekNumber="apiData ? apiData.week_number : null"
+        :year="apiData ? apiData.year : null"
+        :containerFields="containerFields"
+        @previous="previous"
+        @next="next"
+        @gotoByWeekNumber="gotoByDate"
+        @created="newTaskCreated"
+        @updated="newTaskCreated"
+        @deleted="(task) => gotoByDate(task.startDate)"
+        ref="navigation" />
 
     <div class="grid grid-cols-7 mt-5 divide-x divide-primary-Darker">
-      <div v-for="day in weekDays" class="col-span-1 px-3 flex justify-between items-center justify-center h-10 text-white font-inter text-sm tracking-wider" :class="day.isToday ? 'bg-primary-Darker font-semibold' : 'bg-primary font-normal'">
+      <div v-for="day in weekDays" @click="goToDailyCalendar(day.date)" class="col-span-1 px-3 flex justify-between items-center justify-center h-10 text-white font-inter text-sm tracking-wider cursor-pointer hover-transition" :class="day.isToday ? 'bg-primary-Darker hover:bg-primary-Darker/80 font-semibold' : 'bg-primary hover:bg-primary/80 font-normal'">
         <p class="capitalize">{{ day.day }}</p>
         <p>{{ day.date.slice(0, 5) }}</p>
       </div>
     </div>
 
-    <Calendar-Week-DailyTasks v-if="allDayTasks.length > 0" :tasks="allDayTasks" :firstDate="weekDays[0]" @opened="setOpenedTask" />
+    <Calendar-Week-DailyTasks v-if="allDayTasks.length > 0" :tasks="allDayTasks" :firstDate="weekDays[0]" @opened="(t) => navigation.setOpenedTask(t)" />
 
     <div class="grid grid-cols-7 divide-x divide-y divide-gray-100 border-r border-gray-100 relative">
-      <!-- Display timeframes on the calendar side -->
       <div class="absolute text-gray-500 text-xs left-[-42px] top-0">
         <div :class="heightClass" v-for="time in timeframe">{{ time }}</div>
       </div>
 
-      <!-- Day foreach -->
       <div :id="'week_'+week.date" class="col-span-1 bg-white relative" :class="{'border-l border-t border-gray-100': index === 0}" v-for="(week, index) in weekDays" :key="week.timestamp">
-        <!-- Times -->
         <div class="border-b relative flex border-gray-200/50" :class="[heightClass, week.isToday ? 'bg-green-100/40  border-gray-100' : 'bg-white']" v-for="(time, index) in timeframe" :key="index+' '+time">
-          <div class="sibling absolute w-full h-full hover:bg-primary/10 hover-transition cursor-pointer" @click="toggleCreateTask({ time: time, day: week.date })"></div>
+          <div class="sibling absolute w-full h-full hover:bg-primary/10 hover-transition cursor-pointer" @click="navigation.toggleCreateTask({ time: time, day: week.date })"></div>
           <div v-for="task in tasks(week.timestamp, time)" class="flex-1 p-[2px]" :key="task.id">
-            <Calendar-Week-Task :task="task" @clicked="setOpenedTask" />
+            <Calendar-Week-Task :task="task" @opened="(t) => navigation.setOpenedTask(t)" />
           </div>
         </div>
       </div>
@@ -43,22 +48,20 @@
   import timeHandler from "@/composables/timeHandler";
   import axios from "axios";
   import moment from 'moment';
+  import { useRouter } from "vue-router";
+  import { Calendar } from "@/store/calendar";
 
-  const { insideTimeBox } = timeHandler();
+  const { insideTimeBox, timeframe } = timeHandler();
   const { getDay, getDate, isToday, dateToTimestamp } = dateHandler();
   const apiData = ref();
   const loading = ref(true);
   const error = ref();
   const heightClass = ref('h-14');
-  const timeframe = [
-    '00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'
-  ];
   const weekHolder = ref([]);
-  const showCreateTask = ref(false);
-  const showOpenedTask = ref(false);
-  const openedTask = ref();
-  const prefillTask = ref({});
   const containerFields = ref(null);
+  const navigation = ref();
+  const Router = useRouter();
+  const calendar = Calendar();
 
   /**
    * Getting data from the API
@@ -145,20 +148,6 @@
     getApi(date.startOf('isoWeek').format('DD-MM-YYYY'));
   }
 
-  const toggleCreateTask = (prefilling = null) => {
-    prefillTask.value = prefilling; // Set prefilling if whitebox is clicked
-    showCreateTask.value = !showCreateTask.value;
-  }
-
-  const setOpenedTask = (task) => {
-    openedTask.value = task;
-    showOpenedTask.value = true; // Open task as we assign it
-  }
-
-  const toggleOpenedTask = () => {
-    showOpenedTask.value = !showOpenedTask.value;
-  }
-
   const newTaskCreated = (task) => {
     // @TODO error handling from backend
     if (task !== null) {
@@ -167,7 +156,8 @@
     }
   }
 
-  const taskDeleted = () => {
-    getApi();
+  const goToDailyCalendar = (date) => {
+    calendar.switchCalendar('day');
+    Router.push('?day='+date.replaceAll('/', '-'));
   }
 </script>

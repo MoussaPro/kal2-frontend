@@ -32,7 +32,7 @@ export default function dateHandler() {
     return date.getFullYear();
   }
 
-  const getDate = (timestamp, seperator) => {
+  const getDate = (timestamp) => {
     const date = new Date(timestamp * 1000);
 
     return ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth()+1)).slice(-2) + '/' + date.getFullYear();
@@ -59,6 +59,16 @@ export default function dateHandler() {
     }
   }
 
+  const dateCalenderTime = (dateParser, slice = true) => {
+    const date = dateCalender(dateParser, slice);
+    const time = new Date(dateParser).toLocaleTimeString(dateLocale, {
+      hour: "2-digit",
+      minute: "2-digit",
+    }).replaceAll('.', ':');
+
+    return date + ' kl. ' + time;
+  }
+
   const danishToDate = (danishDate) => {
     const date = danishDate.split("/");
 
@@ -73,6 +83,7 @@ export default function dateHandler() {
     isToday,
     dateCalender,
     dateToTimestamp,
-    danishToDate
+    danishToDate,
+    dateCalenderTime
   }
 }

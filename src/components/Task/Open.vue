@@ -69,12 +69,21 @@
           </button>
         </div>
       </div>
+      <div class="text-[11px] text-gray-400 mt-2 flex items-center">
+        <p class="font-light" v-if="task.created_at">Oprettet: {{ dateCalenderTime(task.created_at) }}</p>
+        <div v-if="task.updated_at && dateCalenderTime(task.updated_at) !== dateCalenderTime(task.created_at)">
+          <span class="mx-2">-</span>
+          <b class="font-medium">Opdateret: {{ dateCalenderTime(task.updated_at) }}</b>
+        </div>
+      </div>
     </div>
   </PopUp>
 </template>
 <script setup>
   import { ref } from "vue";
   import axios from "axios";
+  import dateHandler from "@/composables/dateHandler";
+  const { dateCalenderTime } = dateHandler();
 
   const props = defineProps({
     task: {
@@ -187,7 +196,7 @@
       loading.value = false;
       error.value = false;
       errorMsg.value = '';
-      emit('deleted');
+      emit('deleted', task);
       deleteLoading.value = false;
       emit('close');
     }).catch((response) => {

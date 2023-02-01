@@ -1,4 +1,8 @@
 export default function timeHandler() {
+  const timeframe = [
+    '00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'
+  ];
+
   // Define the heights on tasks in pixel depends on task length
   const taskHeight = {
     hour: 24, // 3.5 REM
@@ -39,6 +43,7 @@ export default function timeHandler() {
   return {
     diffBetweenTwoTimes,
     taskHeight,
-    insideTimeBox
+    insideTimeBox,
+    timeframe
   }
 }
