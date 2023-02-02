@@ -244,6 +244,7 @@
         publishToken.value = response.token;
         isPublished.value = true;
         showPublishPopup.value = true;
+        hasBeenUpdated.value = true;
       }
     }).catch((response) => {});
   }
@@ -258,6 +259,7 @@
         publishToken.value = null;
         isPublished.value = false;
         showPublishPopup.value = false;
+        hasBeenUpdated.value = true;
       }
     }).catch((response) => {});
   }
