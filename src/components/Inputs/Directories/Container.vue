@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex gap-x-2">
+    <div class="flex flex-wrap gap-2">
       <div v-for="data in chosenDataDirectories" :key="data.id" class="flex items-center justify-between bg-gray-200 px-2 py-1 rounded-md">
         <div class="text-xs text-gray-800"><span class="font-medium">{{ data.directory_title }}: </span>{{ Object.values(data)[1] }}</div>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" @click="deleteChoosenDataDirectories(data)" class="w-4 ml-2 cursor-pointer hover:text-red-600">

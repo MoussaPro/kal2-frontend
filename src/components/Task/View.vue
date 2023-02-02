@@ -23,7 +23,7 @@
 
       <div class="mt-5" v-if="task.data && task.data.length > 0">
         <h3 class="font-bold text-lg font-inter mb-1">Tilknytninger</h3>
-        <div class="flex gap-x-2">
+        <div class="flex flex-wrap gap-2">
           <div v-for="data in task.data" :key="data.id" class="flex items-center justify-between bg-gray-200 px-2 py-1 rounded-md">
             <div class="text-xs text-gray-800"><span class="font-medium">{{ data.directory_title }}: </span> {{ Object.values(data)[1] }}</div>
           </div>
