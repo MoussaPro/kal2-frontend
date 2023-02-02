@@ -32,13 +32,20 @@ import guest from "@/middleware/guest";
     import EditDirectory from '../views/Edit/Directory.vue'
     import DataDirectory from '../views/Edit/DataDirectory.vue'
   /** End edit **/
+
+  /** Task **/
+    import PublicTask from '../views/PublicTask.vue'
+  /** End task **/
 /** End routes **/
 
 
 const routes = [
+  // Public routes
   { path: '/', name: 'index', component: Index, meta: { middleware: guest } },
   { path: '/login', name: 'login', component: Login, meta: { middleware: guest }, },
   { path: '/register', name: 'register', component: Register, meta: { middleware: guest }, },
+  { path: '/opgave/:token', name: 'publicTask', component: PublicTask },
+
   { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { middleware: auth }, },
   { path: '/search', name: 'search', component: Search, meta: { middleware: auth }, },
   { path: '/directory', name: 'directory', component: Directory, meta: { middleware: auth }, children: [
@@ -60,12 +67,12 @@ const routes = [
     ]
   },
   { path: '/calendar', name: 'calendar', component: Calendar, meta: { middleware: auth }, },
+  // Logout
+  { path: '/logout', component: Logout, meta: { middleware: auth } },
 
   // Not found 404
   { path: '/:pathMatch(.*)*', component: NotFoundView },
 
-  // Logout
-  { path: '/logout', component: Logout }
 ]
 
 const router = createRouter({
