@@ -27,7 +27,7 @@
   </div>
 </template>
 <script setup>
-import { onBeforeMount, onUnmounted, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 
   const props = defineProps({
     containerDirectories: {
@@ -36,7 +36,7 @@ import { onBeforeMount, onUnmounted, ref } from "vue";
     jsonData: {
       type: Array
     }
-  })
+  });
 
   const showDirectoriesPopup = ref(false);
   const chosenDataDirectories = ref([]);
@@ -69,18 +69,20 @@ import { onBeforeMount, onUnmounted, ref } from "vue";
   }
 
   const updateChoosenCategories = () => {
-    categoriesDataDirectory.value = Array.from(new Set(chosenDataDirectories.value.map(item => item.directory_id))); // Get the difference directories based selected data
-    categoriesDataDirectory.value.forEach((directory) => {
-      props.containerDirectories.find(obj => {
-        if (obj.id === directory) {
-          categoriesDataDirectory.value.push({
-            id: directory,
-            title: obj.title
-          });
-          categoriesDataDirectory.value = categoriesDataDirectory.value.filter(item => item !== directory);
-        }
-      })
-    });
+    if (props.containerDirectories) {
+      categoriesDataDirectory.value = Array.from(new Set(chosenDataDirectories.value.map(item => item.directory_id))); // Get the difference directories based selected data
+      categoriesDataDirectory.value.forEach((directory) => {
+        props.containerDirectories.find(obj => {
+          if (obj.id === directory) {
+            categoriesDataDirectory.value.push({
+              id: directory,
+              title: obj.title
+            });
+            categoriesDataDirectory.value = categoriesDataDirectory.value.filter(item => item !== directory);
+          }
+        });
+      });
+    }
     emits('taskDataDirectories', chosenDataDirectories.value);
   }
 

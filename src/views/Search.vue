@@ -6,6 +6,7 @@
     <Task-Open
         v-if="showOpenedTask"
         :containerFields="containerFields"
+        :containerDirectories="containerDirectories"
         :task="openedTask"
         @close="toggleOpenedTask"
         @updated="refreshSearch"
@@ -70,12 +71,13 @@
   const showOpenedTask = ref(false);
   const openedTask = ref();
   const containerFields = ref();
+  const containerDirectories = ref();
 
   const search = () => {
     if (searchModel.value) {
       searchError.value = false;
       apiData.value = null;
-      router.push('search?q='+searchModel.value)
+      router.push('/search?q='+searchModel.value)
       loading.value = true;
 
       axios.get('search/'+searchModel.value, {
@@ -86,6 +88,7 @@
         apiData.value = response;
         if (response.containerFields) {
           containerFields.value = response.containerFields;
+          containerDirectories.value = response.directories ?? null;
         }
         loading.value = false;
 

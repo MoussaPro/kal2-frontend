@@ -73,7 +73,7 @@
 
   const search = () => {
     hideSearch();
-    Router.push('search?q='+searchTerm.value);
+    Router.push('/search?q='+searchTerm.value);
   }
 </script>
 <style>
