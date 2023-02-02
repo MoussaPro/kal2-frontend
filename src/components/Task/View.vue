@@ -23,12 +23,9 @@
 
       <div class="mt-5" v-if="task.data && task.data.length > 0">
         <h3 class="font-bold text-lg font-inter mb-1">Tilknytninger</h3>
-        <div v-for="directory in categoriesDataDirectory" :key="directory.id" class="bg-gray-50 rounded-md border border-gray-200 p-2 mt-2">
-          <div class="text-sm text-gray-600 font-medium mb-1">{{ directory.title }}</div>
-          <div class="flex gap-x-2">
-            <div v-for="data in task.data.filter((data) => data.directory_id === directory.id)" :key="data.id" class="flex items-center justify-between bg-gray-200 px-2 py-1 rounded-md">
-              <div class="text-xs text-gray-800">{{ Object.values(data)[1] }}</div>
-            </div>
+        <div class="flex gap-x-2">
+          <div v-for="data in task.data" :key="data.id" class="flex items-center justify-between bg-gray-200 px-2 py-1 rounded-md">
+            <div class="text-xs text-gray-800"><span class="font-medium">{{ data.directory_title }}: </span> {{ Object.values(data)[1] }}</div>
           </div>
         </div>
       </div>
@@ -79,14 +76,6 @@
   const fieldsNoDescription = computed(() => {
     return fields.value.filter((field) => field.type !== 'beskrivelse')
   });
-
-  const categoriesDataDirectory = computed(() => {
-    let categories = Array.from(new Set(props.task.data.map((item) => {
-      return Object({ id: item.directory_id, title: item.directory_title })
-    })));
-
-    return [...new Map(categories.map(item => [item['id'], item])).values()]
-  })
 
   const fieldValue = (value, type) => {
     // @TODO TYPE (stk, liter, etc...)

@@ -19,8 +19,11 @@
     <div>
       <div class="bg-white border border-gray-200 rounded z-30 shadow-md" v-if="activeDirectory">
         <div class="max-h-[250px] min-w-[150px] overflow-y-scroll relative">
-          <div v-for="(data) in activeDirectory.data" :key="data.id" @click="chooseDirectoryData(data)" class="p-2 hover-transition hover:bg-gray-200 text-[12px] cursor-pointer border-b border-gray-200 flex justify-between items-center">
+          <div v-for="(data, index) in activeDirectory.data" v-if="activeDirectory.data" :key="data.id" @click="chooseDirectoryData(data)" :class="{'border-t border-gray-200': index !== 0}" class="p-2 hover-transition hover:bg-gray-200 text-[12px] cursor-pointer flex justify-between items-center">
             {{ Object.values(data)[1] }}
+          </div>
+          <div v-else class="p-2 hover-transition text-[12px] font-medium flex justify-between items-center">
+            Ingen data fundet
           </div>
         </div>
       </div>
