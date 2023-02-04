@@ -26,7 +26,7 @@
       <div class="border-b relative flex border-gray-200/50 bg-white" :class="heightClass" v-for="(time, index) in timeframe" :key="index+' '+time">
         <div class="sibling absolute w-full h-full hover:bg-primary/10 hover-transition cursor-pointer" @click="navigation.toggleCreateTask({ time: time, day: getDate(apiData.day) })"></div>
         <div v-for="task in tasks(time)" class="p-[2px]" :class="!task.moreTask ? 'w-1/5' : 'w-full'" :key="task.id">
-          <Calendar-Week-Task :task="task" @opened="(t) => navigation.setOpenedTask(t)" />
+          <Calendar-Task :task="task" @opened="(t) => navigation.setOpenedTask(t)" />
         </div>
       </div>
     </div>
