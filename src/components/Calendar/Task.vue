@@ -8,7 +8,7 @@
     </div>
   </div>
   <div v-else>
-    <Calendar-Box :task="task" @click="$emit('opened', task)" />
+    <Calendar-Box :task="task" @click="$emit('opened', task)" :layout="layout" />
   </div>
 </template>
 
@@ -21,6 +21,10 @@
     task: {
       type: Object,
       required: true
+    },
+    layout: {
+      type: String,
+      default: null
     }
   });
 

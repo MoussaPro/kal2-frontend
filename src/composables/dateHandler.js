@@ -1,5 +1,6 @@
 export default function dateHandler() {
-  const monthNames = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'Oktober', 'September', 'November', 'December'];
+  const dayNames = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag']
+  const monthNames = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
   const dateLocale = 'da-DK';
 
   const dateToTimestamp = (date) => {
@@ -75,7 +76,16 @@ export default function dateHandler() {
     return new Date(+date[2], date[1] - 1, +date[0]);
   }
 
+  const dateToBackendString = (date) => {
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const day = ("0" + date.getDate()).slice(-2);
+
+    return `${year}-${month}-${day}`;
+  }
+
   return {
+    dayNames,
     getDay,
     getMonth,
     getYear,
@@ -84,6 +94,7 @@ export default function dateHandler() {
     dateCalender,
     dateToTimestamp,
     danishToDate,
-    dateCalenderTime
+    dateCalenderTime,
+    dateToBackendString
   }
 }
