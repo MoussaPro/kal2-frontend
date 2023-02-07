@@ -35,7 +35,7 @@
         <div class="border-b relative flex border-gray-200/50" :class="[heightClass, week.isToday ? 'bg-green-100/40  border-gray-100' : 'bg-white']" v-for="(time, index) in timeframe" :key="index+' '+time">
           <div class="sibling absolute w-full h-full hover:bg-primary/10 hover-transition cursor-pointer" @click="navigation.toggleCreateTask({ time: time, day: week.date })"></div>
           <div v-for="task in tasks(week.timestamp, time)" class="flex-1 p-[2px]" :key="task.id">
-            <Calendar-Week-Task :task="task" @opened="(t) => navigation.setOpenedTask(t)" />
+            <Calendar-Task :task="task" @opened="(t) => navigation.setOpenedTask(t)" />
           </div>
         </div>
       </div>

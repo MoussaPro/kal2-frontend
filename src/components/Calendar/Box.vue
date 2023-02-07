@@ -15,7 +15,7 @@
   <div v-else class="border rounded-md text-xs px-2 py-[5px] shadow relative hover-transition hover:opacity-80 cursor-pointer hover:scale-[102%] hover:!z-[25]" :style="styling">
     <div class="overflow-y-hidden h-full">
       <p class="leading-none font-medium font-inter" :class="lineClamper">{{ task.title }}</p>
-      <span class="text-[10px]">#{{ task.task_number }}</span>
+      <span class="text-[10px]" v-if="!layout">#{{ task.task_number }}</span>
     </div>
   </div>
 </template>
@@ -37,6 +37,10 @@
     subTask : {
       type: Boolean,
       default: false
+    },
+    layout: {
+      type: String,
+      default: null
     }
   });
   const emit = defineEmits(['openMoreTask'])
@@ -48,12 +52,18 @@
 
   if (!props.moreTask) {
     if (!props.subTask) {
-      if (props.task.task_time_end && props.task.task_time_end > props.task.task_time) {
+      if (props.task.task_time_end && props.task.task_time_end > props.task.task_time && !props.layout) {
         styling.value = "height: " + ((diffBetweenTwoTimes(props.task.task_time, props.task.task_time_end, 'minutes')*taskHeight.minute)-2) + "px;";
+      } else if (props.layout) {
+        styling.value = "height: 25px;"
       } else {
         styling.value = "height: 50px;"
       }
-      styling.value += " margin-top:" + props.task.diff * taskHeight.minute + "px;";
+      if (props.layout) {
+        styling.value += " margin-top: 2px;";
+      } else {
+        styling.value += " margin-top:" + props.task.diff * taskHeight.minute + "px;";
+      }
       if (props.task.task_time.slice(0, 2) === '00') {
         styling.value += " z-index: 1;";
       } else {
