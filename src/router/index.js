@@ -22,6 +22,11 @@ import guest from "@/middleware/guest";
     import Directory_Fields from '../views/Directory/Fields.vue'
   /** End Directory **/
 
+  /** Directory **/
+    import Data from '../views/Data/Layout.vue'
+    import Data_index from '../views/Data/Index.vue'
+  /** End Directory **/
+
   /** New **/
     import NewField from '../views/New/Field.vue'
     import NewDirectory from '../views/New/Directory.vue'
@@ -51,6 +56,10 @@ const routes = [
   { path: '/directory', name: 'directory', component: Directory, meta: { middleware: auth }, children: [
       { path: '', component: Directory_index, name: 'directory.index' },
       { path: 'fields', component: Directory_Fields, name: 'directory.fields' }
+    ]
+  },
+  { path: '/data', name: 'data', component: Data, meta: { middleware: auth }, children: [
+      { path: '', component: Data_index, name: 'data.index' },
     ]
   },
   { path: '/new', name: 'new', meta: { middleware: auth }, children: [
