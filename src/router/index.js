@@ -48,7 +48,6 @@ const routes = [
   // Public routes
   { path: '/', name: 'index', component: Index, meta: { middleware: guest } },
   { path: '/login', name: 'login', component: Login, meta: { middleware: guest }, },
-  { path: '/register', name: 'register', component: Register, meta: { middleware: guest }, },
   { path: '/opgave/:token', name: 'publicTask', component: PublicTask },
 
   { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { middleware: auth }, },
