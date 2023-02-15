@@ -35,8 +35,12 @@ import guest from "@/middleware/guest";
   /** Edit **/
     import EditField from '../views/Edit/Field.vue'
     import EditDirectory from '../views/Edit/Directory.vue'
-    import DataDirectory from '../views/Edit/DataDirectory.vue'
+    import EditDataDirectory from '../views/Edit/DataDirectory.vue'
   /** End edit **/
+
+  /** Show **/
+    import ShowDataDirectory from '../views/Show/DataDirectory.vue'
+  /** End show **/
 
   /** Task **/
     import PublicTask from '../views/PublicTask.vue'
@@ -71,7 +75,12 @@ const routes = [
       { path: '', component: NotFoundView, name: 'editError' },
       { path: 'field/:id', component: EditField, name: 'edit.field' },
       { path: 'directory/:id', component: EditDirectory, name: 'edit.directory' },
-      { path: 'directory/data/:id', component: DataDirectory, name: 'edit.data.directory' }
+      { path: 'directory/data/:id', component: EditDataDirectory, name: 'edit.data.directory' }
+    ]
+  },
+  { path: '/show', name: 'show', meta: { middleware: auth }, children: [
+      { path: '', component: NotFoundView, name: 'editError' },
+      { path: 'directory/data/:id', component: ShowDataDirectory, name: 'show.data.directory' },
     ]
   },
   { path: '/calendar', name: 'calendar', component: Calendar, meta: { middleware: auth }, },
