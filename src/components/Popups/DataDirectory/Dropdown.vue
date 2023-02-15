@@ -1,6 +1,6 @@
 <template>
-  <div class="absolute left-0 top-[45px] w-auto font-inter flex items-start gap-x-2 text-[13px] text-gray-600 z-20" v-click-outside="hidePopup">
-    <div class="bg-white h-auto min-w-[200px] shadow-md rounded-b-md border border-gray-200">
+  <div class="absolute left-0 top-[45px] font-inter flex items-start gap-x-2 text-[13px] text-gray-600 z-20" :class="fullWidth ? 'w-full' : 'w-auto'" v-click-outside="hidePopup">
+    <div class="bg-white h-auto shadow-md rounded-b-md border border-gray-200 min-w-[200px]" :class="fullWidth ? 'w-full' : ''">
       <div class="max-h-[250px] overflow-y-scroll relative" v-if="containerDirectories && containerDirectories.length">
         <div v-for="(directory) in containerDirectories" @click="setActiveDirectory(directory)" :class="activeDirectory?.id === directory.id ? 'bg-gray-200 font-medium' : ''" class="p-2 hover-transition hover:bg-gray-200 text-[12px] cursor-pointer border-b border-gray-200 flex justify-between items-center">
           {{ directory.title }}
@@ -44,6 +44,10 @@
     showCreate: {
       type: Boolean,
       default: true
+    },
+    fullWidth: {
+      type: Boolean,
+      default: false
     }
   })
 

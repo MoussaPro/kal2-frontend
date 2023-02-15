@@ -69,7 +69,6 @@
           'Authorization': 'Bearer '+ localStorage.getItem('token')
         }
       }).then((response) => response.data).then((response) => {
-        console.log(response);
         apiData.value = response;
         title.value = getMonth(response.month[0], 'name');
         containerFields.value = response.fields ?? null;
