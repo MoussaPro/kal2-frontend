@@ -22,7 +22,7 @@
     <div>
       <div class="bg-white border border-gray-200 rounded z-30 shadow-md" v-if="activeDirectory">
         <div class="max-h-[250px] min-w-[150px] overflow-y-scroll relative">
-          <div v-for="(data, index) in activeDirectory.data" v-if="activeDirectory.data" :key="data.id" @click="chooseDirectoryData(data)" :class="{'border-t border-gray-200': index !== 0}" class="p-2 hover-transition hover:bg-gray-200 text-[12px] cursor-pointer flex justify-between items-center">
+          <div v-for="(data, index) in activeDirectory.data" v-if="activeDirectory.data" :key="data.id" @click="chooseDirectoryData(data)" :class="[{'border-t border-gray-200': index !== 0}, inChosenDirectories(data) ? 'bg-primary text-white font-medium cursor-default' : 'hover:bg-gray-200']" class="p-2 hover-transition text-[12px] cursor-pointer flex justify-between items-center">
             {{ getDataDirectoryIdentifier(data) }}
           </div>
           <div v-else class="p-2 hover-transition text-[12px] font-medium flex justify-between items-center">
@@ -48,6 +48,9 @@
     fullWidth: {
       type: Boolean,
       default: false
+    },
+    chosenDirectories: {
+      type: Array
     }
   })
 
@@ -64,6 +67,20 @@
       activeDirectory.value = directory;
     else
       activeDirectory.value = null;
+  }
+
+  const inChosenDirectories = (data) => {
+    let isIn = false;
+
+    if (props.chosenDirectories && props.chosenDirectories.length) {
+      props.chosenDirectories.filter((chosenData) => {
+        if (chosenData.id === data.id) {
+          isIn = true;
+        }
+      });
+    }
+
+    return isIn;
   }
 
   const chooseDirectoryData = (directory) => {

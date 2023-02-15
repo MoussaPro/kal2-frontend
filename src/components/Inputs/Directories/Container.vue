@@ -10,7 +10,7 @@
     </div>
 
     <div class="relative">
-      <Popups-DataDirectory-Dropdown :containerDirectories="containerDirectories" v-if="showDirectoriesPopup" @hide="hideDirectoriesPopup" @onChosen="updateChoosenDataDirectories"/>
+      <Popups-DataDirectory-Dropdown :containerDirectories="containerDirectories" v-if="showDirectoriesPopup" @hide="hideDirectoriesPopup" :chosenDirectories="chosenDataDirectories" @onChosen="updateChoosenDataDirectories"/>
 
       <div class="flex justify-between items-center py-2">
         <div class="rounded-md shadow py-[5px] px-3 font-inter text-left text-[12px] font-medium flex items-center hover-transition cursor-pointer" :class="showDirectoriesPopup ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-primary hover:border-primary hover:text-white'" @click="showDirectoriesPopup = true">
