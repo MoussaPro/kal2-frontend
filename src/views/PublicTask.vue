@@ -28,7 +28,7 @@
           <h3 class="font-bold text-lg font-inter mb-1">Tilknytninger</h3>
           <div class="flex flex-wrap gap-2">
             <div v-for="data in task.data" :key="data.id" class="flex items-center justify-between bg-gray-200 px-2 py-1 rounded-md">
-              <div class="text-xs text-gray-800"><span class="font-medium">{{ data.directory_title }}: </span> {{ Object.values(data)[1] }}</div>
+              <div class="text-xs text-gray-800"><span class="font-medium">{{ data.directory_title }}: </span> {{ getDataDirectoryIdentifier(data) }}</div>
             </div>
           </div>
         </div>
@@ -62,9 +62,11 @@
   import { useRouter } from "vue-router";
   import colorHandler from "@/composables/colorHandler";
   import dateHandler from "@/composables/dateHandler";
+  import fieldHandler from "@/composables/fieldHandler";
 
   const { colors } = colorHandler();
   const { dateCalender } = dateHandler();
+  const { getDataDirectoryIdentifier } = fieldHandler();
 
   const route = useRoute();
   const Router = useRouter();

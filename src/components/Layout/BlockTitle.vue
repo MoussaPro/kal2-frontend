@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-xl font-inter font-medium">{{ title }}</h1>
+  <h2 class="text-xl font-inter font-medium">{{ title }}</h2>
 </template>
 <script setup>
   const props = defineProps({

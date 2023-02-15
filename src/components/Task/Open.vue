@@ -73,7 +73,7 @@
         </button>
         <div class="flex items-center mr-3">
           <button class="text-sm text-gray-700 font-inter underline flex items-center hover-transition hover:text-gray-900" :disabled="loading" @click="editMode = false; hideWarnings()">
-            Anuller ændringer
+            Annuller ændringer
           </button>
           <span class="ml-6 mr-5 text-gray-300">|</span>
           <button class="text-sm text-red-500 font-inter underline flex items-center hover-transition hover:text-red-800" @click="toggleDeleteBox" :disabled="loading">

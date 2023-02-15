@@ -25,7 +25,15 @@ export default function fieldHandler() {
     return firstChar + restOfString;
   }
 
+  const getDataDirectoryIdentifier = (data) => {
+    if (data['identification']) {
+      return data[data['identification']]
+    } else {
+      return Object.values(data)[1];
+    }
+  }
+
   return {
-    addField, deleteField, capitalizeString, addFieldDirectory
+    addField, deleteField, capitalizeString, addFieldDirectory, getDataDirectoryIdentifier
   }
 }

@@ -86,8 +86,8 @@
         }
       }).then((response) => response.data).then((response) => {
         apiData.value = response;
-        if (response.containerFields) {
-          containerFields.value = response.containerFields;
+        if (response.fields) {
+          containerFields.value = response.fields;
           containerDirectories.value = response.directories ?? null;
         }
         loading.value = false;

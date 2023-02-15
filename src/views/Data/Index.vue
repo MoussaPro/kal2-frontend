@@ -5,19 +5,37 @@
 
     <div v-if="!loading && !error" class="p-10">
       <Layout-BlockTitle title="Udregning af data" class="mb-2"/>
-      sd
-    </div>
 
+      <DataSearcher :containerFields="containerFields" :containerDirectories="containerDirectories" />
+    </div>
   </div>
 </template>
 <script setup>
   import { onMounted, ref } from "vue";
+  import axios from "axios";
 
-  const directories = ref();
   const loading = ref(false);
   const error = ref();
+  const containerFields = ref();
+  const containerDirectories = ref();
 
   onMounted(() => {
+    loading.value = true;
 
+    try {
+      axios.get('/data/search/index', {
+        headers: {
+          'Authorization': 'Bearer '+ localStorage.getItem('token')
+        }
+      }).then((response) => response.data).then((response) => {
+        containerFields.value = response.fields;
+        containerDirectories.value = response.directories;
+        loading.value = false;
+      }).catch((response) => {
+        error.value = response;
+      });
+    } catch(e) {
+      error.value = e;
+    }
   });
 </script>
