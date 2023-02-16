@@ -88,7 +88,7 @@
   if (props.task) {
     loading.value = true;
     title.value = props.task.title ? props.task.title : null;
-    allDaySwitch.value = !!props.task.task_date_end;
+    allDaySwitch.value = !!props.task.task_all_day;
     color.value = colors.filter((color) => { return props.task.task_color === color.name })[0]; // Find color object by the name we get
     startDate.value = props.task.task_date ? dateCalender(props.task.task_date, false) : null; // Convert to date Calendar (Danish)
     endDate.value = props.task.task_date_end ? dateCalender(props.task.task_date_end, false) : null; // Convert to date Calendar (Danish)
