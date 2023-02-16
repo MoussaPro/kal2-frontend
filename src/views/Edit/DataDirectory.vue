@@ -63,7 +63,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                       </svg>
                     </div>
-                    <MoreDropDown @delete="toggleDeleteBox(index)" @edit="toggleEditBox(data)" v-if="dropdownIndex === index" v-click-outside="setDropDownIndex" />
+                    <MoreDropDown @delete="toggleDeleteBox(index)" @edit="toggleEditBox(data)" @show="$router.push('/show/directory/data/' + route.params.id + '/' + data['id'])" v-if="dropdownIndex === index" v-click-outside="setDropDownIndex" />
                   </td>
                 </tr>
               </tbody>
@@ -76,7 +76,7 @@
 </template>
 <script setup>
   import { useRoute, useRouter } from "vue-router/dist/vue-router";
-  import { onMounted, ref } from "vue";
+  import { onBeforeMount, ref } from "vue";
   import axios from "axios";
 
   const route = useRoute();
@@ -200,7 +200,7 @@
     dropdownIndex.value = null;
   }
 
-  onMounted(() => {
+  onBeforeMount(() => {
     try {
       axios.get('/directory/'+route.params.id, {
         headers: {

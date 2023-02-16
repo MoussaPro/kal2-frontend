@@ -80,7 +80,7 @@ const routes = [
   },
   { path: '/show', name: 'show', meta: { middleware: auth }, children: [
       { path: '', component: NotFoundView, name: 'editError' },
-      { path: 'directory/data/:id', component: ShowDataDirectory, name: 'show.data.directory' },
+      { path: 'directory/data/:id/:data_id', component: ShowDataDirectory, name: 'show.data.directory' },
     ]
   },
   { path: '/calendar', name: 'calendar', component: Calendar, meta: { middleware: auth }, },
