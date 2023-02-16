@@ -64,10 +64,14 @@
       } else {
         styling.value += " margin-top:" + props.task.diff * taskHeight.minute + "px;";
       }
-      if (props.task.task_time.slice(0, 2) === '00') {
-        styling.value += " z-index: 1;";
+      if (props.task.task_time) {
+        if (props.task.task_time.slice(0, 2) === '00') {
+          styling.value += " z-index: 1;";
+        } else {
+          styling.value += " z-index:" + props.task.task_time.slice(0, 2) + ";";
+        }
       } else {
-        styling.value += " z-index:" + props.task.task_time.slice(0, 2) + ";";
+        styling.value += " z-index: 1;";
       }
     }
     styling.value += " background-color:" + color.value['background'] + ";";
