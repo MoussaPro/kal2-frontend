@@ -53,9 +53,12 @@
               </thead>
               <tbody>
                 <tr class="border-b" :class="index % 2 === 1 ? 'bg-gray-50' : 'bg-white'" v-if="apiData && apiData.data" v-for="(data, index) in apiData.data">
-                  <td class="px-3 py-4 font-normal overflow-x-scroll text-gray-800" v-for="(field, index) in apiData.fields">
-                    {{ data[field.title] }}
-                  </td>
+                  <template v-for="(field, index) in apiData.fields">
+                    <td class="px-3 py-4 font-normal overflow-x-scroll text-gray-800" :class="index === 0 ? 'underline hover:opacity-75 cursor-pointer' : ''">
+                      <RouterLink :to="'/show/directory/data/' + route.params.id + '/' + data['id']" v-if="index === 0">{{ data[field.title] }}</RouterLink>
+                      <span v-else>{{ data[field.title] }}</span>
+                    </td>
+                  </template>
                   <td class="px-3 relative block py-4 text-primary-Darker1 hover-transition cursor-pointer font-medium">
                     <div @click="setDropDownIndex(index)" class="flex items-center justify-end">
                       Mere
@@ -63,7 +66,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                       </svg>
                     </div>
-                    <MoreDropDown @delete="toggleDeleteBox(index)" @edit="toggleEditBox(data)" v-if="dropdownIndex === index" v-click-outside="setDropDownIndex" />
+                    <MoreDropDown @delete="toggleDeleteBox(index)" @edit="toggleEditBox(data)" @show="$router.push('/show/directory/data/' + route.params.id + '/' + data['id'])" v-if="dropdownIndex === index" v-click-outside="setDropDownIndex" />
                   </td>
                 </tr>
               </tbody>
@@ -76,7 +79,7 @@
 </template>
 <script setup>
   import { useRoute, useRouter } from "vue-router/dist/vue-router";
-  import { onMounted, ref } from "vue";
+  import { onBeforeMount, ref } from "vue";
   import axios from "axios";
 
   const route = useRoute();
@@ -200,7 +203,7 @@
     dropdownIndex.value = null;
   }
 
-  onMounted(() => {
+  onBeforeMount(() => {
     try {
       axios.get('/directory/'+route.params.id, {
         headers: {

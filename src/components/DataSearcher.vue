@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="bg-gray-50">
-      <div class="grid grid-cols-3 divide-x divide-border-gray-300 py-5">
-        <div class="px-5">
+      <div class="grid divide-x divide-border-gray-300 py-5" :class="directoryData ? 'grid-cols-2' : 'grid-cols-3'">
+        <div class="px-5" v-if="!directoryData">
           <div class="font-medium">1. Søg efter</div>
           <div class="relative" v-if="!search.data">
             <Popups-DataDirectory-Dropdown :fullWidth="true" :showCreate="false" :containerDirectories="containerDirectories" v-if="showDirectoriesPopup" @hide="hideDirectoriesPopup" @onChosen="updateChoosenDataDirectories"/>
@@ -24,9 +24,9 @@
           </div>
         </div>
         <div class="px-5">
-          <div class="font-medium">2. Hent data</div>
+          <div class="font-medium"><span v-if="!directoryData">2.</span><span v-else>1.</span> Hent data</div>
           <div class="relative">
-            <div class="bg-white shadow-md max-h-[400px] w-[600px] left-[-175px] overflow-scroll mt-2 rounded-md p-3 absolute top-[40px]" v-if="showFieldsPopup" v-click-outside="hideFieldsPopup">
+            <div class="bg-white shadow-md max-h-[400px] w-[600px] overflow-scroll mt-2 rounded-md p-3 absolute top-[40px]" :class="directoryData ? 'left-0' : 'left-[-175px]'" v-if="showFieldsPopup" v-click-outside="hideFieldsPopup">
               <div v-for="(fields, index) in containerFields" :key="fields.id">
                 <template v-if="fields.fields.filter((f) => f.type === 'valuta' || f.type === 'tal').length">
                   <div class="font-medium text-gray-700 mb-1">{{ fields.title }}</div>
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="px-5">
-          <div class="font-medium">3. Vælg dato</div>
+          <div class="font-medium"><span v-if="!directoryData">3.</span><span v-else>2.</span> Vælg dato</div>
           <div class="relative">
             <DatePicker is-expanded show-iso-weeknumbers is-range v-model="search.dates" class="absolute top-[45px]" v-if="showDatePopup" v-click-outside="hideDatePopup"/>
 
@@ -79,7 +79,7 @@
       <div class="text-xl font-inter font-medium mt-5">Resultater</div>
       <template v-for="(tasks, date) in results">
         <div class="bg-gray-50 my-2 p-2" v-if="shareInDates(tasks.filter((task) => task.task_date === date))">
-          <div class="text-[15px] mb-2 font-medium">{{ printDate(date) }}</div>
+          <div class="text-[15px] mb-2 font-medium">{{ printDate(date) }} <span class="text-xs">({{ tasks.filter((task) => task.task_date === date).length }} opgaver)</span></div>
           <div class="grid grid-cols-5 gap-2">
             <div class="text-gray-800 text-xs bg-gray-100 py-2 flex items-center text-center justify-center flex-col" v-for="(data, index) in shareInDates(tasks.filter((task) => task.task_date === date))">
               <div>{{ data.title }}</div>
@@ -89,7 +89,7 @@
         </div>
       </template>
 
-      <div class="text-xl font-inter font-medium mt-5 mb-2">Total</div>
+      <div class="text-xl font-inter font-medium mt-5 mb-2">Total <span class="text-xs">({{ totalTaskCounter(results) }} opgaver ialt)</span></div>
       <div class="bg-gray-200 p-2 gap-2 grid grid-cols-5">
         <div class="text-gray-800 text-xs bg-gray-100 py-2 flex items-center text-center justify-center flex-col" v-for="(data, index) in getTotal(results)">
           <div>{{ data.title }}</div>
@@ -116,6 +116,10 @@
     },
     containerFields: {
       type: Array
+    },
+    directoryData: {
+      type: Object,
+      default: null
     }
   });
 
@@ -133,10 +137,22 @@
   const searchErrorFilter = ref(false);
 
   const search = ref({
-    data: null,
+    data: props.directoryData ? props.directoryData : null,
     filter: [],
     dates: null
   });
+
+  const totalTaskCounter = (result) => {
+    let total = 0;
+
+    if (result) {
+      Object.values(result).forEach((dates) => {
+        total += dates.length;
+      });
+    }
+
+    return total;
+  }
 
   const shareInDates = (tasks) => {
     let filteredTasks = [];
