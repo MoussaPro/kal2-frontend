@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Api-Server-Loading v-if="loading" class="mt-10"/>
+    <Api-Server-Loading v-if="loading" class="mt-10 max-w-[900px] mx-auto"/>
     <div v-if="!loading && task" class="bg-gray-100 max-w-[900px] p-2 lg:mb-10 lg:border border-gray-200 lg:mx-auto lg:mt-10">
       <div class="max-w-full rounded-md shadow-md p-2" :class="color.css">
         <div class="font-semibold font-inter text-[16px] overflow-x-scroll relative whitespace-nowrap" :class="task.task_color === 'yellow' ? 'text-black' : 'text-white'">#{{ task.task_number }} {{ task.title }}</div>

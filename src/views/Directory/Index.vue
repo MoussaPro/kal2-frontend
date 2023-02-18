@@ -18,15 +18,15 @@
         </div>
       </RouterLink>
 
-      <div v-for="directory in directories" :key="directory.id" class="relative flex justify-between hover-transition items-center space-x-3 mb-2 rounded-lg border border-gray-300 hover:border-gray-400 shadow-sm bg-white px-6 py-5">
-        <div class="flex items-center space-x-3">
+      <Div v-for="directory in directories" :key="directory.id" class="relative flex justify-between hover-transition items-center space-x-3 mb-2 rounded-lg border border-gray-300 hover:border-gray-400 shadow-sm bg-white px-6 py-5">
+        <RouterLink :to="'/edit/directory/data/'+directory.id" class="flex items-center space-x-3">
           <div class="flex-shrink-0">
             <div class="h-10 w-10 bg-gray-500 text-gray-100 flex items-center justify-center rounded-full">{{ directory.title.substring(0,1) }}</div>
           </div>
           <div class="min-w-0 flex-1">
             <p class="text-sm font-medium text-gray-900">{{ directory.title }}</p>
           </div>
-        </div>
+        </RouterLink>
         <div class="flex items-center space-x-6 font-inter text-xs mr-2">
           <RouterLink :to="'/edit/directory/data/'+directory.id" class="hover-transition hover:underline flex items-center hover:text-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 mr-1">

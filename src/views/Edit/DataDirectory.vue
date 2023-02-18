@@ -53,9 +53,12 @@
               </thead>
               <tbody>
                 <tr class="border-b" :class="index % 2 === 1 ? 'bg-gray-50' : 'bg-white'" v-if="apiData && apiData.data" v-for="(data, index) in apiData.data">
-                  <td class="px-3 py-4 font-normal overflow-x-scroll text-gray-800" v-for="(field, index) in apiData.fields">
-                    {{ data[field.title] }}
-                  </td>
+                  <template v-for="(field, index) in apiData.fields">
+                    <td class="px-3 py-4 font-normal overflow-x-scroll text-gray-800" :class="index === 0 ? 'underline hover:opacity-75 cursor-pointer' : ''">
+                      <RouterLink :to="'/show/directory/data/' + route.params.id + '/' + data['id']" v-if="index === 0">{{ data[field.title] }}</RouterLink>
+                      <span v-else>{{ data[field.title] }}</span>
+                    </td>
+                  </template>
                   <td class="px-3 relative block py-4 text-primary-Darker1 hover-transition cursor-pointer font-medium">
                     <div @click="setDropDownIndex(index)" class="flex items-center justify-end">
                       Mere
