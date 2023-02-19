@@ -146,6 +146,15 @@
         }
         return false;
       }
+
+      if (n.title.toLocaleLowerCase() === 'id' || n.title.toLocaleLowerCase() === 'identification') {
+        error.value = true;
+        errorMsg.value = 'Ordet ' + n.title + ' er reserveret, brug venligst et nyt.';
+        if (el) {
+          el.scrollIntoView();
+        }
+        return false;
+      }
     });
 
     if (!loading.value && !error.value) {
