@@ -32,19 +32,10 @@
         </ul>
       </nav>
 
-      <div class="items-center gap-x-3 hidden lg:flex">
-          <div class="flex items-center">
-            <div @click="toggleSearch" :class="searchActive ? 'rounded-l-md bg-gray-800 hover:bg-gray-800' : 'bg-[#434d60] rounded-md hover:bg-gray-800 mr-2'" class="flex py-2 px-3 cursor-pointer flex-col items-center text-xs hover-transition font-light justify-center text-gray-200 font-inter font-normal">
-              <img src="@/assets/images/navigation/search.png" alt="search icon" class="w-7" v-if="!searchActive"/>
-              <img src="@/assets/images/navigation/close.png" alt="close icon" class="w-7" v-else/>
-            </div>
-            <transition name="searchSlide" class="overflow-hidden">
-              <form method="get" class="flex items-center mr-2" id="searchForm" action="/dashboard" @submit.prevent="search()" v-if="searchActive">
-                <input type="text" ref="searchInput" class="text-black py-[8.5px] w-[250px] pl-2 border focus:outline-0 border-gray-800" name="q" placeholder="Indtast søgeord" v-model="searchTerm"/>
-                <button @click="search()" class="py-[8.5px] block bg-gray-900 text-white -ml-[1px] rounded-r-md px-3 border border-gray-900 hover:bg-gray-800 hover-transition hover:border-gray-800" >Søg</button>
-              </form>
-            </transition>
-          </div>
+      <div class="hidden lg:flex items-center">
+        <RouterLink to="/search" active-class="bg-gray-900 hover:bg-gray-900" class="flex py-2 px-3 cursor-pointer flex-col items-center text-xs hover-transition font-light justify-center text-gray-200 font-inter font-normal bg-[#434d60] rounded-md hover:bg-gray-800 mr-2">
+          <img src="@/assets/images/navigation/search.png" alt="search icon" class="w-7"/>
+        </RouterLink>
       </div>
       <div class="relative">
         <div @click="profileMenu = !profileMenu" class="text-gray-200 font-inter cursor-pointer text-center font-normal flex hover:bg-gray-800 h-full py-2 lg:px-7 flex-col items-center text-sm hover-transition font-light justify-center">
@@ -80,7 +71,6 @@
 <script setup>
   import { Auth } from "@/store/auth";
   import { ref } from "vue";
-  import { useRouter } from "vue-router";
   const auth = Auth();
 
   const logout = () => {
@@ -89,35 +79,10 @@
 
   const searchActive = ref(false);
   const searchTerm = ref();
-  const Router = useRouter();
   const searchInput = ref();
   const profileMenu = ref(false);
-
-  const toggleSearch = () => {
-    searchActive.value = !searchActive.value;
-  }
-
-  const hideSearch = () => {
-    searchActive.value = false;
-  }
-
-  const search = () => {
-    hideSearch();
-    Router.push('/search?q='+searchTerm.value);
-  }
 
   const hideProfileMenu = () => {
     profileMenu.value = false;
   }
 </script>
-<style>
-.searchSlide-enter-active,
-.searchSlide-leave-active {
-  transition: all 0.3s ease;
-}
-.searchSlide-enter-from,
-.searchSlide-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-</style>

@@ -14,10 +14,10 @@
 
     <div class="w-full bg-white mt-5 shadow p-3" v-if="!loading">
       <div class="font-medium text-sm mb-1 text-gray-700">Global søgning</div>
-      <form method="GET" class="flex items-center justify-center " @submit.prevent="search()">
+      <div class="flex items-center justify-center">
         <input type="text" class="flex-1 border h-10 pl-2 text-gray-700 rounded-l-md focus:outline-0" :class="searchError ? 'border-red-500' : 'border-gray-300'" v-model="searchModel" />
-        <button class="bg-primary-Darker1 h-10 px-6 rounded-r-md hover:opacity-75 hover-transition cursor-pointer text-white">Søg</button>
-      </form>
+        <button @click="search" class="bg-primary-Darker1 h-10 px-6 rounded-r-md hover:opacity-75 hover-transition cursor-pointer text-white">Søg</button>
+      </div>
     </div>
 
     <div class="w-full bg-white mt-5 shadow p-3 mb-20" v-if="apiData">
@@ -77,7 +77,6 @@
     if (searchModel.value) {
       searchError.value = false;
       apiData.value = null;
-      router.push('/search?q='+searchModel.value)
       loading.value = true;
 
       axios.get('search/'+searchModel.value, {
@@ -85,6 +84,7 @@
           'Authorization': 'Bearer '+ localStorage.getItem('token')
         }
       }).then((response) => response.data).then((response) => {
+        console.log(response);
         apiData.value = response;
         if (response.fields) {
           containerFields.value = response.fields;
