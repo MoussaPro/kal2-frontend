@@ -59,14 +59,14 @@
                       <span v-else>{{ data[field.title] }}</span>
                     </td>
                   </template>
-                  <td class="px-3 relative block py-4 text-primary-Darker1 hover-transition cursor-pointer font-medium">
-                    <div @click="setDropDownIndex(index)" class="flex items-center justify-end">
+                  <td class="px-3 py-4 text-primary-Darker1 hover-transition cursor-pointer font-medium">
+                    <div @click="setDropDownIndex(index)" class="flex relative items-center justify-end">
                       Mere
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" :class="dropdownIndex === index ? 'rotate-180' : 'rotate-0'" class="w-[16px] ml-1 hover-transition">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                       </svg>
-                    </div>
                     <MoreDropDown @delete="toggleDeleteBox(index)" @edit="toggleEditBox(data)" @show="$router.push('/show/directory/data/' + route.params.id + '/' + data['id'])" v-if="dropdownIndex === index" v-click-outside="setDropDownIndex" />
+                    </div>
                   </td>
                 </tr>
               </tbody>
