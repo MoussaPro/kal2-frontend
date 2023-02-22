@@ -79,7 +79,14 @@
       <div class="text-xl font-inter font-medium mt-5">Resultater</div>
       <template v-for="(tasks, date) in results">
         <div class="bg-gray-50 my-2 p-2" v-if="shareInDates(tasks.filter((task) => task.task_date === date))">
-          <div class="text-[15px] mb-2 font-medium">{{ printDate(date) }} <span class="text-xs">({{ tasks.filter((task) => task.task_date === date).length }} opgaver)</span></div>
+          <div class="text-[15px] mb-2 font-medium">
+            {{ printDate(date) }}
+            <span class="text-xs ml-1">
+              {{ tasks.filter((task) => task.task_date === date).length }}
+              <span v-if="tasks.filter((task) => task.task_date === date).length === 1">opgave</span>
+              <span v-else>opgaver</span>
+            </span>
+          </div>
           <div class="grid grid-cols-5 gap-2">
             <div class="text-gray-800 text-xs bg-gray-100 py-2 flex items-center text-center justify-center flex-col" v-for="(data, index) in shareInDates(tasks.filter((task) => task.task_date === date))">
               <div>{{ data.title }}</div>
@@ -89,7 +96,14 @@
         </div>
       </template>
 
-      <div class="text-xl font-inter font-medium mt-5 mb-2">Total <span class="text-xs">({{ totalTaskCounter(results) }} opgaver ialt)</span></div>
+      <div class="text-xl font-inter font-medium mt-5 mb-2">
+        Total
+        <span class="text-xs ml-1">
+          {{ totalTaskCounter(results) }}
+          <span v-if="totalTaskCounter(results) === 1">opgave ialt</span>
+          <span v-else>opgaver ialt</span>
+        </span>
+      </div>
       <div class="bg-gray-200 p-2 gap-2 grid grid-cols-5">
         <div class="text-gray-800 text-xs bg-gray-100 py-2 flex items-center text-center justify-center flex-col" v-for="(data, index) in getTotal(results)">
           <div>{{ data.title }}</div>
