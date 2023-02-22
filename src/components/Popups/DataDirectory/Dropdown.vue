@@ -1,9 +1,9 @@
 <template>
   <div class="absolute left-0 font-inter flex items-start gap-x-2 text-[13px] text-gray-600 z-20" :class="[topMargin, fullWidth ? 'w-full' : 'w-auto']" v-click-outside="hidePopup">
     <div class="bg-white h-auto shadow-md rounded-b-md border border-gray-200 min-w-[200px]" :class="fullWidth ? 'w-full' : ''">
-      <div class="max-h-[250px] overflow-y-scroll relative" v-if="containerDirectories && containerDirectories.length">
+      <div class="max-h-[250px] max-w-[250px] overflow-y-scroll relative" v-if="containerDirectories && containerDirectories.length">
         <div v-for="(directory, index) in containerDirectories" @click="setActiveDirectory(directory)" :class="{'bg-gray-200 font-medium': activeDirectory?.id === directory.id, 'border-t border-gray-200': index !== 0}" class="p-2 hover-transition hover:bg-gray-200 text-[12px] cursor-pointer flex justify-between items-center">
-          {{ directory.title }}
+          <div class="w-11/12 line-clamp-1">{{ directory.title }}</div>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
           </svg>
@@ -21,9 +21,9 @@
     </div>
     <div>
       <div class="bg-white border border-gray-200 rounded z-30 shadow-md" v-if="activeDirectory">
-        <div class="max-h-[250px] min-w-[150px] overflow-y-scroll relative">
+        <div class="max-h-[250px] w-[250px] overflow-y-scroll relative">
           <div v-for="(data, index) in activeDirectory.data" v-if="activeDirectory.data" :key="data.id" @click="chooseDirectoryData(data)" :class="[{'border-t border-gray-200': index !== 0}, inChosenDirectories(data) ? 'bg-primary text-white font-medium cursor-default rounded' : 'hover:bg-gray-200']" class="p-2 hover-transition text-[12px] cursor-pointer flex justify-between items-center">
-            {{ getDataDirectoryIdentifier(data) }}
+            <span class="line-clamp-1">{{ getDataDirectoryIdentifier(data) }}</span>
           </div>
           <div v-else class="p-2 hover-transition text-[12px] font-medium flex justify-between items-center">
             Ingen data fundet

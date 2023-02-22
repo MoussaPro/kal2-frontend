@@ -40,7 +40,7 @@
           <div v-for="(task, index) in apiData.tasks">
             <div class="flex items-center mb-3 h-[50px] rounded-md hover-transition hover:scale-[100.5%] cursor-pointer group" @click="setOpenedTask(task)">
               <div class="w-[50px] h-full rounded-l-md text-white p-1 text-xs font-medium" :class="getTaskColor(task.task_color)"></div>
-              <div class="flex-1 grid grid-cols-5 px-5 text-xs text-gray-700 h-full bg-gray-50 rounded-r-md border border-gray-200 group-hover:bg-gray-100 hover-transition">
+              <div class="flex-1 grid grid-cols-5 gap-x-10 px-5 text-xs text-gray-700 h-full bg-gray-50 rounded-r-md border border-gray-200 group-hover:bg-gray-100 hover-transition">
                 <div class="col-span-3 flex flex-col justify-center">
                   <p class="leading-tight text-sm line-clamp-1">#{{ task.task_number}} {{ task.title }}</p>
                 </div>
@@ -50,8 +50,11 @@
                 </div>
                 <div class="col-span-1 flex flex-col justify-center">
                   <b class="leading-tight font-medium">Slut</b>
-                  <p class="leading-tight font-light line-clamp-1" v-if="task.task_date_end || task.task_time_end">{{ getOutputDate(task.task_date_end) }} {{ getOutputTime(task.task_time_end) }}</p>
-                  <p class="font-light line-clamp-1" v-else>Ingen</p>
+                  <p class="leading-tight font-light line-clamp-1">
+                    <span v-if="task.task_date_end">{{ getOutputDate(task.task_date_end) }}</span>
+                    <span v-if="task.task_time_end">{{ getOutputTime(task.task_time_end) }}</span>
+                  </p>
+                  <p class="font-light line-clamp-1" v-if="!task.task_date_end && !task.task_time_end">Ingen</p>
                 </div>
               </div>
             </div>
