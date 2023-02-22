@@ -12,15 +12,28 @@
         @updated="refreshSearch"
         @deleted="refreshSearch" />
 
-    <div class="w-full bg-white mt-5 shadow p-3" v-if="!loading">
+    <div class="w-full bg-white mt-5 shadow p-3" v-if="!loading && !error">
       <div class="font-medium text-sm mb-1 text-gray-700">Global søgning</div>
+      <div v-if="searchError" class="bg-red-500/90 flex items-center text-white rounded-md mb-4 mt-2 p-2 text-xs font-medium font-inter">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 mr-[5px] -mt-[3px]">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+        </svg>
+        Udfyld venligst minimum en søgekriterie
+      </div>
       <div class="flex items-center justify-center">
-        <input type="text" class="flex-1 border h-10 pl-2 text-gray-700 rounded-l-md focus:outline-0" :class="searchError ? 'border-red-500' : 'border-gray-300'" v-model="searchModel" />
+        <input type="text" class="flex-1 border h-10 pl-2 text-gray-700 rounded-l-md focus:outline-0 border-gray-300" v-model="searchModel" />
         <button @click="search" class="bg-primary-Darker1 h-10 px-6 rounded-r-md hover:opacity-75 hover-transition cursor-pointer text-white">Søg</button>
+      </div>
+      <AdvancedSearch @searchcriteria="(emittedSearch) => searchcriteria = emittedSearch" :searchcriteria="searchcriteria" v-if="advanceSearch" :containerFields="containerFields" :containerDirectories="containerDirectories"/>
+      <div @click="advanceSearch = !advanceSearch;" class="mt-3 bg-gray-100 px-4 inline-flex items-center rounded-md text-gray-800 font-medium py-[5px] text-sm cursor-pointer hover:bg-gray-300 active:bg-gray-400 hover-transition">
+        Avanceret søgning
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 ml-1 mt-[2px]" :class="{'rotate-180': advanceSearch}">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
       </div>
     </div>
 
-    <div class="w-full bg-white mt-5 shadow p-3 mb-20" v-if="apiData">
+    <div class="w-full bg-white mt-5 shadow p-3 mb-20" v-if="apiData && !loading && !error">
       <div v-if="apiData.tasks.length">
         <div v-if="apiData.tasks.length">
           <h2 class="text-lg font-medium mb-2">Opgaver:</h2>
@@ -72,27 +85,28 @@
   const openedTask = ref();
   const containerFields = ref();
   const containerDirectories = ref();
+  const advanceSearch = ref(false);
+  const searchcriteria = ref();
 
   const search = () => {
-    if (searchModel.value) {
+    if (searchModel.value || (searchcriteria.value.included.length || searchcriteria.value.excluded.length)) {
       searchError.value = false;
       apiData.value = null;
       loading.value = true;
 
-      axios.get('search/'+searchModel.value, {
+      axios.post('/search', {
+        q: searchModel.value,
+        searchcriteria: searchcriteria.value
+      },{
         headers: {
           'Authorization': 'Bearer '+ localStorage.getItem('token')
         }
       }).then((response) => response.data).then((response) => {
         console.log(response);
         apiData.value = response;
-        if (response.fields) {
-          containerFields.value = response.fields;
-          containerDirectories.value = response.directories ?? null;
-        }
         loading.value = false;
-
       }).catch((response) => {
+        error.value = true;
         loading.value = false;
       });
     } else {
@@ -133,8 +147,18 @@
   }
 
   onBeforeMount(() => {
-    if (route.query.q) {
-      search();
-    }
+    axios.get('global/data', {
+      headers: {
+        'Authorization': 'Bearer '+ localStorage.getItem('token')
+      }
+    }).then((response) => response.data).then((response) => {
+      containerFields.value = response.fields;
+      containerDirectories.value = response.directories;
+      loading.value = false;
+
+    }).catch((response) => {
+      error.value = true;
+      loading.value = false;
+    });
   });
 </script>
