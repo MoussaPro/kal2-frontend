@@ -1,7 +1,7 @@
 <template>
   <div class="w-full" v-if="task">
     <div class="max-w-full rounded-md shadow-md p-2" :class="color.css">
-      <div class="font-semibold font-inter text-[16px] overflow-x-scroll relative whitespace-nowrap" :class="task.task_color === 'yellow' ? 'text-black' : 'text-white'">#{{ task.task_number }} {{ task.title }}</div>
+      <div class="font-semibold font-inter text-[15px] relative" :class="task.task_color === 'yellow' ? 'text-black' : 'text-white'">#{{ task.task_number }} {{ task.title }}</div>
     </div>
     <div class="py-2">
       <div class="grid grid-cols-2 gap-x-5 text-gray-700 h-full">
