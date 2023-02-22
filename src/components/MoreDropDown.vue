@@ -1,5 +1,5 @@
 <template>
-  <div class="z-[20] top-10 right-[20px] absolute block bg-white border border-gray-200 divide-y divide-gray-100 rounded shadow-md w-40">
+  <div class="z-[20] absolute block bg-white border border-gray-200 divide-y divide-gray-100 rounded shadow-md w-40" :class="position">
     <ul class="text-[13px] font-inter text-gray-700">
       <li>
         <div @click="$emit('show')" class="block px-4 py-2 hover:bg-gray-100 flex items-center">
@@ -29,3 +29,11 @@
     </div>
   </div>
 </template>
+<script setup>
+  const props = defineProps({
+    position: {
+      type: String,
+      default: 'top-[22px] right-[20px]'
+    }
+  })
+</script>
