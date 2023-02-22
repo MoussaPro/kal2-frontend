@@ -84,6 +84,19 @@ export default function dateHandler() {
     return `${year}-${month}-${day}`;
   }
 
+  const printBetweenDates = (date) => {
+    let start =  dateToTimestamp(date.start);
+    start = getDay(start) +'. '+ getMonth(start, 'name').slice(0,3) + ' ' + getYear(start);
+    let end =  dateToTimestamp(date.end);
+    end = getDay(end) +'. '+ getMonth(end, 'name').slice(0,3) + ' ' + getYear(end);
+
+    if (start === end) {
+      return start
+    }
+
+    return start + ' - ' + end;
+  }
+
   return {
     dayNames,
     getDay,
@@ -95,6 +108,7 @@ export default function dateHandler() {
     dateToTimestamp,
     danishToDate,
     dateCalenderTime,
-    dateToBackendString
+    dateToBackendString,
+    printBetweenDates
   }
 }

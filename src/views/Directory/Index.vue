@@ -18,7 +18,7 @@
         </div>
       </RouterLink>
 
-      <Div v-for="directory in directories" :key="directory.id" class="relative flex justify-between hover-transition items-center space-x-3 mb-2 rounded-lg border border-gray-300 hover:border-gray-400 shadow-sm bg-white px-6 py-5">
+      <div v-for="directory in directories" :key="directory.id" class="relative flex justify-between hover-transition items-center space-x-3 mb-2 rounded-lg border border-gray-300 hover:border-gray-400 shadow-sm bg-white px-6 py-5">
         <RouterLink :to="'/edit/directory/data/'+directory.id" class="flex items-center space-x-3">
           <div class="flex-shrink-0">
             <div class="h-10 w-10 bg-gray-500 text-gray-100 flex items-center justify-center rounded-full">{{ directory.title.substring(0,1) }}</div>

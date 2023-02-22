@@ -51,7 +51,7 @@
 
             <div class="rounded-md shadow py-[5px] my-2 px-3 font-inter text-left text-[12px] w-full font-medium flex items-center hover-transition cursor-pointer" :class="showDatePopup ? (search.dates ? 'bg-primary-Darker1 text-white' : 'bg-primary-Darker1 text-white') : (search.dates ? 'bg-primary-Darker text-white hover:bg-primary-Darker1' : 'bg-gray-100 hover:bg-primary hover:border-primary hover:text-white')" @click="showDatePopup = true">
               <span v-if="!search.dates">Vælg dato</span>
-              <span v-else>{{ printDates(search.dates) }}</span>
+              <span v-else>{{ printBetweenDates(search.dates) }}</span>
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@
   });
 
   const { getDataDirectoryIdentifier } = fieldHandler();
-  const { dateToTimestamp, getDay, getMonth, getYear } = dateHandler();
+  const { dateToTimestamp, getDay, getMonth, getYear, printBetweenDates } = dateHandler();
 
   const results = ref();
   const showDirectoriesPopup = ref();
@@ -241,19 +241,6 @@
     });
 
     return isIn;
-  }
-
-  const printDates = (date) => {
-    let start =  dateToTimestamp(date.start);
-    start = getDay(start) +'. '+ getMonth(start, 'name').slice(0,3) + ' ' + getYear(start);
-    let end =  dateToTimestamp(date.end);
-    end = getDay(end) +'. '+ getMonth(end, 'name').slice(0,3) + ' ' + getYear(end);
-
-    if (start === end) {
-      return start
-    }
-
-    return start + ' - ' + end;
   }
 
   const printDate = (date) => {
