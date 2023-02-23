@@ -3,6 +3,7 @@
     <Task-Create
         v-if="showCreateTask"
         :containerFields="containerFields"
+        :containerDirectories="containerDirectories"
         :prefill="prefill"
         @close="toggleCreateTask"
         @created="(task) => $emit('created', task)" />
@@ -10,6 +11,7 @@
     <Task-Open
         v-if="showOpenedTask"
         :containerFields="containerFields"
+        :containerDirectories="containerDirectories"
         :task="openedTask"
         @close="toggleOpenedTask"
         @updated="(task) => $emit('updated', task)"
@@ -24,6 +26,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
         </svg>
         <div class="relative">
+          <Calendar-Month-Navigation :month="month" :year="year" @gotoByMonthNumber="(number) => $emit('gotoByMonthNumber', number)" v-if="calendar.active === 'month'"/>
           <Calendar-Week-Navigation :weekDays="weekDays" :weekNumber="weekNumber" @gotoByWeekNumber="(number) => $emit('gotoByWeekNumber', number)" :year="year" v-if="calendar.active === 'week'"/>
           <Calendar-Day-Navigation :day="day" @gotoByDayNumber="(number) => $emit('gotoByDayNumber', number)" v-if="calendar.active === 'day'"/>
         </div>
@@ -37,7 +40,7 @@
           <div @click="calendar.switchCalendar('week')" class="rounded p-3 text-sm" :class="calendar.active === 'week' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover-transition hover:bg-primary hover:text-white cursor-pointer'">Uge visning</div>
         </div>
         <div class="mx-2">
-          <div class="rounded p-3 text-sm" :class="calendar.active === 'month' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover-transition hover:bg-primary hover:text-white cursor-pointer'">Måned visning</div>
+          <div @click="calendar.switchCalendar('month')" class="rounded p-3 text-sm" :class="calendar.active === 'month' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover-transition hover:bg-primary hover:text-white cursor-pointer'">Måned visning</div>
         </div>
       </div>
 
@@ -68,6 +71,9 @@
     day: {
       type: Number,
     },
+    month: {
+      type: Number,
+    },
     weekNumber: {
       type: Number,
     },
@@ -77,6 +83,9 @@
     containerFields: {
       type: Array || null,
     },
+    containerDirectories: {
+      type: Array || null,
+    }
   });
 
   const showCreateTask = ref(false);

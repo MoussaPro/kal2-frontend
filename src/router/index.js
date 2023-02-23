@@ -22,6 +22,11 @@ import guest from "@/middleware/guest";
     import Directory_Fields from '../views/Directory/Fields.vue'
   /** End Directory **/
 
+  /** Directory **/
+    import Data from '../views/Data/Layout.vue'
+    import Data_index from '../views/Data/Index.vue'
+  /** End Directory **/
+
   /** New **/
     import NewField from '../views/New/Field.vue'
     import NewDirectory from '../views/New/Directory.vue'
@@ -30,20 +35,34 @@ import guest from "@/middleware/guest";
   /** Edit **/
     import EditField from '../views/Edit/Field.vue'
     import EditDirectory from '../views/Edit/Directory.vue'
-    import DataDirectory from '../views/Edit/DataDirectory.vue'
+    import EditDataDirectory from '../views/Edit/DataDirectory.vue'
   /** End edit **/
+
+  /** Show **/
+    import ShowDataDirectory from '../views/Show/DataDirectory.vue'
+  /** End show **/
+
+  /** Task **/
+    import PublicTask from '../views/PublicTask.vue'
+  /** End task **/
 /** End routes **/
 
 
 const routes = [
+  // Public routes
   { path: '/', name: 'index', component: Index, meta: { middleware: guest } },
   { path: '/login', name: 'login', component: Login, meta: { middleware: guest }, },
-  { path: '/register', name: 'register', component: Register, meta: { middleware: guest }, },
+  { path: '/opgave/:token', name: 'publicTask', component: PublicTask },
+
   { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { middleware: auth }, },
   { path: '/search', name: 'search', component: Search, meta: { middleware: auth }, },
   { path: '/directory', name: 'directory', component: Directory, meta: { middleware: auth }, children: [
       { path: '', component: Directory_index, name: 'directory.index' },
       { path: 'fields', component: Directory_Fields, name: 'directory.fields' }
+    ]
+  },
+  { path: '/data', name: 'data', component: Data, meta: { middleware: auth }, children: [
+      { path: '', component: Data_index, name: 'data.index' },
     ]
   },
   { path: '/new', name: 'new', meta: { middleware: auth }, children: [
@@ -56,16 +75,21 @@ const routes = [
       { path: '', component: NotFoundView, name: 'editError' },
       { path: 'field/:id', component: EditField, name: 'edit.field' },
       { path: 'directory/:id', component: EditDirectory, name: 'edit.directory' },
-      { path: 'directory/data/:id', component: DataDirectory, name: 'edit.data.directory' }
+      { path: 'directory/data/:id', component: EditDataDirectory, name: 'edit.data.directory' }
+    ]
+  },
+  { path: '/show', name: 'show', meta: { middleware: auth }, children: [
+      { path: '', component: NotFoundView, name: 'editError' },
+      { path: 'directory/data/:id/:data_id', component: ShowDataDirectory, name: 'show.data.directory' },
     ]
   },
   { path: '/calendar', name: 'calendar', component: Calendar, meta: { middleware: auth }, },
+  // Logout
+  { path: '/logout', component: Logout, meta: { middleware: auth } },
 
   // Not found 404
   { path: '/:pathMatch(.*)*', component: NotFoundView },
 
-  // Logout
-  { path: '/logout', component: Logout }
 ]
 
 const router = createRouter({

@@ -12,21 +12,22 @@
           <div class="text-gray-700 text-xs font-inter font-medium">Kartotek skabeloner:</div>
           <div class="flex flex-wrap items-center text-xs space-x-3 mt-1">
             <div :class="recommendedClass(null)" @click="setRecommended(null)">Opret egen</div>
-            <div :class="recommendedClass('employees')" @click="setRecommended('employees')">Medarbejder</div>
-            <div :class="recommendedClass('product')" @click="setRecommended('product')">Vare</div>
-            <div :class="recommendedClass('customer')" @click="setRecommended('customer')">Kunde</div>
+            <div :class="recommendedClass('employees')" @click="setRecommended('employees')">Medarbejdere</div>
+            <div :class="recommendedClass('product')" @click="setRecommended('product')">Varer</div>
+            <div :class="recommendedClass('customer')" @click="setRecommended('customer')">Kunder</div>
           </div>
         </div>
 
         <div v-for="(field, index) in directory" v-if="directory && directory.length" :key="field.id">
-          <div class="relative">
-            <div v-if="index !== 0" @click="deleteField(directory, index)" class="text-red-500 hover-transition hover:text-red-700 cursor-pointer absolute left-[-35px] top-[30px]">
+          <div class="relative mt-5">
+          <div v-if="index === 0" class="text-gray-500 text-xs font-medium mb-1">( Identifikations felt )</div>
+            <div v-if="index !== 0" @click="deleteField(directory, index)" class="text-red-500 hover-transition hover:text-red-700 cursor-pointer absolute left-[-35px] top-[9px]">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </div>
 
-            <input type="text" class="bg-gray-50 border-gray-200 border-2 border-dashed mt-5 px-2 py-1 w-[400px] h-9 rounded text-[13px] text-gray-600 focus:outline-gray-300 focus:border-gray-300 active:border-gray-300" @blur="setField({ id: field.id, title: field.title }, index)" v-model="field.title"/>
+            <input type="text" class="bg-gray-50 border-gray-200 border-2 border-dashed px-2 py-1 w-[400px] h-9 rounded text-[13px] text-gray-600 focus:outline-gray-300 focus:border-gray-300 active:border-gray-300 placeholder:text-gray-500" placeholder="Angiv værdi holder" @blur="setField({ id: field.id, title: field.title }, index)" v-model="field.title"/>
           </div>
         </div>
         <div class="text-primary-Darker1 tracking-[0.45px] mt-3 ml-[1px] font-inter font-medium text-[13px] inline-flex border-b border-primary-Darker1 items-center cursor-pointer hover-transition hover:opacity-75" @click="addFieldDirectory(directory)">
@@ -52,7 +53,7 @@
 
   const title = ref();
   const recommended = ref(null);
-  const standard = { id: Math.random(), title: 'Værdi holder navn' };
+  const standard = { id: Math.random(), title: '' };
   const saved = ref([standard]); // Saved when going back from recommended
   const directory = ref([standard]);
   const loading = ref();
@@ -75,9 +76,11 @@
 
     switch(r) {
       case null:
+        title.value = null;
         directory.value = saved.value;
         break;
       case 'employees':
+        title.value = 'Medarbejdere'
         directory.value = [
           { id: Math.random(), title: 'Fornavn' },
           { id: Math.random(), title: 'Efternavn' },
@@ -89,6 +92,7 @@
         ];
         break;
       case 'product':
+        title.value = 'Varer'
         directory.value = [
           { id: Math.random(), title: 'Varenavn' },
           { id: Math.random(), title: 'Varenummer' },
@@ -98,6 +102,7 @@
         ];
         break;
       case 'customer':
+        title.value = 'Kunder'
         directory.value = [
           { id: Math.random(), title: 'Navn' },
           { id: Math.random(), title: 'Adresse' },
@@ -106,6 +111,7 @@
         ];
         break;
       default:
+        title.value = null
         directory.value = [standard];
     }
   }
@@ -140,6 +146,15 @@
         }
         return false;
       }
+
+      if (n.title.toLocaleLowerCase() === 'id' || n.title.toLocaleLowerCase() === 'identification') {
+        error.value = true;
+        errorMsg.value = 'Ordet ' + n.title + ' er reserveret, brug venligst et nyt.';
+        if (el) {
+          el.scrollIntoView();
+        }
+        return false;
+      }
     });
 
     if (!loading.value && !error.value) {
@@ -154,7 +169,11 @@
         }
       }).then((response) => response.data).then((response) => {
         loading.value = false;
-        router.push({ path: '/directory' });
+        if (response.directory.id) {
+          router.push({ path: '/edit/directory/data/' + response.directory.id })
+        } else {
+          router.push({ path: '/directory' });
+        }
       }).catch((response) => {
         error.value = true;
         if (el) {

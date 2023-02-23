@@ -4,10 +4,11 @@
 
   <div v-if="!loading && !error">
     <Calendar-Navigation
+        :containerFields="containerFields"
+        :containerDirectories="containerDirectories"
         :weekDays="apiData ? apiData.week : null"
         :weekNumber="apiData ? apiData.week_number : null"
         :year="apiData ? apiData.year : null"
-        :containerFields="containerFields"
         @previous="previous"
         @next="next"
         @gotoByWeekNumber="gotoByDate"
@@ -34,7 +35,7 @@
         <div class="border-b relative flex border-gray-200/50" :class="[heightClass, week.isToday ? 'bg-green-100/40  border-gray-100' : 'bg-white']" v-for="(time, index) in timeframe" :key="index+' '+time">
           <div class="sibling absolute w-full h-full hover:bg-primary/10 hover-transition cursor-pointer" @click="navigation.toggleCreateTask({ time: time, day: week.date })"></div>
           <div v-for="task in tasks(week.timestamp, time)" class="flex-1 p-[2px]" :key="task.id">
-            <Calendar-Week-Task :task="task" @opened="(t) => navigation.setOpenedTask(t)" />
+            <Calendar-Task :task="task" @opened="(t) => navigation.setOpenedTask(t)" />
           </div>
         </div>
       </div>
@@ -59,6 +60,7 @@
   const heightClass = ref('h-14');
   const weekHolder = ref([]);
   const containerFields = ref(null);
+  const containerDirectories = ref(null);
   const navigation = ref();
   const Router = useRouter();
   const calendar = Calendar();
@@ -84,6 +86,7 @@
       }).then((response) => response.data).then((response) => {
         apiData.value = response;
         containerFields.value = response.fields ?? null;
+        containerDirectories.value = response.directories ?? null;
         loading.value = false;
       }).catch((response) => {
         error.value = response;

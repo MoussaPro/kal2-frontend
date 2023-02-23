@@ -1,7 +1,7 @@
 <template>
   <div class="w-full" v-if="task">
     <div class="max-w-full rounded-md shadow-md p-2" :class="color.css">
-      <div class="font-semibold font-inter text-[16px] overflow-x-scroll relative whitespace-nowrap" :class="task.task_color === 'yellow' ? 'text-black' : 'text-white'">#{{ task.task_number }} {{ task.title }}</div>
+      <div class="font-semibold font-inter text-[15px] relative" :class="task.task_color === 'yellow' ? 'text-black' : 'text-white'">#{{ task.task_number }} {{ task.title }}</div>
     </div>
     <div class="py-2">
       <div class="grid grid-cols-2 gap-x-5 text-gray-700 h-full">
@@ -17,6 +17,15 @@
           <div class="text-gray-700">
             <p class="text-[13.5px] tracking-[0.3px]" v-if="task.task_date_end">Dato: {{ dateCalender(task.task_date_end, false) }}</p>
             <p class="text-[13.5px] tracking-[0.3px]" v-if="task.task_time_end">Tidspunkt: {{ task.task_time_end.slice(0, 5) }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5" v-if="task.data && task.data.length > 0">
+        <h3 class="font-bold text-lg font-inter mb-1">Tilknytninger</h3>
+        <div class="flex flex-wrap gap-2">
+          <div v-for="data in task.data" :key="data.id" class="flex items-center justify-between bg-gray-200 px-2 py-1 rounded-md hover:opacity-75">
+            <RouterLink :to="'/show/directory/data/'+data.directory_id+'/'+data.id" class="text-xs text-gray-800"><span class="font-medium">{{ data.directory_title }}: </span> {{ getDataDirectoryIdentifier(data) }}</RouterLink>
           </div>
         </div>
       </div>
@@ -46,15 +55,17 @@
   import colorHandler from "@/composables/colorHandler";
   import { computed, ref } from "vue";
   import dateHandler from "@/composables/dateHandler";
+  import fieldHandler from "@/composables/fieldHandler";
   const { colors } = colorHandler();
   const { dateCalender } = dateHandler();
+  const { getDataDirectoryIdentifier } = fieldHandler();
 
   const props = defineProps({
     task: Object
   });
 
   const task_ends = props.task.task_date_end || props.task.task_time_end;
-  const fields = ref(JSON.parse(props.task.fields));
+  const fields = ref(props.task.fields);
 
   const color = computed(() => {
     return colors.filter(color => color.name === props.task.task_color)[0];

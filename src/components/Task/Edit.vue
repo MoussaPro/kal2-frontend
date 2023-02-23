@@ -41,6 +41,11 @@
         <SwitchButton title="Hele dagen" :checked="allDaySwitch" @clicked="toggleAllDaySwitch" />
       </div>
 
+      <div class="mt-5">
+        <p class="text-[14px] font-medium text-gray-700">Tilknytning</p>
+        <Inputs-Directories-Container :containerDirectories="containerDirectories" @taskDataDirectories="setDataDirectories" :jsonData="dataDirectories"/>
+      </div>
+
       <div class="mt-8">
         <Inputs-Fields-Container @taskFields="setFields" :containerFields="containerFields" :jsonData="fields" />
       </div>
@@ -61,6 +66,9 @@
     },
     containerFields: {
       type: Array || null,
+    },
+    containerDirectories: {
+      type: Array || null,
     }
   });
 
@@ -71,6 +79,7 @@
   const endTime = ref(null);
   const title = ref(null);
   const fields = ref(null);
+  const dataDirectories = ref(null);
   const color = ref({});
   const allDaySwitch = ref(false);
   const loading = ref(false);
@@ -79,13 +88,14 @@
   if (props.task) {
     loading.value = true;
     title.value = props.task.title ? props.task.title : null;
-    allDaySwitch.value = !!props.task.task_date_end;
+    allDaySwitch.value = !!props.task.task_all_day;
     color.value = colors.filter((color) => { return props.task.task_color === color.name })[0]; // Find color object by the name we get
     startDate.value = props.task.task_date ? dateCalender(props.task.task_date, false) : null; // Convert to date Calendar (Danish)
     endDate.value = props.task.task_date_end ? dateCalender(props.task.task_date_end, false) : null; // Convert to date Calendar (Danish)
     startTime.value = props.task.task_time ? props.task.task_time.slice(0, 5) : null; // Slice as we get the date in milliseconds
     endTime.value = props.task.task_time_end ? props.task.task_time_end.slice(0, 5) : null; // Slice as we get the date in milliseconds
     fields.value = props.task.fields ? props.task.fields : null;
+    dataDirectories.value = props.task.data ? props.task.data : null;
     taskId.value = props.task.id ?? null;
     loading.value = false;
   }
@@ -103,6 +113,10 @@
     fields.value = getFields;
   }
 
+  const setDataDirectories = (getDataDirectories) => {
+    dataDirectories.value = getDataDirectories;
+  }
+
   const getTask = () => {
     // Return the new informations to parent
     return {
@@ -114,6 +128,7 @@
       endDate: endDate.value,
       endTime: endTime.value,
       fields: fields.value,
+      data: dataDirectories.value,
       taskId: taskId.value
     };
   }

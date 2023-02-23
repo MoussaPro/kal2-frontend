@@ -1,5 +1,6 @@
 <template>
   <div class="calendar-content pb-20">
+    <Calendar-Month-Calendar v-if="activeCalendar === 'month'"></Calendar-Month-Calendar>
     <Calendar-Week-Calendar v-if="activeCalendar === 'week'"></Calendar-Week-Calendar>
     <Calendar-Day-Calendar v-if="activeCalendar === 'day'"></Calendar-Day-Calendar>
   </div>

@@ -14,7 +14,7 @@
         <!-- Rest -->
         <input v-if="fields.type === 'tal' || fields.type === 'tekst' || fields.type === ''" type="text" class="border rounded focus:outline-none w-full h-9 text-[13px] pl-2" :class="error ? 'border-red-500' : 'border-gray-200'" placeholder="Standard værdi" v-model="fields.value" @blur="emitChanges"/>
         <!-- Description -->
-        <trumbowyg v-if="fields.type === 'beskrivelse'" v-model="fields.value" :config="trumConfig" @blur="emitChanges" placeholder="Standard værdi" class="form-control"></trumbowyg>
+        <trumbowyg v-if="fields.type === 'beskrivelse'" v-model="fields.value" :defaultValue="fields.value" :config="trumConfig" @blur="emitChanges" placeholder="Standard værdi" class="form-control"></trumbowyg>
       </div>
       <div class="relative">
         <div class="bg-gray-50 border-gray-200 border-2 h-9 text-[12px] w-[200px] rounded text-sm text-gray-700 cursor-pointer hover-transition hover:bg-gray-100 relative" :class="toggleType ? 'font-semibold' : 'border-dashed'" @click="toggleType = !toggleType">
@@ -108,6 +108,9 @@
   }
 
   const emitChanges = () => {
+    error.value = false;
+    errorMsg.value = ''
+
     // Check if type is number and value is a number
     if (fields.value.type === 'tal' && fields.value.value) {
       const regex = /^[\d,]*\.?\d*$/

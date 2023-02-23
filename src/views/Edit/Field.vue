@@ -73,8 +73,6 @@
         }
       }).then((response) => response.data).then((response) => {
         apiData.value = response;
-        // Parse json
-        apiData.value.fields = JSON.parse(apiData.value.fields);
         // For v-model to set checked, it need to be true instead of 1
         if (apiData.value.is_primary === 1) {
           apiData.value.is_primary = true;

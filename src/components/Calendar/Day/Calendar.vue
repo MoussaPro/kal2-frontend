@@ -5,6 +5,7 @@
   <div v-if="!loading && !error">
     <Calendar-Navigation
         :containerFields="containerFields"
+        :containerDirectories="containerDirectories"
         :day="apiData.day"
         @previous="previous"
         @next="next"
@@ -25,7 +26,7 @@
       <div class="border-b relative flex border-gray-200/50 bg-white" :class="heightClass" v-for="(time, index) in timeframe" :key="index+' '+time">
         <div class="sibling absolute w-full h-full hover:bg-primary/10 hover-transition cursor-pointer" @click="navigation.toggleCreateTask({ time: time, day: getDate(apiData.day) })"></div>
         <div v-for="task in tasks(time)" class="p-[2px]" :class="!task.moreTask ? 'w-1/5' : 'w-full'" :key="task.id">
-          <Calendar-Week-Task :task="task" @opened="(t) => navigation.setOpenedTask(t)" />
+          <Calendar-Task :task="task" @opened="(t) => navigation.setOpenedTask(t)" />
         </div>
       </div>
     </div>
@@ -44,6 +45,7 @@
   const error = ref();
   const heightClass = ref('h-14');
   const containerFields = ref(null);
+  const containerDirectories = ref(null);
   const { getDay, getDate, getMonth, getYear } = dateHandler();
   const title = ref();
   const { timeframe, insideTimeBox } = timeHandler();
@@ -71,6 +73,7 @@
       }).then((response) => response.data).then((response) => {
         apiData.value = response;
         containerFields.value = response.fields ?? null;
+        containerDirectories.value = response.directories ?? null;
         title.value = getDay(apiData.value.day, 'name') + ' - ' + getDate(apiData.value.day).slice(0, 2) + '. ' + getMonth(apiData.value.day, 'name') + ' ' + getYear(apiData.value.day);
         loading.value = false;
       }).catch((response) => {

@@ -3,7 +3,7 @@
     <div id="topScroller" class="h-2 w-2"></div>
     <Api-Local-Error :error="error" :message="errorMsg" class="my-3" />
     <Task-View :task="taskActive" v-if="!editMode" class="p-3"/>
-    <Task-Edit :task="taskActive" :containerFields="containerFields" ref="editTask" v-if="editMode" class="p-3"/>
+    <Task-Edit :task="taskActive" :containerFields="containerFields" :containerDirectories="containerDirectories" ref="editTask" v-if="editMode" class="p-3"/>
 
     <transition>
       <div class="absolute w-full h-full top-0 left-0 flex items-center justify-center transition-hover z-[100]" v-if="updatedMessage">
@@ -31,6 +31,11 @@
         </div>
       </div>
     </transition>
+
+    <transition>
+      <Popups-TaskPublish v-if="showPublishPopup" :isPublished="isPublished" :token="publishToken" @publish="publishTask" @unpublish="unpublishTask" @close="showPublishPopup = false;" />
+    </transition>
+
     <div class="bg-gray-50 sticky bottom-0 p-3 border-t border-gray-100 z-[200]">
       <div v-if="!editMode" class="flex items-center">
         <button class="flex items-center bg-gray-200 py-3 px-5 rounded-lg text-sm text-gray-800 font-inter hover-transition hover:bg-primary hover:text-white" @click="editMode = true;">
@@ -40,12 +45,19 @@
           Rediger opgave
         </button>
         <span class="ml-6 mr-5 text-gray-300">|</span>
-        <button class="text-sm text-gray-700 font-inter underline flex items-center hover-transition hover:text-primary-Darker1">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-[18px] mr-[5px]">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-          </svg>
-          Send opgave
-        </button>
+        <div>
+          <button class="text-sm text-gray-700 font-inter underline flex items-center hover-transition hover:text-primary-Darker1" @click="showPublishPopup = true;">
+            <span class="flex">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-[18px] mr-[5px]">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+              </svg>
+              Send opgave
+            </span>
+          </button>
+          <div class="text-[10px] mt-[2px] text-primary-Darker1 flex items-center" v-if="isPublished">
+            <span class="w-2 h-2 rounded-full bg-primary-Darker1 mr-1"></span> Aktiv link
+          </div>
+        </div>
       </div>
       <div v-if="editMode" class="flex items-center justify-between">
         <button class="py-3 px-5 rounded-lg text-sm font-inter hover-transition text-white" :disabled="loading" :class="loading ? 'bg-primary-Darker1' : 'bg-primary hover:bg-primary-Darker1'" @click="saveTask()">
@@ -61,7 +73,7 @@
         </button>
         <div class="flex items-center mr-3">
           <button class="text-sm text-gray-700 font-inter underline flex items-center hover-transition hover:text-gray-900" :disabled="loading" @click="editMode = false; hideWarnings()">
-            Anuller ændringer
+            Annuller ændringer
           </button>
           <span class="ml-6 mr-5 text-gray-300">|</span>
           <button class="text-sm text-red-500 font-inter underline flex items-center hover-transition hover:text-red-800" @click="toggleDeleteBox" :disabled="loading">
@@ -91,6 +103,9 @@
     },
     containerFields: {
       type: Array || null,
+    },
+    containerDirectories: {
+      type: Array || null,
     }
   });
 
@@ -105,6 +120,9 @@
   const updatedMessage = ref(false);
   const deleteBox = ref();
   const deleteLoading = ref(false);
+  const isPublished = ref(!!props.task.isOnline);
+  const showPublishPopup = ref(false);
+  const publishToken = ref(props.task && props.task.isOnline && props.task.isOnline.token ? props.task.isOnline.token : null);
 
   const saveTask = async () => {
     const el = document.getElementById('topScroller');
@@ -141,7 +159,8 @@
         endDate: task.endDate,
         allDay: task.allDaySwitch,
         endTime: task.endTime,
-        fields: task.fields
+        fields: task.fields,
+        data: task.data
       }
     }, {
       headers: {
@@ -211,6 +230,38 @@
   const hideWarnings = () => {
     loading.value = false;
     error.value = false;
+  }
+
+  const publishTask = async () => {
+    showPublishPopup.value = false;
+
+    await axios.post('/task/publish/'+props.task.id, {}, {
+      headers: {
+        'Authorization': 'Bearer '+ localStorage.getItem('token')
+      }
+    }).then((response) => response.data).then((response) => {
+      if (response.token !== null) {
+        publishToken.value = response.token;
+        isPublished.value = true;
+        showPublishPopup.value = true;
+        hasBeenUpdated.value = true;
+      }
+    }).catch((response) => {});
+  }
+
+  const unpublishTask = async () => {
+    await axios.delete('/task/publish/'+props.task.id, {
+      headers: {
+        'Authorization': 'Bearer '+ localStorage.getItem('token')
+      }
+    }).then((response) => response.data).then((response) => {
+      if (response.deleted !== null) {
+        publishToken.value = null;
+        isPublished.value = false;
+        showPublishPopup.value = false;
+        hasBeenUpdated.value = true;
+      }
+    }).catch((response) => {});
   }
 </script>
 <style>

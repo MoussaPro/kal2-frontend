@@ -9,7 +9,7 @@
 
     <div v-if="toggleDatePicker" class="absolute shadow-2xl bg-gray-50 w-[400px] mt-5 p-3 rounded hover-transition z-20" :class="datePickerPosition" v-click-outside="hideDatePicker">
       <div class="w-0 h-0 border-[15px] absolute top-0 -mt-7 border-l-transparent border-r-transparent border-t-transparent border-b-gray-100" :class="datePickerPosition.includes('right') ? 'right-10' : 'left-0'"></div>
-      <DatePicker is-expanded show-iso-weeknumbers is_range :min-date="minDate ? minDate : null" :max-date="maxDate ? maxDate : null" v-model="date" />
+      <DatePicker is-expanded show-iso-weeknumbers :min-date="minDate ? minDate : null" :max-date="maxDate ? maxDate : null" v-model="date" />
     </div>
   </div>
 </template>
