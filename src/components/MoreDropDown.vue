@@ -33,7 +33,7 @@
   const props = defineProps({
     position: {
       type: String,
-      default: 'top-[22px] right-[20px]'
+      default: 'top-[21px] right-[20px]'
     }
   })
 </script>
